@@ -4,8 +4,6 @@ Goat.autoRestart1=ʙᴏᴛ ᴡɪʟʟ ᴀᴜᴛᴏ ʀᴇꜱᴛᴀʀᴛ ɪɴ %1
 Goat.autoRestart2=ʙᴏᴛ ᴡɪʟʟ ᴀᴜᴛᴏ ʀᴇꜱᴛᴀʀᴛ ʙʏ ᴄʀᴏɴ ᴊᴏʙ: %1
 Goat.googleApiTokenExpired=ɢᴏᴏɢʟᴇ ᴀᴘɪ ʀᴇꜰʀᴇꜱʜ ᴛᴏᴋᴇɴ ʜᴀꜱ ᴇxᴘɪʀᴇᴅ ᴏʀ ʙᴇᴇɴ ʀᴇᴠᴏᴋᴇᴅ, ᴘʟᴇᴀꜱᴇ ɢᴇᴛ ᴀ ɴᴇᴡ ᴛᴏᴋᴇɴ ᴀᴛ https://developers.google.com/oauthplayground/
 
-
-
 # bot/login/login.js
 login.currentlyLogged=ʟᴏɢɪɴ ɪɴ ᴘʀᴏɢʀᴇss
 login.notFoundDirAccount=ᴄᴀɴɴᴏᴛ ꜰɪɴᴅ ꜰɪʟᴇ %1
@@ -65,12 +63,9 @@ login.startBotSuccess=ʙᴏᴛ ʜᴀs ʙᴇᴇɴ sᴛᴀʀᴛᴇᴅ sᴜᴄᴄ�
 
 version.tooOldVersion=ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ᴀ ᴛᴏᴏ ᴏʟᴅ ᴠᴇʀsɪᴏɴ ᴏꜰ ᴍᴀʜᴀʙᴜʙ ʙᴏᴛ, ᴘʟᴇᴀsᴇ ᴜᴘᴅᴀᴛᴇ ᴛᴏ ᴛʜᴇ ʟᴀᴛᴇsᴛ ᴠᴇʀsɪᴏɴ ʙʏ ᴛʏᴘɪɴɢ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ: %1 ɪɴᴛᴏ ᴛʜᴇ ᴄᴍᴅ/ᴄᴏɴsᴏʟᴇ/ᴛᴇʀᴍɪɴᴀʟ/sʜᴇʟʟ
 
-
-
 # bot/custom.js
 custom.refreshedFb_dtsg=ʀᴇғʀᴇsʜᴇᴅ ғʙ_ᴅᴛsɢ ᴀɴᴅ ᴊᴀᴢᴏᴇsᴛ sᴜᴄᴄᴇssғᴜʟʟʏ
 custom.refreshedFb_dtsgError=ᴀɴ ᴇʀʀᴏʀ ᴏccᴜʀʀᴇᴅ wʜᴇɴ ʀᴇғʀᴇsʜɪɴɢ ғʙ_ᴅᴛsɢ ᴀɴᴅ ᴊᴀᴢᴏᴇsᴛ
-
 
 # bot/login/loadData.js
 loadData.loadThreadDataSuccess=ʟᴏᴀᴅᴇᴅ %1 ɢʳᴏᴜᴘ's ᴅᴀᴛᴀ sᴜᴄᴄᴇssғᴜʟʟʏ!
@@ -79,8 +74,8 @@ loadData.refreshingThreadData=ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ɪɴғᴏʀᴍᴀ�
 loadData.refreshThreadDataSuccess=ᴜᴘᴅᴀᴛᴇᴅ ɪɴғᴏʀᴍᴀᴛɪᴏɴ ᴏғ %1 ɢʳᴏᴜᴘ!
 loadData.refreshThreadDataError=ˢᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ ᴡʀᴏɴɢ wʜᴇɴ ᴜᴘᴅᴀᴛɪɴɢ ᴛʜᴇ ɢʳᴏᴜᴘs ɪɴғᴏʀᴍᴀᴛɪᴏɴ!
 
-
-# bot/login/loadScripts.jsloadScripts.loadScriptsError=ᴛʜᴇ %1 ғɪʟᴇs ʜᴀᴠᴇ ᴀɴ ᴇʀʀᴏʀ ᴅᴜʀɪɴɢ ʟᴏᴀᴅɪɴɢ:
+# bot/login/loadScripts.js
+loadScripts.loadScriptsError=ᴛʜᴇ %1 ғɪʟᴇs ʜᴀᴠᴇ ᴀɴ ᴇʀʀᴏʀ ᴅᴜʀɪɴɢ ʟᴏᴀᴅɪɴɢ:
 loadScripts.loadScriptsNotMatchOrigin=ᴛʜᴇ %1 ғɪʟᴇs ᴅᴏ ɴᴏᴛ ᴍᴀᴛᴄʜ ᴛʜᴇ ᴏʀɪɢɪɴᴀʟ ғɪʟᴇs ᴏɴ ᴛʜᴇ ɢɪᴛʜᴜʙ prᴏᴊᴇᴄᴛ, ᴍᴀᴋᴇ sᴜʀᴇ ᴛʜᴀᴛ ᴛʜᴇsᴇ cᴏᴍᴍᴀɴᴅ ғɪʟᴇs ᴀʀᴇ ʀᴇʟɪᴀʙʟᴇ:
 loadScripts.NOT_FOUND=ɴᴏᴛ ғᴏᴜɴᴅ ɪɴ ᴛʜᴇ ᴏʀɪɢɪɴᴀʟ sᴏᴜʀᴄᴇ cᴏᴅᴇ:
 loadScripts.NOT_MATCH=ᴅᴏᴇs ɴᴏᴛ ᴍᴀᴛᴄʜ ᴛʜᴇ ᴏʀɪɢɪɴᴀʟ sᴏᴜʀᴄᴇ cᴏᴅᴇ:
@@ -94,31 +89,31 @@ handlerCheckData.cantCreateThread=ɢʳᴏᴜᴘs ᴡɪᴛʜ ɪᴅ '%1' ᴄᴀɴ�
 handlerCheckData.cantCreateUser=ᴜsᴇʀs ᴡɪᴛʜ ɪᴅ '%1' ᴄᴀɴɴᴏᴛ ʙᴇ ᴡʀɪᴛᴛᴇɴ ᴛᴏ ᴛʜᴇ ᴅᴀᴛᴀʙᴀsᴇ!
 
 # bot/handler/handlerEvents.js
-handlerEvents.userBanned=ʏᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜsɪɴɢ ᴛʜᴇ ʙᴏᴛ\n» ʀᴇᴀsᴏɴ: %1\n» ᴛɪᴍᴇ: %2\n» ᴜsᴇʀ ɪᴅ: %3
-handlerEvents.threadBanned=ᴛʜɪs ɢʳᴏᴜᴘ ʜᴀs ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜsɪɴɢ ᴛʜᴇ ʙᴏᴛ\n» ʀᴇᴀsᴏɴ: %1\n» ᴛɪᴍᴇ: %2\n» ᴛʜʀᴇᴀᴅ ɪᴅ: %3
-handlerEvents.onlyAdminBox=ᴛʜɪs ɢʳᴏᴜᴘ ɪs ᴄᴜʀʀᴇɴᴛʟʏ ᴇɴᴀʙʟᴇᴅ ᴏɴʟʏ ɢʳᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʙᴏᴛ
-handlerEvents.onlyAdminBot=❌ | ᴄᴜʀʀᴇɴᴛʟʏ ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ʙᴏᴛ
-handlerEvents.commandNotFound=ᴄᴏᴍᴍᴀɴᴅ "%1" ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ, ᴛʏᴘᴇ %2ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
-handlerEvents.commandNotFound2=📜 ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ, ᴛʏᴘᴇ %1ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs
-handlerEvents.commandSyntaxError=📜 ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ ʏᴏᴜ ᴀʀᴇ ᴜsɪɴɢ ɪs ᴡʀᴏɴɢ sʏɴᴛᴀx, ᴘʟᴇᴀsᴇ ᴛʏᴘᴇ %1ʜᴇʟᴘ %2 ᴛᴏ sᴇᴇ ᴛʜᴇ ᴅᴇᴛᴀɪʟs ᴏꜰ ʜᴏᴡ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ!
-handlerEvents.commandNotFoundWithSuggestion=📜 ᴄᴏᴍᴀᴍɴᴅ "%1" ᴅᴏᴇs ɴᴏᴛ ᴇxɪsᴛ.\nᴅɪᴅ ʏᴏᴜ ᴍᴇᴀɴ: %3?\n\nᴛʏᴘᴇ %2ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴀᴍɴᴅs.
-handlerEvents.onlyPrefix=📜 ᴛʜᴀᴛ's ᴊᴜsᴛ ᴍʏ ᴘʀᴇꜰɪx, ᴛᴏ sᴇᴇ ᴍʏ ᴄᴏᴍᴍᴀɴᴅs ᴛʏᴘᴇ %1ʜᴇʟᴘ ᴛᴏ sᴇᴇ ᴀʟʟ ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴀᴍɴᴅs!
-handlerEvents.onlyAdmin=❌ | ᴏɴʟʏ ɢʳᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.onlyAdminToUseOnReply=❌ | ᴏɴʟʏ ɢʳᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʀᴇᴘʟʏ ғᴜɴᴄᴛɪᴏɴ ᴏғ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.onlyAdminToUseOnReaction=❌ | ᴏɴʟʏ ɢʳᴏᴜᴘ ᴀᴅᴍɪɴɪsᴛʀᴀᴛᴏʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʀᴇᴀᴄᴛɪᴏɴ ғᴜɴᴄᴛɪᴏɴ ᴏғ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.onlyAdminBot2=❌ | ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.onlyAdminBot2ToUseOnReply=❌ | ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʀᴇᴘʟʏ ғᴜɴᴄᴛɪᴏɴ ᴏғ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.onlyAdminBot2ToUseOnReaction=❌ | ᴏɴʟʏ ʙᴏᴛ ᴀᴅᴍɪɴ ᴄᴀɴ ᴜsᴇ ᴛʜᴇ ʀᴇᴀᴄᴛɪᴏɴ ғᴜɴᴄᴛɪᴏɴ ᴏғ ᴛʜᴇ ᴄᴏᴍᴍᴀɴᴅ "%1"
-handlerEvents.waitingForCommand=⏱ ʏᴏᴜ ᴀʀᴇ ɪɴ ᴛʜᴇ ᴡᴀɪᴛɪɴɢ ᴛɪᴍᴇ ᴛᴏ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ, ᴘʟᴇᴀsᴇ ᴄᴏᴍᴇ ʙᴀᴄᴋ ᴀꜰᴛᴇʀ %1s
-handlerEvents.errorOccurred=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred2=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ ᴏɴᴄʜᴀᴛ ɪɴ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred3=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴏɴʀᴇᴘʟʏ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred4=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴏɴʀᴇᴀᴄᴛɪᴏɴ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred5=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴏɴᴇᴠᴇɴᴛ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred6=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴏɴᴇᴠᴇɴᴛ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.errorOccurred7=❌ [ %1 ]\nᴀɴ ᴇʀʀᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ ᴡʜᴇɴ ᴇxᴇᴄᴜᴛɪɴɢ ᴏɴᴀɴʏᴇvᴇɴᴛ ᴀᴛ ᴄᴏᴍᴍᴀɴᴅ "%2"\n\n%3
-handlerEvents.cannotFindCommandName=❌ ᴄᴀɴɴᴏᴛ ꜰɪɴᴅ ᴄᴏᴍᴍᴀɴᴅ ɴᴀᴍᴇ ᴛᴏ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪs ʀᴇᴘʟʏ!
-handlerEvents.cannotFindCommand=❌ ᴄᴀɴɴᴏᴛ ꜰɪɴᴅ ᴄᴏᴍᴍᴀɴᴅ "%1" ᴛᴏ ᴇxᴇᴄᴜᴛᴇ ᴛʜɪs ʀᴇᴘʟʏ!
+handlerEvents.userBanned=━━━━━━━━━━━━━━━\n👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n━━━━━━━━━━━━━━━\n🚫 𝐁𝐀𝐍𝐍𝐄𝐃 𝐔𝐒𝐄𝐑\n❌ আপনি বট থেকে  ব্যান হয়েছেন!\n❌ আপনি বটের কোনো কমান্ড ইউজ\n🥺 করতে পারবেন না।\n━━━━━━━━━━━━━━━\n📌 𝐑𝐞𝐚𝐬𝐨𝐧: %1\n» 📅 𝐃𝐚𝐭𝐞 & 𝗧𝗜𝗠𝗘: %2\n» 👤 𝐔𝐬𝐞𝐫 𝗜𝗗: %3\n━━━━━━━━━━━━━━━\n🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓\n━━━━━━━━━━━━━━━
+handlerEvents.threadBanned=━━━━━━━━━━━━━━━\n👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n━━━━━━━━━━━━━━━\n🚫 𝐁𝐀𝐍𝐍𝐄𝐃 𝐆𝐑𝐎𝐔𝐏\n❌ এই গ্রুপটি বট থেকে ব্যান হয়েছে!\n❌ আপনাদের বটের কোনো কমান্ড ইউজ\n🥺 করতে পারবেন না।\n━━━━━━━━━━━━━━━\n📌 𝐑𝐞𝐚𝐬𝐨𝐧: %1\n» 📅 𝐃𝐚𝐭𝐞 & 𝗧𝗜𝗠𝗘: %2\n» 👥 𝐓𝐡𝐫𝐞𝐚𝐝 𝗜𝗗: %3\n━━━━━━━━━━━━━━━\n🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓\n━━━━━━━━━━━━━━━
+handlerEvents.onlyAdminBox=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminBot=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.commandNotFound=🤷‍♂️ 𝗖𝗼𝗺𝗺𝗮𝗻𝗱 "%1" 𝗱𝗼𝗲𝘀 𝗻𝗼𝘁 𝗲𝘅𝗶𝘀𝘁, 𝘁𝘆𝗽𝗲 %2𝗵𝗲𝗹𝗽 𝘁𝗼 𝘀𝗲𝗲 𝗮𝗹𝗹 𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 📜
+handlerEvents.commandNotFound2=🤷‍♂️ 𝗧𝗵𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝘆𝗼𝘂 𝗮𝗿𝗲 𝘂𝘀𝗶𝗻𝗴 𝗱𝗼𝗲𝘀 𝗻𝗼𝘁 𝗲𝘅𝗶𝘀𝘁, 𝘁𝘆𝗽𝗲 %1𝗵𝗲𝗹𝗽 𝘁𝗼 𝘀𝗲𝗲 𝗮𝗹𝗹 𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 📜
+handlerEvents.commandSyntaxError=⚠️ 𝗧𝗵𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝘆𝗼𝘂 𝗮𝗿𝗲 𝘂𝘀𝗶𝗻𝗴 𝗶𝘀 𝘄𝗿𝗼𝗻𝗴 𝘀𝘆𝗻𝘁𝗮𝘅! 𝗣𝗹𝗲𝗮𝘀𝗲 𝘁𝘆𝗽𝗲 %1𝗵𝗲𝗹𝗽 %2 𝘁𝗼 𝘀𝗲𝗲 𝘁𝗵𝗲 𝗱𝗲𝘁𝗮𝗶𝗹𝘀 🛠️
+handlerEvents.commandNotFoundWithSuggestion=🤷‍♂️ 𝗖𝗼𝗺𝗺𝗮𝗻𝗱 "%1" 𝗱𝗼𝗲𝘀 𝗻𝗼𝘁 𝗲𝘅𝗶𝘀𝘁.\n💡 𝗗𝗶𝗱 𝘆𝗼𝘂 𝗺𝗲𝗮𝗻: %3?\n\n👉 𝗧𝘆𝗽𝗲 %2𝗵𝗲𝗹𝗽 𝘁𝗼 𝘀𝗲𝗲 𝗮𝗹𝗹 𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 📜
+handlerEvents.onlyPrefix=🤖 𝗧𝗵𝗮𝘁'𝘀 𝗷𝘂𝘀𝘁 𝗺𝘆 𝗽𝗿𝗲𝗳𝗶𝘅! 𝗧𝘆𝗽𝗲 %1𝗵𝗲𝗹𝗽 𝘁𝗼 𝘀𝗲𝗲 𝗮𝗹𝗹 𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲 𝗰𝗼𝗺𝗺𝗮𝗻𝗱𝘀 ✨
+handlerEvents.onlyAdmin=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminToUseOnReply=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminToUseOnReaction=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminBot2=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminBot2ToUseOnReply=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.onlyAdminBot2ToUseOnReaction=🚫 𝗢𝗻𝗹𝘆 𝗠𝘆 𝗕𝗼𝘀𝘀 𝐒𝐈𝐘𝐀𝐌 তুই আবাল 🌚 সর এখান থেকে🙄🐸
+handlerEvents.waitingForCommand=⏳ 𝗬𝗼𝘂 𝗮𝗿𝗲 𝗶𝗻 𝘁𝗵𝗲 𝘄𝗮𝗶𝘁𝗶𝗻𝗴 𝘁𝗶𝗺𝗲 𝘁𝗼 𝘂𝘀𝗲 𝘁𝗵𝗶𝘀 𝗰𝗼𝗺𝗺𝗮𝗻𝗱, 𝗽𝗹𝗲𝗮𝘀𝗲 𝗰𝗼𝗺𝗲 𝗯𝗮𝗰𝗸 𝗮𝗳𝘁𝗲𝗿 %1𝘀 ⏱️
+handlerEvents.errorOccurred=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred2=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝗮𝘁 𝗼𝗻𝗰𝗵𝗮𝘁 𝗶𝗻 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred3=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝘄𝗵𝗲𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴 𝗼𝗻𝗿𝗲𝗽𝗹𝘆 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred4=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝘄𝗵𝗲𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴 𝗼𝗻𝗿𝗲𝗮𝗰𝘁𝗶𝗼𝗻 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred5=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝘄𝗵𝗲𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴 𝗼𝗻𝗲𝘃𝗲𝗻𝘁 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred6=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝘄𝗵𝗲𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴 𝗼𝗻𝗲𝘃𝗲𝗻𝘁 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.errorOccurred7=❌ [ %1 ]\n⚠️ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱 𝘄𝗵𝗲𝗻 𝗲𝘅𝗲𝗰𝘂𝘁𝗶𝗻𝗴 𝗼𝗻𝗮𝗻𝘆𝗲𝘃𝗲𝗻𝘁 𝗮𝘁 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%2"\n\n%3
+handlerEvents.cannotFindCommandName=❌ 𝗖𝗮𝗻𝗻𝗼𝘁 𝗳𝗶𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 𝗻𝗮𝗺𝗲 𝘁𝗼 𝗲𝘅𝗲𝗰𝘂𝘁𝗲 𝘁𝗵𝗶𝘀 𝗿𝗲𝗽𝗹𝘆! 🤷‍♂️
+handlerEvents.cannotFindCommand=❌ 𝗖𝗮𝗻𝗻𝗼𝘁 𝗳𝗶𝗻𝗱 𝗰𝗼𝗺𝗺𝗮𝗻𝗱 "%1" 𝘁𝗼 𝗲𝘅𝗲𝗰𝘂𝘁𝗲 𝘁𝗵𝗶𝘀 𝗿𝗲𝗽𝗹𝘆! 🔍
 
 # bot/autoUptime.js
 autoUptime.autoUptimeTurnedOn=ᴀᴜᴛᴏᴜᴘᴛɪᴍᴇ ᴍᴏᴅᴇ ᴛᴜʀɴᴇᴅ ᴏɴ
@@ -148,10 +143,10 @@ updater.skipFile=Tʜᴇʀᴇ ɪs ᴀ ɴᴇᴡ ᴠᴇʀsɪᴏɴ ᴏғ ᴛʜᴇ %1
 verifyfbid.sendCode=Yᴏᴜʀ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ ᴄᴏᴅᴇ ɪs:\n%1\nTʜᴇ ᴠᴇʀɪғɪᴄᴀᴛɪᴏɴ ᴄᴏᴅᴇ ɪs ᴠᴀʟɪᴅ ғᴏʀ %2 ᴍɪɴᴜᴛᴇs
 
 # utils.js
-utils.errorOccurred=❌ Aɴ ᴇʀʳᴏʀ ᴏᴄᴄᴜʀʀᴇᴅ:\n\n%1
+utils.errorOccurred=❌ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱:\n\n%1 ⚠️
 
 # for command
-command.restartedBot=ʙᴏᴛ ʜᴀs bᴇᴇɴ ʀᴇsᴛᴀʀᴛᴇᴅ
+command.restartedBot=🔄 𝗕𝗼𝘁 𝗵𝗮𝘀 𝗯𝗲𝗲𝗻 𝗿𝗲𝘀𝘁𝗮𝗿𝘁𝗲𝗱 𝘀𝘂𝗰𝗰𝗲𝘀𝘀𝗳𝘂𝗹𝗹𝘆!👊
 
 # dashboard/app.js
 app.googleApiRefreshTokenExpired=ɢᴏᴏɢʟᴇ ᴀᴘɪ ʀᴇғʀᴇsʜ ᴛᴏᴋᴇɴ ʜᴀs ᴇxᴘɪʀᴇᴅ ᴏʀ bᴇᴇɴ ʀᴇᴠᴏᴋᴇᴅ, ᴘʟᴇᴀsᴇ ɢᴇᴛ ᴀ ɴᴇw ᴛᴏᴋᴇɴ ᴀᴛ https://developers.google.com/oauthplayground/
