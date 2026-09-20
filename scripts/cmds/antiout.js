@@ -24,7 +24,7 @@ module.exports = {
 
   onStart: async function ({ message, event, threadsData, args }) {
 
-    // 🔒 author lock check
+    
     if (module.exports.config.author !== "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") return;
 
     let antiout = await threadsData.get(event.threadID, "settings.antiout");
@@ -44,7 +44,7 @@ module.exports = {
 
   onEvent: async function ({ api, event, threadsData }) {
 
-    // 🔒 author lock check
+    
     if (module.exports.config.author !== "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") return;
 
     const antiout = await threadsData.get(event.threadID, "settings.antiout");
