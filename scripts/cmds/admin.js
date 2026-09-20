@@ -9,7 +9,7 @@ module.exports = {
 	config: {
 		name: "admin",
 		version: "3.0",
-		author: "SIYAM",
+		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
 		countDown: 3,
 		role: 1,
 		shortDescription: "Admin system",
