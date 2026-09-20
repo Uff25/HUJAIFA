@@ -15,7 +15,7 @@ module.exports = {
 	onStart: async function ({ message, api, event }) {
 		const { threadID, messageID, body } = event;
 
-		// 🛑 কমান্ডের সাথে অন্য কোনো লেখা বা ইমোজি থাকলে বট চুপ থাকবে
+	
 		if (body) {
 			const validCommands = [this.config.name, ...this.config.aliases];
 			const isExactMatch = validCommands.some(cmd => {
