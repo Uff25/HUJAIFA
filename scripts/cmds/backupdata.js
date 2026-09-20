@@ -1,12 +1,12 @@
 const fs = require("fs-extra");
 
-const EXPECTED_AUTHOR = "FARHAN-KHAN";
+const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 module.exports = {
 	config: {
 		name: "backupdata",
 		version: "1.3",
-		author: "FARHAN-KHAN", // 🔒 locked author
+		author: LOCKED_AUTHOR,
 		countDown: 5,
 		role: 2,
 		description: {
@@ -30,12 +30,10 @@ module.exports = {
 
 	onStart: async function ({ message, getLang, threadsData, usersData, dashBoardData, globalData }) {
 
-		// 🔒 AUTHOR LOCK CHECK
-		if (module.exports.config.author !== EXPECTED_AUTHOR) {
+		if (module.exports.config.author !== LOCKED_AUTHOR) {
 			return message.reply("⛔ FILE LOCKED: Author modified detected!");
 		}
 
-		// নিশ্চিত tmp folder আছে কিনা
 		const tmpDir = `${__dirname}/tmp`;
 		if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
 
