@@ -2,11 +2,13 @@ const { findUid } = global.utils;
 const moment = require("moment-timezone");
 const fs = require("fs");
 
+const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+
 module.exports = {
 	config: {
 		name: "ban",
 		version: "1.4",
-		author: "FARHAN-KHAN",
+		author: LOCKED_AUTHOR,
 		countDown: 5,
 		role: 1,
 		description: {
@@ -26,13 +28,9 @@ module.exports = {
 		}
 	},
 
-	// 🔒 AUTHOR LOCK SYSTEM
 	onLoad: function () {
 		try {
-			const filePath = __filename;
-			const fileContent = fs.readFileSync(filePath, "utf8");
-
-			if (!fileContent.includes('author: "FARHAN-KHAN"')) {
+			if (module.exports.config.author !== LOCKED_AUTHOR) {
 				console.log("❌ AUTHOR MODIFIED! FILE LOCKED!");
 				process.exit(1);
 			}
