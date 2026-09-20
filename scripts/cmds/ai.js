@@ -26,30 +26,10 @@ async function processAIResponse(api, event, promptText) {
     api.setMessageReaction("⏳", messageID, () => {}, true);
   } catch (_) {}
 
-  let waitMsgID = null;
-
   try {
-    waitMsgID = await new Promise((resolve) => {
-      api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» ⏳ ━━━━ ( 𝟓𝟎% )
-» 🧠 𝐒𝐭𝐚𝐧𝐝𝐛𝐲, 𝐭𝐡𝐢𝐧𝐤𝐢𝐧𝐠...
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
-        threadID,
-        (err, info) => resolve(info ? info.messageID : null),
-        messageID
-      );
-    });
-
     const formattedPrompt = "Answer in a very short, funny, witty, and humorous tone in Bengali language: " + promptText;
     const res = await axios.get(`https://text.pollinations.ai/${encodeURIComponent(formattedPrompt)}`);
     const answer = res.data || "আরে ধুর! কিছু মাথায় আইলো না।";
-
-    if (waitMsgID) {
-      try { api.unsendMessage(waitMsgID); } catch (_) {}
-    }
 
     try {
       api.setMessageReaction("✅", messageID, () => {}, true);
@@ -60,8 +40,7 @@ async function processAIResponse(api, event, promptText) {
 ───────────────
 » 📝 𝐀𝐍𝐒𝐖𝐄𝐑 :
 ${answer}
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+───────────────`,
       threadID,
       (err, info) => {
         if (info && global.client && global.client.handleReply) {
@@ -76,10 +55,6 @@ ${answer}
     );
 
   } catch (err) {
-    if (waitMsgID) {
-      try { api.unsendMessage(waitMsgID); } catch (_) {}
-    }
-
     try {
       api.setMessageReaction("❌", messageID, () => {}, true);
     } catch (_) {}
@@ -90,7 +65,7 @@ ${answer}
 » ❌ 𝐅𝐀𝐈𝐋𝐄𝐃 𝐓𝐎 
 » 🫣 𝐀𝐍𝐒𝐖𝐄𝐑 𝐐𝐔𝐄𝐒𝐓𝐈𝐎𝐍!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝐀𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
