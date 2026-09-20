@@ -20,7 +20,7 @@ module.exports.onStart = async function ({ api, event, Users }) {
 
   let footer =
     "\n━━━━━━━━━━━━━━━━\n" +
-    "👑 BOT OWNER\n" +
+    "𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥\n" +
     "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍\n" +
     "━━━━━━━━━━━━━━━━";
 
@@ -53,7 +53,7 @@ module.exports.onStart = async function ({ api, event, Users }) {
       `│ 🔗 Link: https://facebook.com/${uid}\n` +
       `╰───────────────\n\n`;
 
-    // যদি বেশি বড় হয়ে যায় তাহলে নতুন chunk
+    
     if ((msg + line).length > 1800) {
       chunks.push(msg);
       msg = "";
@@ -65,7 +65,7 @@ module.exports.onStart = async function ({ api, event, Users }) {
   msg += footer;
   chunks.push(msg);
 
-  // একে একে সব মেসেজ পাঠাবে
+  
   for (let i = 0; i < chunks.length; i++) {
     await api.sendMessage(chunks[i], event.threadID);
   }
