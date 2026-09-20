@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const path = require('path');
 const axios = require('axios');
 
+const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const fontDir = path.join(__dirname, 'assets', 'font');
 const cacheDir = path.join(__dirname, 'cache');
 
@@ -19,17 +20,18 @@ try {
     if (fs.existsSync(path.join(fontDir, 'BeVietnamPro-Bold.ttf'))) {
         registerFont(path.join(fontDir, 'BeVietnamPro-Bold.ttf'), { family: 'BeVietnamPro', weight: 'bold' });
     }
-    if (fs.existsSync(path.join(fontDir, 'BeVietnamPro-SemiBold.ttf'))) {
-        registerFont(path.join(fontDir, 'BeVietnamPro-SemiBold.ttf'), { family: 'BeVietnamPro', weight: '600' });
-    }
-} catch (e) {
-    console.log("BalanceCard: Using fallback fonts");
-}
+} catch (e) {}
 
 const CURRENCY_SYMBOL = "$";
 
 function formatMoney(amount) {
     return amount.toLocaleString("en-US");
+}
+
+function sanitizeText(str) {
+    if (!str) return 'UNKNOWN USER';
+    let clean = str.replace(/[\u0000-\u001F\u007F-\u009F]/g, "").trim();
+    return clean.length > 0 ? clean : 'USER';
 }
 
 function drawRoundedRect(ctx, x, y, width, height, radius) {
@@ -46,261 +48,247 @@ function drawRoundedRect(ctx, x, y, width, height, radius) {
     ctx.closePath();
 }
 
+function drawHexagonPath(ctx, x, y, r) {
+    ctx.beginPath();
+    for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 6;
+        const hx = x + r * Math.cos(angle);
+        const hy = y + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(hx, hy);
+        else ctx.lineTo(hx, hy);
+    }
+    ctx.closePath();
+}
+
+function drawHeart(ctx, x, y, size, color) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    const topCurveHeight = size * 0.3;
+    ctx.moveTo(x, y + topCurveHeight);
+    ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+    ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + size, x, y + size);
+    ctx.bezierCurveTo(x, y + size, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+    ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+}
+
 async function getProfilePicture(uid) {
     try {
         const avatarURL = `https://graph.facebook.com/${uid}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
         const response = await axios.get(avatarURL, { responseType: 'arraybuffer', timeout: 10000 });
         return await loadImage(Buffer.from(response.data));
     } catch (error) {
-        console.error("Failed to fetch profile picture:", error.message);
         return null;
     }
 }
 
-function drawDefaultAvatar(ctx, x, y, size) {
-    const gradient = ctx.createRadialGradient(x + size/2, y + size/2, 0, x + size/2, y + size/2, size/2);
-    gradient.addColorStop(0, '#22c55e');
-    gradient.addColorStop(1, '#16a34a');
-    
-    ctx.beginPath();
-    ctx.arc(x + size/2, y + size/2, size/2, 0, Math.PI * 2);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-    
-    ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(x + size/2, y + size/2 - 10, 25, 0, Math.PI * 2);
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.ellipse(x + size/2, y + size/2 + 45, 40, 30, 0, Math.PI, 0, true);
-    ctx.fill();
-}
-
 async function createBalanceCard(userData, userID, balance) {
-    const width = 950;
-    const height = 520;
+    const width = 1000;
+    const height = 580;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
 
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#0a0f0d');
-    gradient.addColorStop(0.3, '#0d1f17');
-    gradient.addColorStop(0.6, '#0f2a1d');
-    gradient.addColorStop(1, '#0a0f0d');
+    const bgGradient = ctx.createRadialGradient(width / 2, height / 2, 50, width / 2, height / 2, 600);
+    bgGradient.addColorStop(0, '#0d0d14');
+    bgGradient.addColorStop(0.6, '#050508');
+    bgGradient.addColorStop(1, '#000000');
     
-    drawRoundedRect(ctx, 0, 0, width, height, 25);
-    ctx.fillStyle = gradient;
+    drawRoundedRect(ctx, 0, 0, width, height, 30);
+    ctx.fillStyle = bgGradient;
     ctx.fill();
 
-    ctx.save();
-    for (let i = 0; i < 100; i++) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        const size = Math.random() * 1.5 + 0.3;
-        const opacity = Math.random() * 0.3 + 0.1;
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
+    const heartColors = [
+        'rgba(255, 0, 128, 0.25)', 
+        'rgba(255, 51, 102, 0.20)', 
+        'rgba(204, 0, 255, 0.18)', 
+        'rgba(0, 243, 255, 0.15)'
+    ];
+    
+    for (let i = 0; i < 45; i++) {
+        const hx = Math.random() * (width - 60) + 30;
+        const hy = Math.random() * (height - 60) + 30;
+        const hsize = Math.random() * 22 + 10;
+        const hcolor = heartColors[Math.floor(Math.random() * heartColors.length)];
+        drawHeart(ctx, hx, hy, hsize, hcolor);
     }
+
+    ctx.save();
+    const borderGradient = ctx.createLinearGradient(0, 0, width, height);
+    borderGradient.addColorStop(0, '#ff0055');
+    borderGradient.addColorStop(0.2, '#ff9900');
+    borderGradient.addColorStop(0.4, '#ffee00');
+    borderGradient.addColorStop(0.6, '#00ff66');
+    borderGradient.addColorStop(0.8, '#00f3ff');
+    borderGradient.addColorStop(1, '#cc00ff');
+
+    ctx.strokeStyle = borderGradient;
+    ctx.lineWidth = 6;
+    ctx.shadowColor = '#00f3ff';
+    ctx.shadowBlur = 15;
+    drawRoundedRect(ctx, 12, 12, width - 24, height - 24, 25);
+    ctx.stroke();
     ctx.restore();
 
     ctx.save();
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.03)';
-    ctx.lineWidth = 1;
-    for (let i = -height; i < width; i += 50) {
-        ctx.beginPath();
-        ctx.moveTo(i, 0);
-        ctx.lineTo(i + height, height);
-        ctx.stroke();
-    }
-    ctx.restore();
-
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.2)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
     ctx.lineWidth = 2;
-    drawRoundedRect(ctx, 12, 12, width - 24, height - 24, 20);
+    drawRoundedRect(ctx, 22, 22, width - 44, height - 44, 20);
     ctx.stroke();
-
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.08)';
-    ctx.lineWidth = 1;
-    drawRoundedRect(ctx, 20, 20, width - 40, height - 40, 16);
-    ctx.stroke();
-
-    const glowGradient = ctx.createLinearGradient(0, 0, 350, 0);
-    glowGradient.addColorStop(0, 'rgba(34, 197, 94, 0.15)');
-    glowGradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
-    ctx.fillStyle = glowGradient;
-    ctx.fillRect(0, 0, 350, height);
+    ctx.restore();
 
     ctx.save();
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 30px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.shadowColor = 'rgba(34, 197, 94, 0.5)';
+    ctx.font = 'bold 38px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#00f3ff';
+    ctx.shadowColor = '#00f3ff';
+    ctx.shadowBlur = 15;
+    ctx.fillText('WALLET BALANCE', 50, 75);
+    ctx.restore();
+
+    ctx.font = 'bold 20px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ff77ff';
+    ctx.fillText('Digital Payment Card', 50, 110);
+
+    ctx.save();
+    ctx.font = 'bold 20px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ffd700';
+    ctx.shadowColor = '#ffd700';
     ctx.shadowBlur = 10;
-    ctx.fillText('WALLET BALANCE', 50, 70);
-    ctx.shadowBlur = 0;
+    ctx.fillText('BOT OWNER: SIYAM HASAN', 50, 145);
     ctx.restore();
 
-    ctx.font = '600 15px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-    ctx.fillText('Digital Payment Card', 50, 100);
-
-    ctx.font = '600 14px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.7)';
-    ctx.fillText('AVAILABLE BALANCE', 50, 175);
+    ctx.font = 'bold 22px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ffee00';
+    ctx.fillText('AVAILABLE BALANCE', 50, 215);
 
     ctx.save();
-    for (let i = 12; i > 0; i--) {
-        ctx.fillStyle = `rgba(34, 197, 94, ${0.015 * i})`;
-        ctx.font = `bold ${68 + i * 0.5}px "NotoSans", "BeVietnamPro", sans-serif`;
-        ctx.fillText(`${CURRENCY_SYMBOL}${formatMoney(balance)}`, 48 + (12 - i) * 0.2, 248 + (12 - i) * 0.2);
-    }
+    ctx.font = 'bold 84px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#00ff66';
+    ctx.shadowColor = '#00ff66';
+    ctx.shadowBlur = 20;
+    ctx.fillText(`${CURRENCY_SYMBOL}${formatMoney(balance)}`, 50, 295);
     ctx.restore();
 
-    const balanceGradient = ctx.createLinearGradient(50, 200, 450, 250);
-    balanceGradient.addColorStop(0, '#4ade80');
-    balanceGradient.addColorStop(0.5, '#22c55e');
-    balanceGradient.addColorStop(1, '#16a34a');
-    ctx.fillStyle = balanceGradient;
-    ctx.font = 'bold 68px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillText(`${CURRENCY_SYMBOL}${formatMoney(balance)}`, 50, 250);
+    ctx.font = 'bold 22px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ff00aa';
+    ctx.fillText('CARD HOLDER', 50, 365);
 
-    ctx.font = '600 14px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.7)';
-    ctx.fillText('CARD HOLDER', 50, 320);
-
-    ctx.font = 'bold 26px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.save();
+    ctx.font = 'bold 32px "NotoSans", "BeVietnamPro", sans-serif';
     ctx.fillStyle = '#ffffff';
-    const displayName = (userData.name || 'Unknown').toUpperCase().slice(0, 22);
-    ctx.fillText(displayName, 50, 355);
+    ctx.shadowColor = '#00f3ff';
+    ctx.shadowBlur = 8;
+    const displayName = sanitizeText(userData.name).toUpperCase().slice(0, 20);
+    ctx.fillText(displayName, 50, 405);
+    ctx.restore();
 
-    ctx.font = '600 14px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.7)';
-    ctx.fillText('USER ID', 50, 410);
+    ctx.font = 'bold 22px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ff9900';
+    ctx.fillText('USER ID', 50, 465);
 
-    ctx.font = 'bold 18px "NotoSans", "BeVietnamPro", monospace';
-    ctx.fillStyle = '#bbf7d0';
-    ctx.fillText(userID, 50, 445);
+    ctx.font = 'bold 28px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ffe600';
+    ctx.fillText(String(userID), 50, 505);
 
     const profilePic = await getProfilePicture(userID);
-    const picSize = 130;
-    const picX = width - picSize - 55;
-    const picY = 55;
+    const hexRadius = 85;
+    const hexX = width - hexRadius - 80;
+    const hexY = 145;
 
     ctx.save();
-    for (let i = 18; i > 0; i--) {
-        ctx.beginPath();
-        ctx.arc(picX + picSize / 2, picY + picSize / 2, picSize / 2 + i, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(34, 197, 94, ${0.02 * i})`;
-        ctx.fill();
+    drawHexagonPath(ctx, hexX, hexY, hexRadius);
+    ctx.clip();
+    if (profilePic) {
+        ctx.drawImage(profilePic, hexX - hexRadius, hexY - hexRadius, hexRadius * 2, hexRadius * 2);
+    } else {
+        ctx.fillStyle = '#22c55e';
+        ctx.fillRect(hexX - hexRadius, hexY - hexRadius, hexRadius * 2, hexRadius * 2);
     }
     ctx.restore();
 
-    if (profilePic) {
+    ctx.save();
+    ctx.lineWidth = 5;
+    const hexBorderGrad = ctx.createLinearGradient(hexX - hexRadius, hexY - hexRadius, hexX + hexRadius, hexY + hexRadius);
+    hexBorderGrad.addColorStop(0, '#00f3ff');
+    hexBorderGrad.addColorStop(0.5, '#ff00ff');
+    hexBorderGrad.addColorStop(1, '#00ff66');
+    ctx.strokeStyle = hexBorderGrad;
+    drawHexagonPath(ctx, hexX, hexY, hexRadius);
+    ctx.stroke();
+    ctx.restore();
+
+    const cornerColors = ['#ff0055', '#ffee00', '#00ff66', '#00f3ff', '#3366ff', '#cc00ff'];
+    for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 6;
+        const cx = hexX + hexRadius * Math.cos(angle);
+        const cy = hexY + hexRadius * Math.sin(angle);
+
         ctx.save();
         ctx.beginPath();
-        ctx.arc(picX + picSize / 2, picY + picSize / 2, picSize / 2, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.clip();
-        ctx.drawImage(profilePic, picX, picY, picSize, picSize);
+        ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+        ctx.fillStyle = cornerColors[i];
+        ctx.shadowColor = cornerColors[i];
+        ctx.shadowBlur = 15;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
         ctx.restore();
-    } else {
-        drawDefaultAvatar(ctx, picX, picY, picSize);
     }
 
-    ctx.beginPath();
-    ctx.arc(picX + picSize / 2, picY + picSize / 2, picSize / 2, 0, Math.PI * 2);
-    ctx.strokeStyle = '#22c55e';
-    ctx.lineWidth = 4;
-    ctx.stroke();
+    const chipX = width - 200;
+    const chipY = 275;
+    drawRoundedRect(ctx, chipX, chipY, 75, 55, 8);
+    const chipGrad = ctx.createLinearGradient(chipX, chipY, chipX + 75, chipY + 55);
+    chipGrad.addColorStop(0, '#ffe066');
+    chipGrad.addColorStop(0.5, '#d4af37');
+    chipGrad.addColorStop(1, '#997a00');
+    ctx.fillStyle = chipGrad;
+    ctx.fill();
 
-    ctx.beginPath();
-    ctx.arc(picX + picSize / 2, picY + picSize / 2, picSize / 2 + 8, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.3)';
+    ctx.save();
+    ctx.fillStyle = 'rgba(0, 243, 255, 0.12)';
+    drawRoundedRect(ctx, width - 210, height - 140, 170, 90, 15);
+    ctx.fill();
+    ctx.strokeStyle = '#00f3ff';
     ctx.lineWidth = 2;
     ctx.stroke();
-
-    const statusX = picX + picSize - 12;
-    const statusY = picY + picSize - 12;
-    ctx.beginPath();
-    ctx.arc(statusX, statusY, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#22c55e';
-    ctx.fill();
-    ctx.strokeStyle = '#0a0f0d';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    ctx.save();
-    ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
-    drawRoundedRect(ctx, width - 200, height - 125, 160, 85, 12);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.2)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
     
-    ctx.font = '600 11px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.6)';
+    ctx.font = 'bold 15px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
-    ctx.fillText('CARD STATUS', width - 120, height - 98);
+    ctx.fillText('CARD STATUS', width - 125, height - 105);
     
-    ctx.font = 'bold 16px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = '#4ade80';
-    ctx.fillText('ACTIVE', width - 120, height - 68);
+    ctx.font = 'bold 22px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#00ff66';
+    ctx.shadowColor = '#00ff66';
+    ctx.shadowBlur = 10;
+    ctx.fillText('ACTIVE', width - 125, height - 70);
     ctx.restore();
 
     ctx.save();
-    ctx.fillStyle = 'rgba(34, 197, 94, 0.08)';
-    drawRoundedRect(ctx, width - 380, height - 125, 160, 85, 12);
+    ctx.fillStyle = 'rgba(255, 0, 255, 0.12)';
+    drawRoundedRect(ctx, width - 400, height - 140, 170, 90, 15);
     ctx.fill();
-    ctx.strokeStyle = 'rgba(34, 197, 94, 0.2)';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = '#ff00ff';
+    ctx.lineWidth = 2;
     ctx.stroke();
     
-    ctx.font = '600 11px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.6)';
+    ctx.font = 'bold 15px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
-    ctx.fillText('CARD TYPE', width - 300, height - 98);
+    ctx.fillText('CARD TYPE', width - 315, height - 105);
     
-    ctx.font = 'bold 16px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = '#22c55e';
-    ctx.fillText('PREMIUM', width - 300, height - 68);
-    ctx.restore();
-
-    const chipX = width - 190;
-    const chipY = 210;
-    const chipGradient = ctx.createLinearGradient(chipX, chipY, chipX + 65, chipY + 50);
-    chipGradient.addColorStop(0, '#d4af37');
-    chipGradient.addColorStop(0.3, '#f5d76e');
-    chipGradient.addColorStop(0.7, '#d4af37');
-    chipGradient.addColorStop(1, '#a67c00');
-    
-    drawRoundedRect(ctx, chipX, chipY, 65, 50, 6);
-    ctx.fillStyle = chipGradient;
-    ctx.fill();
-
-    ctx.strokeStyle = '#a67c00';
-    ctx.lineWidth = 1;
-    for (let i = 0; i < 4; i++) {
-        ctx.beginPath();
-        ctx.moveTo(chipX, chipY + 10 + i * 10);
-        ctx.lineTo(chipX + 65, chipY + 10 + i * 10);
-        ctx.stroke();
-    }
-    for (let i = 0; i < 2; i++) {
-        ctx.beginPath();
-        ctx.moveTo(chipX + 18 + i * 22, chipY);
-        ctx.lineTo(chipX + 18 + i * 22, chipY + 50);
-        ctx.stroke();
-    }
-
-    ctx.save();
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    ctx.font = '600 11px "NotoSans", "BeVietnamPro", sans-serif';
-    ctx.fillStyle = 'rgba(187, 247, 208, 0.4)';
-    ctx.textAlign = 'right';
-    ctx.fillText(`Generated: ${dateStr}`, width - 50, height - 18);
+    ctx.font = 'bold 22px "NotoSans", "BeVietnamPro", sans-serif';
+    ctx.fillStyle = '#00f3ff';
+    ctx.shadowColor = '#00f3ff';
+    ctx.shadowBlur = 10;
+    ctx.fillText('PREMIUM', width - 315, height - 70);
     ctx.restore();
 
     return canvas.toBuffer('image/png');
@@ -310,14 +298,13 @@ module.exports = {
     config: {
         name: "balancec",
         aliases: ["bal", "wallet", "mybalance", "wcard"],
-        version: "2.0.0",
-        author: "Neoaz ゐ",
+        version: "2.1.0",
+        author: LOCKED_AUTHOR,
         countDown: 10,
         role: 0,
-        description: "Display your wallet balance with a professional card featuring your profile picture",
+        description: "Display your wallet balance card designed by SIYAM HASAN",
         category: "economy",
-        guide: `{pn} - View your balance card
-{pn} @tag - View tagged user's balance card`
+        guide: `{pn} - View your balance card`
     },
 
     onStart: async function({ message, event, usersData, args }) {
