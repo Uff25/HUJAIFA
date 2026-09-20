@@ -13,7 +13,7 @@ module.exports = {
   config: {
     name: "autoreact",
     version: "𝟏.𝟎",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", // 🔒 LOCKED AUTHOR
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", 
     countDown: 5,
     role: 0,
     shortDescription: "",
