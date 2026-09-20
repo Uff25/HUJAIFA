@@ -165,7 +165,7 @@ async function runBabaPrediction(api, event, senderID, targetID) {
 » ${randomPrediction}
 
 ━━━━━━━━━━━━━━━━━━
-🏆 » 𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝗕𝗢𝗧 ⚡`;
+🏆 » 𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝗕𝗢𝗧 📡`;
 
     await api.sendMessage(magicResponse, threadID, messageID);
 
