@@ -20,7 +20,7 @@ module.exports = {
 
     let attachment = null;
 
-    // Reply image support
+    
     if (event.messageReply && event.messageReply.attachments.length > 0) {
       const url = event.messageReply.attachments[0].url;
       const filePath = path.join(__dirname, "cache", "owner.jpg");
@@ -43,7 +43,7 @@ module.exports = {
 
           await api.sendMessage(
             {
-              body: `🔔 𝙉𝙊𝙏𝙄𝙁𝙄𝘾𝘼𝙏𝙄𝙊𝙉\n━━━━━━━━━━━━━━━\n📢 From Owner:𓆩👑-𝐒𝐈𝐘𝐀𝐌-👑𓆪\n\n${msg}\n━━━━━━━━━━━━━━━`,
+              body: `🔔 𝙉𝙊𝙏𝙄𝙁𝙄𝘾𝘼𝙏𝙄𝙊𝙉\n━━━━━━━━━━━━━━━\n📢 𝗢𝗪𝗡𝗘𝗥:𓆩👑-𝐒𝐈𝐘𝐀𝐌-👑𓆪\n\n${msg}\n━━━━━━━━━━━━━━━`,
               attachment: attachment
             },
             thread.threadID
