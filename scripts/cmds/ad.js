@@ -2,7 +2,7 @@ const OWNER_NAME = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";  // নাম �
 const ANTI_TAMPER = "𝆠፝";
 const hiddenOwner = ANTI_TAMPER + OWNER_NAME;
 
-if (hiddenOwner !== "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") {  // নাম পরিবর্তন করলে ফাইল নষ্ট হতে পারে⚠️
+if (hiddenOwner !== "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") {  
   process.exit(0);
 }
 
