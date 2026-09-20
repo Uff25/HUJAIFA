@@ -1,6 +1,5 @@
-const LOCKED_AUTHOR = "FARHAN-KHAN";
+const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
-// Author lock system
 function verifyAuthor(config) {
 	if (config.author !== LOCKED_AUTHOR) {
 		throw new Error("AUTHOR_LOCKED: Author name changed, module blocked!");
