@@ -1,6 +1,6 @@
 const moment = require("moment-timezone");
 
-const AUTHOR = "সিয়াম"; // 🔒 locked author
+const AUTHOR = "সিয়াম";
 
 module.exports = {
   config: {
@@ -16,7 +16,6 @@ module.exports = {
 
   onStart: async function ({ api, event, args }) {
     try {
-      // 🔒 AUTHOR LOCK SYSTEM
       if (module.exports.config.author !== AUTHOR) {
         return api.sendMessage(
           "⛔ This file is locked!\nAuthor change detected.",
@@ -24,7 +23,6 @@ module.exports = {
         );
       }
 
-      // ইনপুট না দিলে সাহায্যকারী বার্তা
       if (!args.length) {
         return api.sendMessage(
           "⚠️ আপনার জন্মতারিখ সঠিকভাবে লিখুন!\n\nউদাহরণ:\n• age 2007\n• age 01/05/2007\n• age 5 May 2007",
@@ -32,7 +30,7 @@ module.exports = {
         );
       }
 
-      let input = args.join(" ").trim();
+      let input = args.join(" ").trim().replace(/\s+/g, " ");
       let day, month, year;
 
       const monthMap = {
@@ -43,10 +41,7 @@ module.exports = {
         nov: 11, november: 11, dec: 12, december: 12
       };
 
-      // ফরম্যাট চেক করা
-      if (/^\d{4}$/.test(input)) {
-        day = 1; month = 1; year = Number(input);
-      } else if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(input)) {
+      if (/^\d{4}$/.test(input)) {         day = 1; month = 1; year = Number(input);       } else if (/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(input)) {
         const p = input.split("/");
         day = +p[0];
         month = +p[1];
@@ -64,13 +59,13 @@ module.exports = {
         year = +p[2];
       } else {
         return api.sendMessage(
-          "❌ তারিখের ফরম্যাট সঠিক নয়!\n\n✔ সঠিক ব্যবহার:\n• age 2007\n• age 01/05/2007\n• age 3 May 2007",
+          "❌ তারিখের ফরম্যাট সঠিক নয়!\n\n✔ সঠিক ব্যবহার:\n• age 2007\n• age 01/05/2007\n• age 3 May 2007",
           event.threadID
         );
       }
 
       if (!day || !month || !year) {
-        return api.sendMessage("❌ সঠিক তারিখ সনাক্ত করা যায়নি!", event.threadID);
+        return api.sendMessage("❌ সঠিক তারিখ সনাক্ত করা যায়নি!", event.threadID);
       }
 
       const birth = moment.tz(
@@ -80,7 +75,7 @@ module.exports = {
       );
 
       if (!birth.isValid()) {
-        return api.sendMessage("❌ অকার্যকর তারিখ প্রদান করা হয়েছে!", event.threadID);
+        return api.sendMessage("❌ অকার্যকর তারিখ প্রদান করা হয়েছে!", event.threadID);
       }
 
       const now = moment.tz("Asia/Dhaka");
@@ -88,7 +83,6 @@ module.exports = {
         return api.sendMessage("❌ জন্মতারিখ ভবিষ্যতের হতে পারে না!", event.threadID);
       }
 
-      // বয়স হিসাব
       const y = now.diff(birth, 'years');
       birth.add(y, 'years');
       const m = now.diff(birth, 'months');
@@ -105,7 +99,6 @@ module.exports = {
       const totalDays = Math.floor(now.diff(originalBirth, 'days'));
       const totalHours = Math.floor(now.diff(originalBirth, 'hours'));
 
-      // বারের নাম বাংলায়
       const banglaDays = {
         Sunday: "রবিবার",
         Monday: "সোমবার",
@@ -117,7 +110,6 @@ module.exports = {
       };
       const dayName = banglaDays[originalBirth.format("dddd")] || originalBirth.format("dddd");
 
-      // পরবর্তী জন্মদিন
       let nextBirthday = moment.tz(
         `${now.year()}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`,
         "YYYY-MM-DD",
@@ -128,7 +120,6 @@ module.exports = {
       }
       const daysToNextBirthday = Math.ceil(nextBirthday.diff(now, 'days', true));
 
-      // সুন্দর ও পরিষ্কার আউটপুট মেসেজ
       const msgText = `» 👑 𝗢𝗪𝗡𝗘𝗥 : 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
 ───────────────
 » 🎂 𝗔𝗚𝗘 𝗥𝗘𝗦𝗨𝗟𝗧
@@ -151,7 +142,7 @@ module.exports = {
 
     } catch (e) {
       console.error(e);
-      return api.sendMessage("❌ বয়স গণনা করতে সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।", event.t[...]
+      return api.sendMessage("❌ বয়স গণনা করতে সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।", event.threadID);
     }
   }
 };
