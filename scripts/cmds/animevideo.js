@@ -26,14 +26,14 @@ module.exports = {
       throw new Error("❌ AUTHOR LOCKED FILE - Modification Detected!");
     }
 
-    // 💔 Random sad captions
+    
     const captions = [
       "=「𝐏𝐑𝐄𝐅𝐈𝐗-𝐄𝐕𝐄𝐍𝐓」= \n--❖(✷‿𝐍𝐈𝐉𝐇𝐔𝐌-𝐁𝐎𝐓‿✷)❖-- \n✢━━━━━━━━━━━━━━━✢        \n🎌🏴‍☠️♡-𝐀𝐍𝐈𝐌𝐄-𝐕𝐈𝐃𝐄𝐎-♡🏴‍☠️🎌 \n✢━━━━━━━━━━━━━━━✢\n(✷‿𝐎𝐖𝐍𝐄𝐑:-‿𝐃𝐒-𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍✷)"
     ];
 
     const caption = captions[Math.floor(Math.random() * captions.length)];
 
-    // 🎥 Sad videos list
+    
     const links = [
       "https://drive.google.com/uc?id=18-qJqj0yJOe1DnqtKCtt2BA6aL4Lsu1V",
     "https://drive.google.com/uc?id=18_dfqfqJ7Izv_V39udjqHIhL9VNXJ9g8",
