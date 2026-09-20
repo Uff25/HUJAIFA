@@ -52,6 +52,18 @@ module.exports = {
 		category: "economy"
 	},
 
+	onLoad: function () {
+		try {
+			if (module.exports.config.author !== LOCKED_AUTHOR) {
+				console.log("❌ AUTHOR MODIFIED! FILE LOCKED!");
+				process.exit(1);
+			}
+		} catch (e) {
+			console.log("❌ LOCK ERROR!");
+			process.exit(1);
+		}
+	},
+
 	onStart: async function ({ api, event, message, usersData }) {
 		if (module.exports.config.author !== LOCKED_AUTHOR) {
 			module.exports.config.author = LOCKED_AUTHOR;
@@ -67,17 +79,20 @@ module.exports = {
 
 		try {
 			const userData = (await usersData.get(targetID)) || {};
-			const rawName = userData.name || (event.mentions ? event.mentions[targetID] : "VIP USER");
+			const rawName = userData.name || (await usersData.getName(targetID)) || "VIP USER";
 			const userName = rawName.replace(/[\r\n]+/g, " ").trim();
 
-			const bankMoney = userData.bank || userData.money || 125000;
-			const cashMoney = userData.cash || Math.floor(bankMoney * 0.15);
-			const creditScore = Math.min(850, 650 + Math.floor((bankMoney % 200)));
+			const bankMoney = typeof userData.bank === "number" ? userData.bank : (typeof userData.data?.bank === "number" ? userData.data.bank : 0);
+			const cashMoney = typeof userData.money === "number" ? userData.money : 0;
+			
+			const totalAssets = bankMoney + cashMoney;
+			const creditScore = Math.min(850, Math.max(300, 600 + Math.floor((totalAssets / 10000))));
 			
 			const formattedBank = bankMoney.toLocaleString("en-US");
 			const formattedCash = cashMoney.toLocaleString("en-US");
 			const maskedCardNo = `4892 •••• •••• ${targetID.slice(-4)}`;
-			const avatarLink = `https://graph.facebook.com/${targetID}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+			
+			const avatarLink = `https://graph.facebook.com/${targetID}/picture?height=512&width=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 
 			const width = 1600;
 			const height = 980;
@@ -157,7 +172,7 @@ module.exports = {
 			ctx.restore();
 
 			drawFittedText(ctx, "ROYAL BANK OF VIP", cX + 60, cY + 85, 800, 48, "Arial, sans-serif", "#fcf6ba");
-			drawFittedText(ctx, "OWNER: SIYAM-HASAN  •  OFFICIAL FINANCIAL CARD", cX + 60, cY + 122, 700, 18, "sans-serif", "#a1a1aa");
+			drawFittedText(ctx, `OWNER: ${LOCKED_AUTHOR}  •  OFFICIAL FINANCIAL CARD`, cX + 60, cY + 122, 700, 18, "sans-serif", "#a1a1aa");
 
 			const avSize = 270;
 			const avX = cX + cW - avSize - 60;
@@ -187,6 +202,7 @@ module.exports = {
 				ctx.beginPath();
 				ctx.arc(avX + avSize / 2, avY + avSize / 2, avSize / 2, 0, Math.PI * 2);
 				ctx.fill();
+				drawFittedText(ctx, userName.charAt(0).toUpperCase(), avX + avSize / 2, avY + avSize / 2 + 25, avSize, 80, "sans-serif", "#d4af37", "center");
 				ctx.restore();
 			}
 
@@ -257,42 +273,39 @@ module.exports = {
 			ctx.lineTo(cX + cW - 60, footerY - 25);
 			ctx.stroke();
 
-			drawFittedText(ctx, `POWERED BY ${BOT_NAME}  |  DEVELOPED BY ${LOCKED_AUTHOR.replace(/[^\x20-\x7E]/g, '')}`, width / 2, footerY + 15, cW - 100, 22, "sans-serif", "#d4af37", "center");
+			drawFittedText(ctx, `POWERED BY ${BOT_NAME}  |  DEVELOPED BY ${LOCKED_AUTHOR}`, width / 2, footerY + 15, cW - 100, 22, "sans-serif", "#d4af37", "center");
 			ctx.restore();
 
 			const buffer = canvas.toBuffer("image/png");
 			await fs.writeFile(imgPath, buffer);
 
-			const msgStream = fs.createReadStream(imgPath);
-
 			const replyText = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 ${LOCKED_AUTHOR} 👑
 ───────────────
 » 💳 𝐑𝐎𝐘𝐀𝐋 𝐁𝐀𝐍𝐊
 » 🤩 𝐎𝐅 𝐕𝐈𝐏 𝐒𝐓𝐀𝐓𝐄𝐌𝐄𝐍𝐓
 
-» 👤 𝐔𝐒𝐄𝐑 ${userName}
-» 💰 𝐁𝐀𝐍𝐊 𝐁𝐀𝐋𝐀𝐍𝐂𝐄:
-» 🧞‍♂️ $${formattedBank}
+» 👤 𝐔𝐒𝐄𝐑: ${userName}
+» 💰 𝐁𝐀𝐍𝐊 𝐁𝐀𝐋𝐀𝐍𝐂𝐄: $${formattedBank}
 » 💵 𝐏𝐎𝐂𝐊𝐄𝐓 𝐂𝐀𝐒𝐇: $${formattedCash}
 » 📈 𝐂𝐑𝐄𝐃𝐈𝐓 𝐒𝐂𝐎𝐑𝐄: ${creditScore}/850
 ───────────────
-» 🧚‍♀️ ‿𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓`;
+» 🧚‍♀️ ‿${BOT_NAME}`;
 
-			return await message.reply({
+			await message.reply({
 				body: replyText,
-				attachment: msgStream
+				attachment: fs.createReadStream(imgPath)
 			});
 
 		} catch (err) {
 			console.error("Bank Card Error:", err);
-			return message.reply("❌ ব্যাংক কার্ড ফাইল তৈরি করতে সমস্যা হয়েছে!");
+			return message.reply("❌ ব্যাংক কার্ড ফাইল তৈরি করতে সমস্যা হয়েছে!");
 		} finally {
 			setTimeout(() => {
 				if (fs.existsSync(imgPath)) {
 					fs.unlinkSync(imgPath);
 				}
-			}, 5000);
+			}, 10000);
 		}
 	}
 };
