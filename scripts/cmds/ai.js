@@ -5,12 +5,12 @@ const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const config = {
   name: "ai",
   aliases: ["ask", "gpt"],
-  version: "1.0.0",
+  version: "2.0.0",
   role: 0,
   hasPermssion: 0,
   author: LOCKED_AUTHOR,
   credits: LOCKED_AUTHOR,
-  description: "AI এর কাছে যেকোনো প্রশ্ন করে ছোট ও মজার উত্তর পান",
+  description: "AI এর সাথে আনলিমিটেড রিপ্লাইতে কথা বলুন",
   category: "AI",
   commandCategory: "AI",
   usages: "ai <আপনার প্রশ্ন>",
@@ -18,6 +18,31 @@ const config = {
   countDown: 3,
   cooldowns: 3
 };
+
+function saveReplyState(messageID, senderID) {
+  const data = {
+    name: config.name,
+    commandName: config.name,
+    messageID: messageID,
+    author: senderID
+  };
+
+  if (global.client && global.client.handleReply) {
+    if (Array.isArray(global.client.handleReply)) {
+      global.client.handleReply.push(data);
+    } else if (typeof global.client.handleReply.set === "function") {
+      global.client.handleReply.set(messageID, data);
+    }
+  }
+
+  if (global.GoatBot && global.GoatBot.onReply) {
+    if (typeof global.GoatBot.onReply.set === "function") {
+      global.GoatBot.onReply.set(messageID, data);
+    } else if (Array.isArray(global.GoatBot.onReply)) {
+      global.GoatBot.onReply.push(data);
+    }
+  }
+}
 
 async function processAIResponse(api, event, promptText) {
   const { threadID, messageID, senderID } = event;
@@ -43,12 +68,8 @@ ${answer}
 ───────────────`,
       threadID,
       (err, info) => {
-        if (info && global.client && global.client.handleReply) {
-          global.client.handleReply.push({
-            name: config.name,
-            messageID: info.messageID,
-            author: senderID
-          });
+        if (info && info.messageID) {
+          saveReplyState(info.messageID, senderID);
         }
       },
       messageID
@@ -64,8 +85,7 @@ ${answer}
 ───────────────
 » ❌ 𝐅𝐀𝐈𝐋𝐄𝐃 𝐓𝐎 
 » 🫣 𝐀𝐍𝐒𝐖𝐄𝐑 𝐐𝐔𝐄𝐒𝐓𝐈𝐎𝐍!
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝐀𝗧𝗕𝗢𝗧`,
+───────────────`,
       threadID,
       messageID
     );
@@ -86,8 +106,7 @@ async function handleCommand({ api, event, args }) {
 ───────────────
 » ⚠️ যেকোনো একটি প্রশ্ন লিখুন!
 » 🔰 ai বাংলাদেশের রাজধানী কোথায়?
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+───────────────`,
       threadID,
       messageID
     );
