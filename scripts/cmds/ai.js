@@ -4,13 +4,13 @@ const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 const config = {
   name: "ai",
-  aliases: ["ask", "gpt"],
-  version: "2.0.0",
+  aliases: ["ask", "gpt", "bot"],
+  version: "2.5.0",
   role: 0,
   hasPermssion: 0,
   author: LOCKED_AUTHOR,
   credits: LOCKED_AUTHOR,
-  description: "AI এর সাথে আনলিমিটেড রিপ্লাইতে কথা বলুন",
+  description: "AI এর কাছ থেকে চরম ফানি, রোমান্টিক ও ট্রোল উত্তর পান",
   category: "AI",
   commandCategory: "AI",
   usages: "ai <আপনার প্রশ্ন>",
@@ -52,9 +52,11 @@ async function processAIResponse(api, event, promptText) {
   } catch (_) {}
 
   try {
-    const formattedPrompt = "Answer in a very short, funny, witty, and humorous tone in Bengali language: " + promptText;
+    const funnyPromptInstruction = "Act as an extremely hilarious, super funny, romantic, witty, and sarcastic Bengali chatbot friend. Always answer in Bengali language within 1-2 short punchy lines. Make the reply super humorous, funny, playful, charming, romantic, or witty with emojis. User says: ";
+    const formattedPrompt = funnyPromptInstruction + promptText;
+
     const res = await axios.get(`https://text.pollinations.ai/${encodeURIComponent(formattedPrompt)}`);
-    const answer = res.data || "আরে ধুর! কিছু মাথায় আইলো না।";
+    const answer = res.data || "আরে সোনা! মাথায় কিছু আইলো না তো! 🙈😜";
 
     try {
       api.setMessageReaction("✅", messageID, () => {}, true);
@@ -105,7 +107,7 @@ async function handleCommand({ api, event, args }) {
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » ⚠️ যেকোনো একটি প্রশ্ন লিখুন!
-» 🔰 ai বাংলাদেশের রাজধানী কোথায়?
+» 🔰 ai তোমার নাম কি?
 ───────────────`,
       threadID,
       messageID
