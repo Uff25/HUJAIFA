@@ -4,18 +4,18 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
+const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+
 const API_BASE = "https://xrahat-gen.vercel.app";
 const GENERATE_ENDPOINT = `${API_BASE}/api/generate`;
-
-const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 module.exports.config = {
   name: "aiv", 
   aliases: ["aivideo"],
   version: "1.0.0",
-  hasPermssion: 0,
-  credits: LOCKED_AUTHOR,
-  author: LOCKED_AUTHOR,  
+  hasPermssion: 2,
+  author: LOCKED_AUTHOR,
+  credits: LOCKED_AUTHOR,  
   description: "ছবিতে রিপ্লাই দিয়ে prompt লিখে AI ভিডিও generate করে",
   commandCategory: "AI",
   usages: "[একটা ছবিতে reply দিয়ে] aiv <prompt>",
@@ -23,12 +23,8 @@ module.exports.config = {
 };
 
 module.exports.onStart = async function ({ api, event, args }) {
-  if (
-    module.exports.config.author !== LOCKED_AUTHOR ||
-    module.exports.config.credits !== LOCKED_AUTHOR
-  ) {
-    console.log("🚫 FILE LOCKED: Author changed!");
-    return;
+  if (module.exports.config.author !== LOCKED_AUTHOR) {
+    module.exports.config.author = LOCKED_AUTHOR;
   }
 
   const { threadID, messageID, messageReply } = event;
@@ -39,8 +35,13 @@ module.exports.onStart = async function ({ api, event, args }) {
     messageReply.attachments.length === 0
   ) {
     return api.sendMessage(
-      "⚠️ একটা ছবিতে reply দিয়ে লিখুন: aiv <prompt>\n" +
-      "Example: aiv dancing in a neon city",
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⚠️ একটা ছবিতে reply দিয়ে লিখুন: 
+» aiv prompt
+» 🔰 aiv dancing in a neon city
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -62,7 +63,12 @@ module.exports.onStart = async function ({ api, event, args }) {
     )
   ) {
     return api.sendMessage(
-      "⚠️ শুধু ছবিতে reply দিয়ে এই command ব্যবহার করা যাবে।",
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⚠️ শুধু ছবিতে reply দিয়ে 
+» 🫣 এই command ব্যবহার করা যাবে।
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -72,7 +78,12 @@ module.exports.onStart = async function ({ api, event, args }) {
 
   if (!prompt) {
     return api.sendMessage(
-      "⚠️ Prompt লিখুন। Example: aiv dancing in a neon city",
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⚠️ Prompt লিখুন। 
+» 🔰 aiv dancing in a neon city
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -90,7 +101,12 @@ module.exports.onStart = async function ({ api, event, args }) {
 
     waitMessageID = await new Promise((resolve) => {
       api.sendMessage(
-        "🪒please wait bara...",
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⏳ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐰𝐚𝐢𝐭 𝐛𝐚𝐫𝐚...
+» 🎥 𝐕𝐢𝐝𝐞𝐨 𝐢𝐬 𝐠𝐞𝐧𝐞𝐫𝐚𝐭𝐢𝐧𝐠!
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
         threadID,
         (err, info) => {
           resolve(info ? info.messageID : null);
@@ -180,9 +196,8 @@ module.exports.onStart = async function ({ api, event, args }) {
     await new Promise((resolve, reject) => {
       api.sendMessage(
         {
-          body: "✅ আপনার ভিডিও তৈরি!",
-          attachment:
-            fs.createReadStream(tempFilePath)
+          body: `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ✅ 𝐀𝐈 𝐕𝐈𝐃𝐄𝐎 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄𝐃!\n───────────────\n» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+          attachment: fs.createReadStream(tempFilePath)
         },
         threadID,
         (err) =>
@@ -209,7 +224,13 @@ module.exports.onStart = async function ({ api, event, args }) {
     );
 
     api.sendMessage(
-      "❌ ভিডিও তৈরি করা যায়নি, আবার চেষ্টা করুন।",
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ 𝐅𝐀𝐈𝐋𝐄𝐃 𝐓𝐎 
+» 🤩 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐕𝐈𝐃𝐄𝐎!
+» ⚠️ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧...
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
