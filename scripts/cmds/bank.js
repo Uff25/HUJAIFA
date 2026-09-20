@@ -1,7 +1,23 @@
-const fs = require("fs-extra");
+const { execSync } = require("child_process");
 const path = require("path");
-const { createCanvas, loadImage } = require("canvas");
+const fs = require("fs");
 
+let fsExtra, canvasModule;
+try {
+	fsExtra = require("fs-extra");
+} catch (e) {
+	execSync("npm install fs-extra", { stdio: "inherit" });
+	fsExtra = require("fs-extra");
+}
+
+try {
+	canvasModule = require("canvas");
+} catch (e) {
+	execSync("npm install canvas", { stdio: "inherit" });
+	canvasModule = require("canvas");
+}
+
+const { createCanvas, loadImage } = canvasModule;
 const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const BOT_NAME = "NIJHUM CHATBOT";
 
@@ -52,26 +68,14 @@ module.exports = {
 		category: "economy"
 	},
 
-	onLoad: function () {
-		try {
-			if (module.exports.config.author !== LOCKED_AUTHOR) {
-				console.log("❌ AUTHOR MODIFIED! FILE LOCKED!");
-				process.exit(1);
-			}
-		} catch (e) {
-			console.log("❌ LOCK ERROR!");
-			process.exit(1);
-		}
-	},
-
 	onStart: async function ({ api, event, message, usersData }) {
-		if (module.exports.config.author !== LOCKED_AUTHOR) {
-			module.exports.config.author = LOCKED_AUTHOR;
+		if (this.config.author !== LOCKED_AUTHOR) {
+			this.config.author = LOCKED_AUTHOR;
 		}
 
 		const cacheDir = path.join(__dirname, "cache");
-		if (!fs.existsSync(cacheDir)) {
-			fs.mkdirSync(cacheDir, { recursive: true });
+		if (!fsExtra.existsSync(cacheDir)) {
+			fsExtra.mkdirSync(cacheDir, { recursive: true });
 		}
 
 		const targetID = (event.mentions && Object.keys(event.mentions)[0]) || event.senderID;
@@ -277,7 +281,7 @@ module.exports = {
 			ctx.restore();
 
 			const buffer = canvas.toBuffer("image/png");
-			await fs.writeFile(imgPath, buffer);
+			await fsExtra.writeFile(imgPath, buffer);
 
 			const replyText = 
 `» 👑 ${LOCKED_AUTHOR} 👑
@@ -287,7 +291,7 @@ module.exports = {
 
 » 👤 𝐔𝐒𝐄𝐑: ${userName}
 » 💰 𝐁𝐀𝐍𝐊 𝐁𝐀𝐋𝐀𝐍𝐂𝐄: $${formattedBank}
-» 💵 𝐏𝐎𝐂𝐊𝐄𝐓 𝐂𝐀𝐒𝐇: $${formattedCash}
+» 💵 𝐏𝐎𝐂𝐊𝐄𝐓 𝐂𝐀𝐒 𝐇: $${formattedCash}
 » 📈 𝐂𝐑𝐄𝐃𝐈𝐓 𝐒𝐂𝐎𝐑𝐄: ${creditScore}/850
 ───────────────
 » 🧚‍♀️ ‿${BOT_NAME}`;
@@ -302,8 +306,8 @@ module.exports = {
 			return message.reply("❌ ব্যাংক কার্ড ফাইল তৈরি করতে সমস্যা হয়েছে!");
 		} finally {
 			setTimeout(() => {
-				if (fs.existsSync(imgPath)) {
-					fs.unlinkSync(imgPath);
+				if (fsExtra.existsSync(imgPath)) {
+					fsExtra.unlinkSync(imgPath);
 				}
 			}, 10000);
 		}
