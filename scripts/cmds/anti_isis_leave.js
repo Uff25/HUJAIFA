@@ -12,43 +12,33 @@ module.exports = {
   },
 
   onStart: async function () {
-    // 🔐 AUTHOR LOCK (simple protection)
     if (module.exports.config.author !== "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") {
       console.log("🚫 AUTHOR CHANGED! FILE LOCKED!");
       process.exit(1);
     }
   },
 
-  // ==========================
-  // 🔥 All trigger list
-  // ==========================
   triggers: [
     "我是 ISIS☝",
     "我是杀人犯☝",
     "☝️😭‼️‼️我是一名恐怖分子，我是一名 ISIS 恐怖分子，我是一名☝️😭‼️‼️"
   ],
 
-  // Universal checker
   checkTrigger(text, triggers) {
     if (!text) return false;
     return triggers.some(trigger => text.includes(trigger));
   },
 
-  // ==========================
-  // 🔥 On chat event (message + bot add)
-  // ==========================
   onChat: async function ({ event, api }) {
     try {
       const botID = api.getCurrentUserID();
       const triggers = this.triggers;
 
-      // === MESSAGE CHECK ===
       if (event.body && this.checkTrigger(event.body, triggers)) {
         await api.removeUserFromGroup(botID, event.threadID);
         return;
       }
 
-      // === BOT ADDED CHECK ===
       if (event.logMessageType === "log:subscribe") {
         const added = event.logMessageData?.addedParticipants?.find(
           p => p.userFbId == botID
@@ -71,9 +61,6 @@ module.exports = {
     }
   },
 
-  // ==========================
-  // 🔥 On group rename event
-  // ==========================
   onEvent: async function ({ event, api }) {
     try {
       if (event.logMessageType === "log:thread-name") {
