@@ -30,7 +30,7 @@ module.exports = {
       const mentions = Object.keys(event.mentions);
       let targetID;
 
-      // ১. ম্যানশন চেক, না থাকলে রিপ্লাই মেসেজ চেক, না থাকলে নিজের আইডি
+    
       if (mentions.length > 0) {
         targetID = mentions[0];
       } else if (event.type === "message_reply") {
