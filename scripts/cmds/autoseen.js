@@ -1,15 +1,12 @@
 const fs = require("fs-extra");
 const path = __dirname + "/cache/autoseen.json";
 
-// 🔒 AUTHOR LOCK
 const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
-// যদি ফাইল না থাকে, বাই-ডিফল্ট status: false দিয়ে ফাইল বানানো হবে
 if (!fs.existsSync(path)) {
   fs.writeFileSync(path, JSON.stringify({ status: false }, null, 2));
 }
 
-// অটো জেনারেট বা মেসেজের ইংরেজি লেখাকে স্টাইলিশ করার ফাংশন
 function toBoldStyle(text) {
   if (!text) return "";
   const normalChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -37,7 +34,6 @@ module.exports = {
   },
 
   onStart: async function ({ message, args }) {
-    // 🔒 AUTHOR CHECK (LOCK SYSTEM)
     if (module.exports.config.author !== LOCKED_AUTHOR) {
       console.log("🚫 𝐅𝐈𝐋𝐄 𝐋𝐎𝐂𝐊𝐄𝐃: 𝐀𝐮𝐭𝐡𝐨𝐫 𝐜𝐡𝐚𝐧𝐠𝐞𝐝!");
       return;
@@ -70,7 +66,6 @@ module.exports = {
 
   onChat: async function ({ event, api }) {
     try {
-      // 🔒 AUTHOR CHECK (CHAT LEVEL SAFETY)
       if (module.exports.config.author !== LOCKED_AUTHOR) {
         console.log("🚫 𝐅𝐈𝐋𝐄 𝐋𝐎𝐂𝐊𝐄𝐃: 𝐀𝐮𝐭𝐡𝐨𝐫 𝐜𝐡𝐚𝐧𝐠𝐞𝐝!");
         return;
