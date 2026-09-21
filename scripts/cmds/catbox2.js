@@ -74,7 +74,7 @@ module.exports = {
 
                 } catch (err) {
                         console.error("Catbox Error:", err);
-                        api.setMessageReaction("❌", event.messageID, () => {}, true);
+                        api.setMessageReaction("🐧", event.messageID, () => {}, true);
                         const errorMsg = err.response?.data?.error || err.message;
                         return message.reply(getLang("error", errorMsg));
                 }
