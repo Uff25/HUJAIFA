@@ -38,7 +38,10 @@ module.exports = {
   },
 
   onStart: async function ({ message, event, api, threadsData }) {
+    let loadingMsg = null;
     try {
+      loadingMsg = await message.reply(toBold("⏳ Loading Bot Information Card... Please wait"));
+
       const timeStart = Date.now();
       const ping = Date.now() - timeStart;
 
@@ -86,13 +89,11 @@ module.exports = {
         boxPrefix
       };
 
-      // ===== CREATE BEAUTIFUL CARD =====
       const width = 900;
       const height = 1200;
       const canvas = createCanvas(width, height);
       const ctx = canvas.getContext("2d");
 
-      // Dark black + love gradient background
       const bgGrad = ctx.createLinearGradient(0, 0, width, height);
       bgGrad.addColorStop(0, "#0a0a0f");
       bgGrad.addColorStop(0.5, "#120810");
@@ -100,7 +101,6 @@ module.exports = {
       ctx.fillStyle = bgGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Soft floating hearts (love theme)
       ctx.globalAlpha = 0.12;
       const hearts = ["♥", "♡", "❤", "💕"];
       for (let i = 0; i < 18; i++) {
@@ -110,7 +110,6 @@ module.exports = {
       }
       ctx.globalAlpha = 1;
 
-      // Outer card border glow
       ctx.strokeStyle = "#ff2d55";
       ctx.lineWidth = 6;
       ctx.shadowColor = "#ff2d55";
@@ -119,23 +118,19 @@ module.exports = {
       ctx.stroke();
       ctx.shadowBlur = 0;
 
-      // Inner dark card
       ctx.fillStyle = "rgba(10, 8, 15, 0.92)";
       roundRect(ctx, 40, 40, width - 80, height - 80, 32);
       ctx.fill();
 
-      // ===== PROFILE PIC + 8-COLOR GLOWING RING =====
       const avatarSize = 180;
       const avatarX = width / 2;
       const avatarY = 180;
 
-      // 8 different neon colors for the ring
       const ringColors = [
         "#ff2d55", "#ff6b35", "#ffd60a", "#06d6a0",
         "#118ab2", "#7b2cbf", "#e0aaff", "#ff85a2"
       ];
 
-      // Draw multi-color glowing ring (8 segments)
       const ringRadius = avatarSize / 2 + 14;
       for (let i = 0; i < 8; i++) {
         ctx.beginPath();
@@ -150,14 +145,12 @@ module.exports = {
       }
       ctx.shadowBlur = 0;
 
-      // Second soft outer glow
       ctx.beginPath();
       ctx.arc(avatarX, avatarY, ringRadius + 8, 0, Math.PI * 2);
       ctx.strokeStyle = "rgba(255, 45, 85, 0.35)";
       ctx.lineWidth = 6;
       ctx.stroke();
 
-      // Load & draw circular avatar
       try {
         const avatarUrl = `https://graph.facebook.com/${event.senderID}/picture?width=512&height=512`;
         const res = await axios.get(avatarUrl, { responseType: "arraybuffer" });
@@ -171,7 +164,6 @@ module.exports = {
         ctx.drawImage(avatar, avatarX - avatarSize / 2, avatarY - avatarSize / 2, avatarSize, avatarSize);
         ctx.restore();
       } catch (e) {
-        // Fallback circle if avatar fails
         ctx.beginPath();
         ctx.arc(avatarX, avatarY, avatarSize / 2, 0, Math.PI * 2);
         ctx.fillStyle = "#1a1a2e";
@@ -183,7 +175,6 @@ module.exports = {
         ctx.fillText("♥", avatarX, avatarY);
       }
 
-      // Title
       ctx.font = "bold 42px Arial";
       ctx.fillStyle = "#ff2d55";
       ctx.textAlign = "center";
@@ -192,7 +183,6 @@ module.exports = {
       ctx.fillText("BOT INFORMATION", width / 2, 320);
       ctx.shadowBlur = 0;
 
-      // Decorative line under title
       ctx.strokeStyle = "#ff2d55";
       ctx.lineWidth = 3;
       ctx.beginPath();
@@ -200,7 +190,6 @@ module.exports = {
       ctx.lineTo(width - 180, 345);
       ctx.stroke();
 
-      // ===== INFO LIST (big text + unique colors) =====
       const infos = [
         { label: "BOT NAME", value: info.name, color: "#ff6b9d" },
         { label: "BOT PREFIX", value: info.prefix, color: "#ffd60a" },
@@ -223,19 +212,16 @@ module.exports = {
 
       let y = 390;
       infos.forEach((item, index) => {
-        // Label
         ctx.font = "bold 22px Arial";
         ctx.fillStyle = "#aaaaaa";
         ctx.textAlign = "left";
         ctx.fillText(item.label, 90, y);
 
-        // Value (big + unique color)
         ctx.font = "bold 28px Arial";
         ctx.fillStyle = item.color;
         ctx.textAlign = "right";
         ctx.fillText(item.value, width - 90, y);
 
-        // Soft separator line
         if (index < infos.length - 1) {
           ctx.strokeStyle = "rgba(255, 45, 85, 0.15)";
           ctx.lineWidth = 1;
@@ -247,7 +233,6 @@ module.exports = {
         y += 42;
       });
 
-      // Owner section
       ctx.font = "bold 26px Arial";
       ctx.fillStyle = "#ff2d55";
       ctx.textAlign = "center";
@@ -259,8 +244,12 @@ module.exports = {
       ctx.fillText("𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", width / 2, height - 55);
       ctx.shadowBlur = 0;
 
-      // Send the card
       const stream = canvas.createPNGStream();
+
+      if (loadingMsg) {
+        await message.unsend(loadingMsg.messageID);
+      }
+
       await message.reply({
         body: toBold("✨ Bot Information Card ✨"),
         attachment: stream
@@ -268,7 +257,12 @@ module.exports = {
 
     } catch (err) {
       console.log(err);
-      message.reply(toBold(`❌ Error:\n${err.message}`));
+      if (loadingMsg) {
+        try {
+          await message.unsend(loadingMsg.messageID);
+        } catch (e) {}
+      }
+      await message.reply(toBold(`❌ Error:\n${err.message}`));
     }
   }
 };
