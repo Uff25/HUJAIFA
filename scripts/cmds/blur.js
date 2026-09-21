@@ -6,7 +6,7 @@ module.exports = {
   config: {
     name: "blur",
     version: "1.0",
-    author: "FARHAN-KHAN",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 10,
     role: 0,
     shortDescription: {
@@ -24,7 +24,6 @@ module.exports = {
   onStart: async function ({ api, event, message }) {
     const { senderID, mentions, type, messageReply } = event;
 
-    // Determine user ID for avatar
     let uid;
     if (Object.keys(mentions).length > 0) {
       uid = Object.keys(mentions)[0];
