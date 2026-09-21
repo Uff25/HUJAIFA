@@ -2,9 +2,6 @@ const axios = require("axios");
 
 const AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍"; // 🔒 locked author
 
-/**
- * 🌐 গুগল ট্রান্সলেটর ফাংশন (বাংলা ও অফিশিয়াল ইংরেজির জন্য)
- */
 async function translateText(text, targetLang) {
   try {
     const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
@@ -27,9 +24,7 @@ async function translateText(text, targetLang) {
   }
 }
 
-/**
- * 🧹 বটের আগের হেডার, ফুটার ও নোটিফিকেশন পুরোপুরি বাদ দেওয়ার কাস্টম ফাংশন
- */
+
 function cleanInputText(rawText) {
   if (!rawText) return "";
 
@@ -60,13 +55,11 @@ function cleanInputText(rawText) {
   return cleanText || rawText;
 }
 
-/**
- * 🔤 বাংলা লেখা ➔ বাংলা উচ্চারণে ইংরেজি অক্ষর (Banglish)
- */
+
 function convertToBanglish(text) {
   if (!text) return "";
 
-  // কমন ব্যবহৃত শব্দের সঠিক উচ্চারণ ডিকশনারি
+  
   const wordMap = {
     "আমি": "ami", "তুমি": "tumi", "আপনি": "apni", "সে": "se", "তারা": "tara",
     "কেমন": "kemon", "আছো": "acho", "আছেন": "achen", "ভালো": "valo", "ভালোবাসি": "valobashi",
@@ -84,10 +77,10 @@ function convertToBanglish(text) {
     str = str.replace(reg, val);
   }
 
-  // ইউনিকোড ফিল্টারিং
+  
   str = str
-    .replace(/\u09CD/g, '') // হসন্ত মুছে ফেলা
-    .replace(/\u09BC/g, '') // নুকতা মুছে ফেলা
+    .replace(/\u09CD/g, '') 
+    .replace(/\u09BC/g, '') 
     .replace(/ক্ষ/g, 'kkho').replace(/জ্ঞ/g, 'ggo').replace(/ঙ্ক/g, 'nk').replace(/ঙ্গ/g, 'ng')
     .replace(/চ্ছ/g, 'cch').replace(/জ্জ/g, 'jj').replace(/ড়/g, 'r').replace(/ঢ়/g, 'rh')
     .replace(/য়/g, 'y').replace(/ৎ/g, 't');
@@ -158,12 +151,12 @@ module.exports = {
         return api.sendMessage("❌ আপনি যে মেসেজে রিপ্লাই দিয়েছেন তাতে কোনো লেখা পাওয়া যায়নি!", event.threadID, event.messageID);
       }
 
-      // 🧼 মূল টেক্সট ফিল্টার
+      
       const textToTranslate = cleanInputText(rawText);
 
       let resultText = "";
 
-      // 🔄 মোড সিলেকশন
+      
       if (commandType === "e" || commandType === "eb" || commandType === "banglish") {
         // ১. বাংলা ➔ ইংরেজি অক্ষরে বাংলা (Banglish)
         resultText = convertToBanglish(textToTranslate);
