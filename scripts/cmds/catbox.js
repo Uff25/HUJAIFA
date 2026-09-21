@@ -5,246 +5,241 @@ const path = require("path");
 const os = require("os");
 
 module.exports = {
-config: {
-name: "catbox",
-aliases: ["up", "upload"],
-version: "1.0.0",
-author: "Siyam", /* ⚠️ এই ফাইলের নাম পরিবর্তন করলে কাজ করবে না বন্ধ হয়ে যাবে। */
-countDown: 5,
-role: 0,
-shortDescription: {
-en: "Upload media"
-},
-longDescription: {
-en: "Upload image, video, audio and get direct link"
-},
-category: "tools",
-guide: {
-en: "{pn} reply to an image/video/audio"
-}
-},
+  config: {
+    name: "catbox",
+    aliases: ["up", "upload"],
+    version: "1.0.0",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    countDown: 5,
+    role: 0,
+    shortDescription: {
+      en: "Upload media"
+    },
+    longDescription: {
+      en: "Upload image, video, audio and get direct link"
+    },
+    category: "tools",
+    guide: {
+      en: "{pn} reply to an image/video/audio"
+    }
+  },
 
-onStart: async function ({ event, message, api }) {  
-	let tempPath = null;  
+  onStart: async function ({ event, message, api }) {  
+    let tempPath = null;  
 
-	try {  
-		  
-		if (this.config.author !== "Siyam") {  
-			throw new Error("Unauthorized Modification: এই ফাইলের মূল লেখক 'Siyam'। লেখকের নাম পরিবর্তন করার কারণে ফাইলটি নিষ্ক্রিয় করা হয়েছে।");  
-		}  
+    try {  
+      const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
-		const reply = event.messageReply;  
+      if (module.exports.config.author !== LOCKED_AUTHOR) {  
+        const lockMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⛔ 𝗙𝗜𝗟𝗘 𝗟𝗢𝗖𝗞𝗘𝗗
+» ❌ সিয়াম ভাই এর নাম 
+» 🤦 পরিবর্তন করা হয়েছে!
+» ⚠️ এই কমান্ডটি নষ্ট করা হলো।
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
-		if (  
-			!reply ||  
-			!reply.attachments ||  
-			!reply.attachments.length  
-		) {  
-			return message.reply(  
-				"⚠️ Please reply to an image, video, audio or GIF."  
-			);  
-		}  
+        return message.reply(lockMsg);
+      }  
 
-		api.setMessageReaction(  
-			"📤",  
-			event.messageID,  
-			() => {},  
-			true  
-		);  
+      const reply = event.messageReply;  
 
-		const loadingMsg = await message.reply(  
-			"⚡ Uploading..."  
-		);  
+      if (  
+        !reply ||  
+        !reply.attachments ||  
+        !reply.attachments.length  
+      ) {  
+        const noReplyMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 📌 যেকোনো ছবি, ভিডিও, 
+» 🎙️ অডিও বা GiF রিপ্লাই দিন!
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
-		const attachment = reply.attachments[0];  
+        return message.reply(noReplyMsg);
+      }  
 
-		let ext = ".jpg";  
+      api.setMessageReaction(  
+        "📤",  
+        event.messageID,  
+        () => {},  
+        true  
+      );  
 
-		switch (attachment.type) {  
-			case "video":  
-				ext = ".mp4";  
-				break;  
+      const waitMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ☁️ ফাইল আপলোড করা হচ্ছে...
+» ⏳ অনুগ্রহ করে অপেক্ষা করুন!
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
-			case "audio":  
-				ext = ".mp3";  
-				break;  
+      const loadingMsg = await message.reply(waitMsg);  
 
-			case "animated_image":  
-				ext = ".gif";  
-				break;  
+      const attachment = reply.attachments[0];  
 
-			default:  
-				ext = ".jpg";  
-		}  
+      let ext = ".jpg";  
 
-		tempPath = path.join(  
-			os.tmpdir(),  
-			`catbox_${Date.now()}${ext}`  
-		);  
+      switch (attachment.type) {  
+        case "video":  
+          ext = ".mp4";  
+          break;  
 
-		const response = await axios({  
-			method: "GET",  
-			url: attachment.url,  
-			responseType: "stream"  
-		});  
+        case "audio":  
+          ext = ".mp3";  
+          break;  
 
-		const writer = fs.createWriteStream(tempPath);  
+        case "animated_image":  
+          ext = ".gif";  
+          break;  
 
-		response.data.pipe(writer);  
+        default:  
+          ext = ".jpg";  
+      }  
 
-		await new Promise((resolve, reject) => {  
-			writer.on("finish", resolve);  
-			writer.on("error", reject);  
-		});  
+      tempPath = path.join(  
+        os.tmpdir(),  
+        `catbox_${Date.now()}${ext}`  
+      );  
 
-		let finalLink = null;  
+      const response = await axios({  
+        method: "GET",  
+        url: attachment.url,  
+        responseType: "stream"  
+      });  
 
-		// ======================  
-		// CATBOX  
-		// ======================  
+      const writer = fs.createWriteStream(tempPath);  
 
-		try {  
-			const form = new FormData();  
+      response.data.pipe(writer);  
 
-			form.append(  
-				"reqtype",  
-				"fileupload"  
-			);  
+      await new Promise((resolve, reject) => {  
+        writer.on("finish", resolve);  
+        writer.on("error", reject);  
+      });  
 
-			form.append(  
-				"fileToUpload",  
-				fs.createReadStream(tempPath)  
-			);  
+      let finalLink = null;  
 
-			const upload = await axios.post(  
-				"https://catbox.moe/user/api.php",  
-				form,  
-				{  
-					headers: form.getHeaders(),  
-					maxBodyLength: Infinity,  
-					maxContentLength: Infinity  
-				}  
-			);  
+      // CATBOX  
+      try {  
+        const form = new FormData();  
 
-			const link = upload.data  
-				?.toString()  
-				.trim();  
+        form.append("reqtype", "fileupload");  
+        form.append("fileToUpload", fs.createReadStream(tempPath));  
 
-			if (  
-				link &&  
-				link.startsWith("https://")  
-			) {  
-				finalLink = link;  
-			}  
-		} catch {}  
+        const upload = await axios.post(  
+          "https://catbox.moe/user/api.php",  
+          form,  
+          {  
+            headers: form.getHeaders(),  
+            maxBodyLength: Infinity,  
+            maxContentLength: Infinity  
+          }  
+        );  
 
-		// ======================  
-		// TMPFILES  
-		// ======================  
+        const link = upload.data?.toString().trim();  
 
-		if (!finalLink) {  
-			try {  
-				const form = new FormData();  
+        if (link && link.startsWith("https://")) {  
+          finalLink = link;  
+        }  
+      } catch {}  
 
-				form.append(  
-					"file",  
-					fs.createReadStream(tempPath)  
-				);  
+      // TMPFILES  
+      if (!finalLink) {  
+        try {  
+          const form = new FormData();  
 
-				const upload = await axios.post(  
-					"https://tmpfiles.org/api/v1/upload",  
-					form,  
-					{  
-						headers: form.getHeaders()  
-					}  
-				);  
+          form.append("file", fs.createReadStream(tempPath));  
 
-				const raw =  
-					upload.data?.data?.url;  
+          const upload = await axios.post(  
+            "https://tmpfiles.org/api/v1/upload",  
+            form,  
+            {  
+              headers: form.getHeaders()  
+            }  
+          );  
 
-				if (raw) {  
-					finalLink = raw.replace(  
-						"https://tmpfiles.org/",  
-						"https://tmpfiles.org/dl/"  
-					);  
-				}  
-			} catch {}  
-		}  
+          const raw = upload.data?.data?.url;  
 
-		// ======================  
-		// 0x0.st  
-		// ======================  
+          if (raw) {  
+            finalLink = raw.replace(  
+              "https://tmpfiles.org/",  
+              "https://tmpfiles.org/dl/"  
+            );  
+          }  
+        } catch {}  
+      }  
 
-		if (!finalLink) {  
-			const form = new FormData();  
+      // 0x0.st  
+      if (!finalLink) {  
+        const form = new FormData();  
 
-			form.append(  
-				"file",  
-				fs.createReadStream(tempPath)  
-			);  
+        form.append("file", fs.createReadStream(tempPath));  
 
-			const upload = await axios.post(  
-				"https://0x0.st",  
-				form,  
-				{  
-					headers: form.getHeaders()  
-				}  
-			);  
+        const upload = await axios.post(  
+          "https://0x0.st",  
+          form,  
+          {  
+            headers: form.getHeaders()  
+          }  
+        );  
 
-			finalLink = upload.data  
-				.toString()  
-				.trim();  
-		}  
+        finalLink = upload.data.toString().trim();  
+      }  
 
-		if (!finalLink) {  
-			throw new Error(  
-				"All upload servers failed."  
-			);  
-		}  
+      if (!finalLink) {  
+        throw new Error("সবগুলো সার্ভারে আপলোড ব্যর্থ হয়েছে।");  
+      }  
 
-		if (loadingMsg?.messageID) {  
-			try {  
-				await api.unsendMessage(  
-					loadingMsg.messageID  
-				);  
-			} catch {}  
-		}  
+      if (loadingMsg?.messageID) {  
+        try {  
+          await api.unsendMessage(loadingMsg.messageID);  
+        } catch {}  
+      }  
 
-		api.setMessageReaction(  
-			"✅",  
-			event.messageID,  
-			() => {},  
-			true  
-		);  
+      api.setMessageReaction(  
+        "✅",  
+        event.messageID,  
+        () => {},  
+        true  
+      );  
 
-		return message.reply(  
-			`✅ Upload Successful\n\n🔗 ${finalLink}`  
-		);  
+      const successMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 ফাইল আপলোড সফল হয়েছে!
+» 🌐 লিঙ্ক: ${finalLink}`;
 
-	} catch (err) {  
-		console.error(err);  
+      return message.reply(successMsg);  
 
-		api.setMessageReaction(  
-			"❌",  
-			event.messageID,  
-			() => {},  
-			true  
-		);  
+    } catch (err) {  
+      console.error(err);  
 
-		return message.reply(  
-			`❌ Upload Failed\n\n${err.message}`  
-		);  
+      api.setMessageReaction(  
+        "❌",  
+        event.messageID,  
+        () => {},  
+        true  
+      );  
 
-	} finally {  
-		try {  
-			if (  
-				tempPath &&  
-				fs.existsSync(tempPath)  
-			) {  
-				fs.unlinkSync(tempPath);  
-			}  
-		} catch {}  
-	}  
-}
+      const errorMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 💥 ফাইল আপলোড ব্যর্থ হয়েছে!
+» ❌ কারণ: ${err.message}
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
+      return message.reply(errorMsg);  
+
+    } finally {  
+      try {  
+        if (tempPath && fs.existsSync(tempPath)) {  
+          fs.unlinkSync(tempPath);  
+        }  
+      } catch {}  
+    }  
+  }  
 };
