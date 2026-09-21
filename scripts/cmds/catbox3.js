@@ -13,21 +13,55 @@ async function getUploadApiUrl() {
 }
 
 async function handleCatboxUpload({ event, api, message }) {
+  const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+
+  if (module.exports.config.author !== LOCKED_AUTHOR) {
+    const lockMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⛔ 𝗙𝗜𝗟𝗘 𝗟𝗢𝗖𝗞𝗘𝗗
+» ❌ সিয়াম ভাই এর নাম 
+» 🤦 পরিবর্তন করা হয়েছে!
+» ⚠️ এই কমান্ডটি নষ্ট করা হলো।
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+
+    return message.reply(lockMsg);
+  }
+
   const { messageReply, messageID } = event;
   if (!messageReply || !messageReply.attachments || messageReply.attachments.length === 0) {
-    return message.reply("Please reply to an image or video.");
+    const noMediaMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 📁 যেকোনো ছবি অথবা 
+» 🎬 ভিডিওতে রিপ্লাই দিন!
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+
+    return message.reply(noMediaMsg);
   }
 
   const fileUrl = messageReply.attachments[0].url;
   const ext = messageReply.attachments[0].type === "photo" ? ".jpg" : ".mp4";
   const filePath = path.join(__dirname, "temp" + ext);
 
-  // React with 🕛 during upload
   api.setMessageReaction("🕛", messageID, () => {}, true);
-  const loading = await message.reply("⏳ Meow~ Uploading your media to the magical Catbox...");
+
+  const waitMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🚀 ফাইল ক্যাটবক্সে পাঠানোর কাজ
+» 🌌 দ্রুত গতিতে চলছে...
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+
+  const loading = await message.reply(waitMsg);
 
   setTimeout(() => {
-    api.unsendMessage(loading.messageID);
+    if (loading?.messageID) {
+      api.unsendMessage(loading.messageID);
+    }
   }, 5000);
 
   try {
@@ -52,14 +86,31 @@ async function handleCatboxUpload({ event, api, message }) {
 
     fs.unlinkSync(filePath);
 
-    // ✅ React on success
     api.setMessageReaction("✅", messageID, () => {}, true);
-    return message.reply(upload.data);
+
+    const successMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 💎 মিডিয়া আপলোড সম্পন্ন!
+» ✨ লিঙ্ক: ${upload.data}`;
+
+    return message.reply(successMsg);
   } catch (err) {
-    fs.existsSync(filePath) && fs.unlinkSync(filePath);
-    // ❌ React on failure
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
     api.setMessageReaction("❌", messageID, () => {}, true);
-    return message.reply("❌ Failed to upload to Catbox.");
+
+    const errorMsg = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🚨 আপলোড ব্যর্থ হয়েছে!
+» 📡 পুনরায় চেষ্টা করুন।
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+
+    return message.reply(errorMsg);
   }
 }
 
@@ -68,11 +119,15 @@ module.exports = {
     name: "catbox3",
     aliases: ["ct3"],
     version: "1.3",
-    author: "MaHU",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 0,
-    shortDescription: "Upload media to catbox.moe",
-    longDescription: "Upload replied image or video to catbox.moe and get link",
+    shortDescription: {
+      en: "Upload media to catbox.moe"
+    },
+    longDescription: {
+      en: "Upload replied image or video to catbox.moe and get link"
+    },
     category: "tools",
     guide: {
       en: "{pn} (reply to image/video)"
