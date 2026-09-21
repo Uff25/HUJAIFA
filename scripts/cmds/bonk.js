@@ -7,7 +7,7 @@ module.exports = {
   config: {
     name: "bonk",
     aliases: ["b"],
-    author: "Meheraz | rewrite by Muzan",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     shortDescription: "Bonk someone",
     longDescription: "Make a BONK meme using two avatars",
     category: "fun",
@@ -47,12 +47,11 @@ module.exports = {
     const avtOne = await fetchPfp(one);
     const avtTwo = await fetchPfp(two);
 
-    const circle1 = await this.circleCrop(avtOne, 110); // PFP 1 -> size 110
-    const circle2 = await this.circleCrop(avtTwo, 90);  // PFP 2 -> size 90
+    const circle1 = await this.circleCrop(avtOne, 110);
+    const circle2 = await this.circleCrop(avtTwo, 90);
 
-    // Swap positions
-    ctx.drawImage(circle1, 60, 150); // Sender goes to hitting position
-    ctx.drawImage(circle2, 500, 220);  // Target goes to bonked position
+    ctx.drawImage(circle1, 60, 150);
+    ctx.drawImage(circle2, 500, 220);
 
     const outPath = path.join(__dirname, `bonk_${one}_${two}.png`);
     fs.writeFileSync(outPath, canvas.toBuffer("image/png"));
@@ -72,25 +71,21 @@ module.exports = {
       const one = senderID;
       const two = targetID;
 
-      // --- পরিবর্তন এখান থেকে শুরু ---
-      // টার্গেট আইডির নাম বের করা হচ্ছে
       let targetName = "User";
       try {
-          const userInfo = await api.getUserInfo(targetID);
-          targetName = userInfo[targetID].name;
+        const userInfo = await api.getUserInfo(targetID);
+        targetName = userInfo[targetID].name;
       } catch (e) {
-          // যদি নাম না পাওয়া যায়, তাহলে ম্যানশন চেক করবে
-          if (Object.keys(mentions).length > 0) {
-              targetName = mentions[targetID].replace("@", "");
-          }
+        if (Object.keys(mentions).length > 0) {
+          targetName = mentions[targetID].replace("@", "");
+        }
       }
-      // --- পরিবর্তন শেষ ---
 
       const file = await this.makeImage(one, two);
 
       api.sendMessage(
         {
-          body: `${targetName} bonk nigga 🪓`, // এখানে নাম এবং টেক্সট সেট করা হয়েছে
+          body: `${targetName} bonk nigga 🪓`,
           attachment: fs.createReadStream(file),
         },
         threadID,
