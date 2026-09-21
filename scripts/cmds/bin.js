@@ -7,7 +7,7 @@ module.exports = {
     name: "pastebin",
     aliases: ["bin"],
     version: "1.4",
-    author: "NeoKEX", // Don't try to change the author name otherwise I'll fvckyourmom
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 0,
     shortDescription: "Upload a command's code to Pastebin.",
@@ -17,8 +17,7 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, args, message }) {
-    // Copyright: NeoKEX
-    const encodedAuthor = 'TmVvS0VY'; 
+    const encodedAuthor = Buffer.from('𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍').toString('base64'); 
     const correctAuthor = Buffer.from(encodedAuthor, 'base64').toString('utf8');
 
     if (this.config.author !== correctAuthor) {
