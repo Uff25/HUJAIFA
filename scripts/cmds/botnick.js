@@ -87,7 +87,7 @@ module.exports = {
     getLang
   }) {
 
-    // 🔒 STRONG AUTHOR LOCK
+  
     const content = fs.readFileSync(__filename, "utf8");
 
     if (
