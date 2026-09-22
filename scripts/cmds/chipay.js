@@ -6,7 +6,7 @@ const { createCanvas, loadImage } = require("canvas");
 module.exports = {
   config: {
     name: "chipay",
-    aliases: ["corner", "muri"],
+    aliases: ["corner", "চিপা"],
     version: "2.4.9",
     author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
@@ -28,7 +28,7 @@ module.exports = {
     } else if (messageReply) {
       targetID = messageReply.senderID;
     } else {
-      // User not mentioned warning (Bangla)
+      
       return api.sendMessage("🤦‍♂️ | আরে ভাই, কাকে চিপায় নিবেন তারে তো মেনশন দেন নাই!", threadID, messageID);
     }
 
