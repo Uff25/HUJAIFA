@@ -14,7 +14,7 @@ if (!fileContent.includes(`author: "${EXPECTED_AUTHOR}"`)) {
 module.exports = {
   config: {
     name: "cdp",
-    aliases: ["coupledp", "pairdp"],
+    aliases: ["coupledp"],
     version: "1.5",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
