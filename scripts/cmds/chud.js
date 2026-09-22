@@ -1,3 +1,5 @@
+const activeSessions = new Map();
+
 module.exports = {
   config: {
     name: "su",
@@ -8,57 +10,95 @@ module.exports = {
     category: "admin",
     guide: {
       vi: "Not Available",
-      en: "chud @(mention)"
+      en: "chud @(mention) or su off"
     } 
   },
 
   onStart: async function ({ api, event, userData, args }) {
+    const threadID = event.threadID;
+
+    if (args[0] && args[0].toLowerCase() === "off") {
+      if (activeSessions.has(threadID)) {
+        const timeouts = activeSessions.get(threadID);
+        timeouts.forEach(clearTimeout);
+        activeSessions.delete(threadID);
+        return api.sendMessage("🛑 সফলভাবে অফ করা হয়েছে!", threadID);
+      } else {
+        return api.sendMessage("❌ কোনো রানিং প্রসেস খুঁজে পাওয়া যায়নি!", threadID);
+      }
+    }
+
     var mention = Object.keys(event.mentions)[0];
-    if(!mention) return api.sendMessage("👉 সিয়াম বস যাকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ__🖕🥵", event.threadID);
-    let name = event.mentions[mention];
-    var arraytag = []; 
-    arraytag.push({id: mention, tag: name});
-    var a = function (a) { api.sendMessage(a, event.threadID); }
-    setTimeout(() => {a({body: "কিরে মাদারচোত সিয়াম বস এর চুদন খাওয়ায় জন্য রেডি তো?" + "লে চুদা খা মাঙ্গের বেটা 😂😂" + name, mentions: arraytag})}, 3000);
-    setTimeout(() => {a({body: "মাঘি চুদা শরের বাচ্চা কার লগে পঙ্গা নিতে আসছিস 🤬🤬🤬" + " " + name, mentions: arraytag})}, 5000);
-    setTimeout(() => {a({body: " চুদে গুহা ফাঁক করে দিব খানকীর পোলা 🤤" + " " + name, mentions: arraytag})}, 7000);
-    setTimeout(() => {a({body: " মাদারচোত বোকাচোদা খানকীর পোলা " + " " + name, mentions: arraytag})}, 9000);
-    setTimeout(() => {a({body: " বেসসা মাঘী চোদা কুত্তা চোদা" + " " + name, mentions: arraytag})}, 12000);
-    setTimeout(() => {a({body: " ছাগল চুদা গরু চুদা মাঙ্গের বেটা লোকজন দেখে লাগতে আসিস কুত্তার বাচ্চা 🤬" + " " + name, mentions: arraytag})}, 14000);
-    setTimeout(() => {a({body: " তোর আব্বুকে ভুলে গেলি মাদারচোত 😂" + " " + name, mentions: arraytag})}, 16000);
-    setTimeout(() => {a({body: " তোকে কনডম ছাড়া চুদী মঙ্গের বেটা 🖕🏿" + " " + name, mentions: arraytag})}, 18000);
-    setTimeout(() => {a({body: " আমার ধন চুষ তাইলে থামবো 😂" + " " + name, mentions: arraytag})}, 20000);
-    setTimeout(() => {a({body: " তোরে কুত্তা দিয়ে চোদাই 😍" + " " + name, mentions: arraytag})}, 22000);
-    setTimeout(() => {a({body: " মাঘীর মাং চাটিস বোকাচোদার বাচ্চা তোকে কন্ডম ছাড়া উল্টা করে চুদি 🤬" + " " + name, mentions: arraytag})}, 2400);
-    setTimeout(() => {a({body: " এখনো সময় আছে মাফ চা 🤣🤣" + " " + name, mentions: arraytag})}, 26000);
-    setTimeout(() => {a({body: " তোর নানি কেমন আছে 😍??" + " " + name, mentions: arraytag})}, 28000);
-    setTimeout(() => {a({body: " তোকে চুদী 🥰" + " " + name, mentions: arraytag})}, 30000);
-    setTimeout(() => {a({body: " মাদারচোত 🥰" + " " + name, mentions: arraytag})}, 32000);
-    setTimeout(() => {a({body: " আব্বা কে ভুলিস না 🤬" + " " + name, mentions: arraytag})}, 65000);
-    setTimeout(() => {a({body: " আজকের চুদন আজীবন মনে রাখিস বোকাচোদা 🤣🤣🤣" + " " + name, mentions: arraytag})}, 34000);
-    setTimeout(() => {a({body: "মাঘা 🥰" + " " + name, mentions: arraytag})}, 36000);
-    setTimeout(() => {a({body: " আয় আমার হোল টা চুষে দে 🥵🥵" + " " + name, mentions: arraytag})}, 38000);
-    setTimeout(() => {a({body: " বাপ কে ভুলিস না বোকাচোদার বাচ্চা 🤬🤬🤬🤬🤬" + " " + name, mentions: arraytag})}, 40000);
-    setTimeout(() => {a({body: " হোল কাটে নিবো 🤬🤬🤬🤬🤬🤬" + " " + name, mentions: arraytag})}, 44000);
-    setTimeout(() => {a({body: " তোমার গুষ্টি চুদী ব্রো 😞🖕🏿" + " " + name, mentions: arraytag})}, 460000);
-    setTimeout(() => {a({body: "🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿" + " " + name, mentions: arraytag})}, 48000);
-    setTimeout(() => {a({body: " মাঘীর ছেলে তোর মাকে চুদী 🖕🏽🖕🏽🖕🏽 " + " " + name, mentions: arraytag})} , 50000);
-    setTimeout(() => {a({body: " আজকে তোকে প্যান্ট না খুলেই চুদবো 🤬 তোর মাকে একটু আগেই চুঁদে আসলাম 😂" + " " + name, mentions: arraytag})} , 52000);
-    setTimeout(() => {a({body: "বোকাচোদার বাচ্চা 😂" + " " + name, mentions: arraytag})} , 56000);
-    setTimeout(() => {a({body: " মাদারচোত বোকাচোদা খানকীর ছেলে 🤬" + " " + name, mentions: arraytag})} , 58000);
-    setTimeout(() => {a({body: " প্যান্ট ভিজে নাই 🤣🤣🤣🤣🤣🤣🤣???" + " " + name, mentions: arraytag})} , 60000);
-    setTimeout(() => {a({body: " আরো চুদন খাইতে চাচ্ছিস ???? " + " " + name, mentions: arraytag})} , 62000);
-    setTimeout(() => {a({body: " আয় মাদারচোত আমার ধণ টা চুষে যা 🤬"+ " " + name, mentions: Arraytag})} , 64000);
-    setTimeout(() => {a({body: " তোকে ডগি স্টাইল e চুদী 😋😋" + " " + name, mentions: arraytag})} , 66000);
-    setTimeout(() => {a({body: " তোর আব্বাকে ভুললে আরেকবার এমন চুদন চুদবো মোর যাবি মঙ্গের বেটা 😂😂😂" + " " + name, mentions: arraytag})} , 68000);
-    setTimeout(() => {a({body: " আজকের চুদন আজীবন মনে রাখবি 🤣🤣🤣" + " " + name, mentions: arraytag})} , 70000);
-    setTimeout(() => {a({body: " আয় আমার ধোন টা চুষে যা মঙ্গের পুত 🤬🤬🤬🤬" + " " + name, mentions: arraytag})} , 72000);
-    setTimeout(() => {a({body: " তোরে মুততে মুততে চুদী 🤣🤣" + " " + name, mentions: arraytag})} , 74000);
-    setTimeout(() => {a({body: " চুঁদে পাউরুটি বানায় তোর হোগায় ভরে দিব মাঙ্গের বেতা চিনিস আমারে???" + " " + name, mentions: arraytag})} , 76000);
-    setTimeout(() => {a({body: " খানকীর পোলা তোর বাপকে ভুলে গেলি?? জন্ম দেওয়া ভুল হইলো 🤬🤬🤬" + " " + name, mentions: arraytag})} , 78000);
-    setTimeout(() => {a({body: "বোকাচোদার বাচ্চা 😍" + " " + name, mentions: arraytag})} , 80000);
-    setTimeout(() => {a({body: " তোকে চুদী 😍😍😍" + " " + name, mentions: arraytag})} , 82000);
-    setTimeout(() => {a({body: " হোল কাটে নিবো মঙ্গের বেটা কার লগে লাগতে আসছিস 🤬" + " " + name, mentions: arraytag})} , 84000);
-    setTimeout(() => {a({body: "সিয়াম বস এর চুদন কেমন লাগলো বাচ্চা 🤣🤣🤣🤣??" + " " + name, mentions: arraytag})} , 84000);
+    if(!mention) return api.sendMessage("👉 সিয়াম বস যাকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ__🖕🥵", threadID);
+
+    let realName = event.mentions[mention];
+    if (typeof realName === "string" && realName.startsWith("@")) {
+      realName = realName.replace("@", "");
+    }
+    
+    var arraytag = [{ id: mention, tag: realName }];
+
+    var a = function (text) {
+      return api.sendMessage({ body: text + " " + realName, mentions: arraytag }, threadID);
+    };
+
+    if (activeSessions.has(threadID)) {
+      activeSessions.get(threadID).forEach(clearTimeout);
+    }
+
+    const timeouts = [];
+
+    const messages = [
+      { msg: "কিরে মাদারচোত সিয়াম বস এর চুদন খাওয়ায় জন্য রেডি তো? লে চুদা খা মাঙ্গের বেটা 😂😂", time: 3000 },
+      { msg: "মাঘি চুদা শরের বাচ্চা কার লগে পঙ্গা নিতে আসছিস 🤬🤬🤬", time: 5000 },
+      { msg: " চুদে গুহা ফাঁক করে দিব খানকীর পোলা 🤤", time: 7000 },
+      { msg: " মাদারচোত বোকাচোদা খানকীর পোলা ", time: 9000 },
+      { msg: " বেসসা মাঘী চোদা কুত্তা চোদা", time: 12000 },
+      { msg: " ছাগল চুদা গরু চুদা মাঙ্গের বেটা লোকজন দেখে লাগতে আসিস কুত্তার বাচ্চা 🤬", time: 14000 },
+      { msg: " তোর আব্বুকে ভুলে গেলি মাদারচোত 😂", time: 16000 },
+      { msg: " তোকে কনডম ছাড়া চুদী মঙ্গের বেটা 🖕🏿", time: 18000 },
+      { msg: " আমার ধন চুষ তাইলে থামবো 😂", time: 20000 },
+      { msg: " তোরে কুত্তা দিয়ে চোদাই 😍", time: 22000 },
+      { msg: " মাঘীর মাং চাটিস বোকাচোদার বাচ্চা তোকে কন্ডম ছাড়া উল্টা করে চুদি 🤬", time: 24000 },
+      { msg: " এখনো সময় আছে মাফ চা 🤣🤣", time: 26000 },
+      { msg: " তোর নানি কেমন আছে 😍??", time: 28000 },
+      { msg: " তোকে চুদী 🥰", time: 30000 },
+      { msg: " মাদারচোত 🥰", time: 32000 },
+      { msg: " আজকের চুদন আজীবন মনে রাখিস বোকাচোদা 🤣🤣🤣", time: 34000 },
+      { msg: "মাঘা 🥰", time: 36000 },
+      { msg: " আয় আমার হোল টা চুষে দে 🥵🥵", time: 38000 },
+      { msg: " বাপ কে ভুলিস না বোকাচোদার বাচ্চা 🤬🤬🤬🤬🤬", time: 40000 },
+      { msg: " হোল কাটে নিবো 🤬🤬🤬🤬🤬🤬", time: 44000 },
+      { msg: " তোমার গুষ্টি চুদী ব্রো 😞🖕🏿", time: 46000 },
+      { msg: "🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿🖕🏿", time: 48000 },
+      { msg: " মাঘীর ছেলে তোর মাকে চুদী 🖕🏽🖕🏽🖕🏽 ", time: 50000 },
+      { msg: " আজকে তোকে প্যান্ট না খুলেই চুদবো 🤬 তোর মাকে একটু আগেই চুঁদে আসলাম 😂", time: 52000 },
+      { msg: "বোকাচোদার বাচ্চা 😂", time: 56000 },
+      { msg: " মাদারচোত বোকাচোদা খানকীর ছেলে 🤬", time: 58000 },
+      { msg: " প্যান্ট ভিজে নাই 🤣🤣🤣🤣🤣🤣🤣???", time: 60000 },
+      { msg: " আরো চুদন খাইতে চাচ্ছিস ???? ", time: 62000 },
+      { msg: " আয় মাদারচোত আমার ধণ টা চুষে যা 🤬", time: 64000 },
+      { msg: " আব্বা কে ভুলিস না 🤬", time: 65000 },
+      { msg: " তোকে ডগি স্টাইল e চুদী 😋😋", time: 66000 },
+      { msg: " তোর আব্বাকে ভুললে আরেকবার এমন চুদন চুদবো মোর যাবি মঙ্গের বেটা 😂😂😂", time: 68000 },
+      { msg: " আজকের চুদন আজীবন মনে রাখবি 🤣🤣🤣", time: 70000 },
+      { msg: " আয় আমার ধোন টা চুষে যা মঙ্গের পুত 🤬🤬🤬🤬", time: 72000 },
+      { msg: " তোরে মুততে মুততে চুদী 🤣🤣", time: 74000 },
+      { msg: " চুঁদে পাউরুটি বানায় তোর হোগায় ভরে দিব মাঙ্গের বেতা চিনিস আমারে???", time: 76000 },
+      { msg: " খানকীর পোলা তোর বাপকে ভুলে গেলি?? জন্ম দেওয়া ভুল হইলো 🤬🤬🤬", time: 78000 },
+      { msg: "বোকাচোদার বাচ্চা 😍", time: 80000 },
+      { msg: " তোকে চুদী 😍😍😍", time: 82000 },
+      { msg: " হোল কাটে নিবো মঙ্গের বেটা কার লগে লাগতে আসছিস 🤬", time: 84000 },
+      { msg: "সিয়াম বস এর চুদন কেমন লাগলো বাচ্চা 🤣🤣🤣🤣??", time: 86000 }
+    ];
+
+    messages.forEach((item) => {
+      const timer = setTimeout(() => {
+        a(item.msg);
+      }, item.time);
+      timeouts.push(timer);
+    });
+
+    activeSessions.set(threadID, timeouts);
   }
 };
