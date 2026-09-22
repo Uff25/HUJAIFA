@@ -3,7 +3,7 @@ module.exports = {
     name: "su",
     aliases: ["chud"],
     version: "1.0",
-    author: "FARHAN-KHAN",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     role: 2,
     category: "admin",
     guide: {
@@ -13,11 +13,11 @@ module.exports = {
   },
 
   onStart: async function ({ api, event, userData, args }) {
-      var mention = Object.keys(event.mentions)[0];
-    if(!mention) return api.sendMessage("👉 সিয়াম বস যাকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ__//🖕🥵", event.threadID);
- let name =  event.mentions[mention];
+    var mention = Object.keys(event.mentions)[0];
+    if(!mention) return api.sendMessage("👉 সিয়াম বস যাকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ__🖕🥵", event.threadID);
+    let name =  event.mentions[mention];
     var arraytag = []; 
-        arraytag.push({id: mention, tag: name});
+    arraytag.push({id: mention, tag: name});
     var a = function (a) { api.sendMessage(a, event.threadID); }
 setTimeout(() => {a({body: "কিরে মাদারচোত সিয়াম বস এর চুদন খাওয়ায় জন্য রেডি তো?" + "লে চুদা খা মাঙ্গের বেটা 😂😂" + name, mentions: arraytag})}, 3000);
 setTimeout(() => {a({body: "মাঘি চুদা শরের বাচ্চা কার লগে পঙ্গা নিতে আসছিস 🤬🤬🤬" + " " + name, mentions: arraytag})}, 5000);
@@ -62,3 +62,4 @@ setTimeout(() => {a({body: " হোল কাটে নিবো মঙ্গে
 setTimeout(() => {a({body: "সিয়াম বস এর চুদন কেমন লাগলো বাচ্চা 🤣🤣🤣🤣??" + " " + name, mentions: arraytag})} , 84000);
   }
 };
+  
