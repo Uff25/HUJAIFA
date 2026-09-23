@@ -11,7 +11,7 @@ module.exports = {
   config: {
     name: "cl",
     version: "2.0",
-    role: 1,
+    role: 2,
     author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     description: "Generate Gist from code or bot files",
     category: "convert",
