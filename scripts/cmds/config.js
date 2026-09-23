@@ -5,7 +5,7 @@ const path = require("path");
 module.exports = {
   config: {
     name: "config",
-    version: "1.1.0",
+    version: "2.0.0",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 2,
@@ -22,17 +22,15 @@ module.exports = {
 
     const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
     if (module.exports.config.author !== LOCKED_AUTHOR) {
-      const lockMsg = 
+      return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ⛔ 𝗙𝗜𝗟𝗘 𝗟𝗢𝗖𝗞𝗘𝗗
+» ⛔ FILE LOCKED
 » ❌ সিয়াম ভাই এর নাম 
 » 🤦 পরিবর্তন করা হয়েছে!
 » ⚠️ এই কমান্ডটি নষ্ট করা হলো।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-
-      return api.sendMessage(lockMsg, threadID, messageID);
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, messageID);
     }
 
     const { config } = global.GoatBot;
@@ -41,50 +39,48 @@ module.exports = {
     const isAllowed = adminList.includes(senderID) || operatorList.includes(senderID);
 
     if (!isAllowed) {
-      const noPermMsg = 
+      return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🛑 𝗔𝗖𝗖𝗘𝗦𝗦 𝗗𝗘𝗡𝗜𝗘𝗗
+» 🛑 ACCESS DENIED
 » 🙅‍♂️ এই কমান্ডটি শুধু
 » 👑 বট এডমিন ব্যবহার
 » 🔐 করতে পারবে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-
-      return api.sendMessage(noPermMsg, threadID, messageID);
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, messageID);
     }
 
     const menuMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ⚙️ 𝗕𝗢𝗧 𝗖𝗢𝗡𝗙𝗜𝗚 𝗠𝗘𝗡𝗨
+» ⚙️ BOT CONFIG MENU
 ───────────────
-» 01. 📝 𝗘𝗱𝗶𝘁 𝗕𝗶𝗼
-» 02. 🏷️ 𝗘𝗱𝗶𝘁 𝗡𝗶𝗰𝗸𝗻𝗮𝗺𝗲
-» 03. 📩 𝗣𝗲𝗻𝗱𝗶𝗻𝗴 𝗠𝗲𝘀𝘀𝗮𝗴𝗲𝘀
-» 04. 👁️ 𝗨𝗻𝗿𝗲𝗮𝗱 𝗠𝗲𝘀𝘀𝗮𝗴𝗲𝘀
-» 05. 🚫 𝗦𝗽𝗮𝗺 𝗠𝗲𝘀𝘀𝗮𝗴𝗲𝘀
-» 06. 🖼️ 𝗖𝗵𝗮𝗻𝗴𝗲 𝗔𝘃𝗮𝘁𝗮𝗿
-» 07. 🛡️ 𝗔𝘃𝗮𝘁𝗮𝗿 𝗦𝗵𝗶𝗲𝗹𝗱
-» 08. 🔕 𝗕𝗹𝗼𝗰𝗸 𝗨𝘀𝗲𝗿
-» 09. 🔔 𝗨𝗻𝗯𝗹𝗼𝗰𝗸 𝗨𝘀𝗲𝗿
-» 10. 📌 𝗖𝗿𝗲𝗮𝘁𝗲 𝗣𝗼𝘀𝘁
-» 11. 🗑️ 𝗗𝗲𝗹𝗲𝘁𝗲 𝗣𝗼𝘀𝘁
-» 12. 💬 𝗖𝗼𝗺𝗺𝗲𝗻𝘁 𝗣𝗼𝘀𝘁 (𝗨𝘀𝗲𝗿)
-» 13. 👨‍👩‍👧‍👦 𝗖𝗼𝗺𝗺𝗲𝗻𝘁 𝗣𝗼𝘀𝘁 (𝗚𝗿𝗼𝘂𝗽)
-» 14. 💖 𝗗𝗿𝗼𝗽 𝗙𝗲𝗲𝗹𝗶𝗻𝗴𝘀
-» 15. 👥 𝗔𝗱𝗱 𝗙𝗿𝗶𝗲𝗻𝗱
-» 16. ✅ 𝗔𝗰𝗰𝗲𝗽𝘁 𝗙𝗿𝗶𝗲𝗻𝗱 𝗥𝗲𝗾𝘂𝗲𝘀𝘁
-» 17. ❌ 𝗗𝗲𝗰𝗹𝗶𝗻𝗲 𝗙𝗿𝗶𝗲𝗻𝗱 𝗥𝗲𝗾𝘂𝗲𝘀𝘁
-» 18. 🚶 𝗨𝗻𝗳𝗿𝗶𝗲𝗻𝗱 𝗨𝗜𝗗
-» 19. 📤 𝗦𝗲𝗻𝗱 𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝘃𝗶𝗮 𝗨𝗜𝗗
-» 20. 💻 𝗡𝗼𝘁𝗲 𝗖𝗼𝗱𝗲
-» 21. 🚪 𝗟𝗼𝗴𝗼𝘂𝘁 𝗔𝗰𝗰𝗼𝘂𝗻𝘁
+» 01. Edit Bio
+» 02. Edit Nickname
+» 03. Pending Messages
+» 04. Unread Messages
+» 05. Spam Messages
+» 06. Change Avatar
+» 07. Avatar Shield
+» 08. Block User
+» 09. Unblock User
+» 10. Create Post
+» 11. Delete Post
+» 12. Comment Post (User)
+» 13. Comment Post (Group)
+» 14. Drop Feelings
+» 15. Add Friend
+» 16. Accept Friend Request
+» 17. Decline Friend Request
+» 18. Unfriend UID
+» 19. Send Message via UID
+» 20. Note Code
+» 21. Logout Account
 ───────────────
 » 💡 যে অপশনটি চান সেটির 
-» 🔢 নম্বর দিয়ে 𝗥𝗲𝗽𝗹𝘆 করুন।
+» 🔢 নম্বর দিয়ে Reply করুন।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿NIJHUM CHATBOT`;
 
     return api.sendMessage(menuMsg, threadID, (err, info) => {
       global.GoatBot.onReply.set(info.messageID, {
@@ -97,36 +93,36 @@ module.exports = {
   },
 
   onReply: async function ({ api, event, Reply }) {
-    const { threadID, messageID, senderID, body } = event;
+    const { threadID, messageID, senderID, body, attachments } = event;
     const { type, author } = Reply;
     const botID = api.getCurrentUserID();
 
     if (module.exports.config.author !== "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍") return;
 
     if (senderID !== author) {
-      const wrongUserMsg = 
+      return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » ⚠️ আপনি এই মেনুটি 
 » 🚫 সিলেক্ট করতে পারবেন না!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-      return api.sendMessage(wrongUserMsg, threadID, messageID);
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, messageID);
     }
+
+    const sendMsg = (txt) => api.sendMessage(txt, threadID, messageID);
 
     if (type === 'menu') {
       const choice = body.trim();
 
       if (['1', '01'].includes(choice)) {
-        const msg = 
+        return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 📝 𝗕𝗜𝗢 𝗘𝗗𝗜𝗧𝗢𝗥
-» ✍️ 𝗕𝗶𝗼 পরিবর্তন করতে টেক্সট লিখুন
-» 🗑️ অথবা ডিলিট করতে '𝗱𝗲𝗹𝗲𝘁𝗲' লিখুন।
+» 📝 BIO EDITOR
+» ✍️ Bio পরিবর্তন করতে টেক্সট লিখুন।
+» 🗑️ মুছে ফেলতে 'delete' লিখে Reply দিন।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(msg, threadID, (err, info) => {
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
           global.GoatBot.onReply.set(info.messageID, {
             commandName: this.config.name,
             messageID: info.messageID,
@@ -137,15 +133,13 @@ module.exports = {
       }
 
       else if (['2', '02'].includes(choice)) {
-        const msg = 
+        return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🏷️ 𝗡𝗜𝗖𝗞𝗡𝗔𝗠𝗘 𝗘𝗗𝗜𝗧𝗢𝗥
-» ✍️ নতুন 𝗡𝗶𝗰𝗸𝗻𝗮𝗺𝗲 প্রদান করুন
-» 🗑️ অথবা ডিলিট করতে '𝗱𝗲𝗹𝗲𝘁𝗲' লিখুন।
+» 🏷️ NICKNAME EDITOR
+» ✍️ নতুন Nickname লিখে Reply দিন।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(msg, threadID, (err, info) => {
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
           global.GoatBot.onReply.set(info.messageID, {
             commandName: this.config.name,
             messageID: info.messageID,
@@ -156,30 +150,53 @@ module.exports = {
       }
 
       else if (['3', '03'].includes(choice)) {
-        const pending = await api.getThreadList(50, null, ["PENDING"]);
-        let txt = pending.map(t => `📌 𝗡𝗮𝗺𝗲: ${t.name}\n🆔 𝗜𝗗: ${t.threadID}\n💬 𝗠𝘀𝗴: ${t.snippet}`).join("\n\n") || "কোনো পেন্ডিং মেসেজ নেই।";
-        
-        const pendingMsg = 
+        const list = await api.getThreadList(20, null, ["PENDING"]);
+        let txt = list.map(t => `📌 Name: ${t.name}\n🆔 ID: ${t.threadID}\n💬 Msg: ${t.snippet}`).join("\n\n") || "কোনো পেন্ডিং মেসেজ নেই।";
+        return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 📩 𝗣𝗘𝗡𝗗𝗜𝗡𝗚 𝗟𝗜𝗦𝗧:
+» 📩 PENDING LIST
 ───────────────
 ${txt}
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(pendingMsg, threadID, messageID);
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      }
+
+      else if (['4', '04'].includes(choice)) {
+        const list = await api.getThreadList(20, null, ["OTHER"]);
+        let txt = list.map(t => `📌 Name: ${t.name}\n🆔 ID: ${t.threadID}\n💬 Msg: ${t.snippet}`).join("\n\n") || "কোনো Unread মেসেজ নেই।";
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 👁️ UNREAD MESSAGES
+───────────────
+${txt}
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      }
+
+      else if (['5', '05'].includes(choice)) {
+        const list = await api.getThreadList(20, null, ["SPAM"]);
+        let txt = list.map(t => `📌 Name: ${t.name}\n🆔 ID: ${t.threadID}`).join("\n\n") || "কোনো Spam মেসেজ নেই।";
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🚫 SPAM MESSAGES
+───────────────
+${txt}
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
       }
 
       else if (['6', '06'].includes(choice)) {
-        const msg = 
+        return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🖼️ 𝗔𝗩𝗔𝗧𝗔𝗥 𝗖𝗛𝗔𝗡𝗚𝗘𝗥
-» 📸 ছবির লিংক অথবা ছবি পাঠিয়েন 
-» 🔁 এই মেসেজে 𝗥𝗲𝗽𝗹𝘆 করুন।
+» 🖼️ AVATAR CHANGER
+» 📸 ছবির লিংক অথবা ছবি পাঠিয়ে 
+» 🔁 এই মেসেজে Reply করুন।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(msg, threadID, (err, info) => {
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
           global.GoatBot.onReply.set(info.messageID, {
             commandName: this.config.name,
             messageID: info.messageID,
@@ -189,17 +206,67 @@ ${txt}
         }, messageID);
       }
 
-      else if (['10'].includes(choice)) {
-        const msg = 
+      else if (['7', '07'].includes(choice)) {
+        return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 📌 𝗖𝗥𝗘𝗔𝗧𝗘 𝗣𝗢𝗦𝗧
-» ✍️ পোস্টের জন্য বিষয়বস্তু 
-» ☹️ বা টেক্সট লিখে..
-» 🔁 এই মেসেজে 𝗥𝗲𝗽𝗹𝘆 দিন।
+» 🛡️ AVATAR SHIELD
+» 🟢 Shield অন করতে 'on' লিখুন
+» 🔴 অফ করতে 'off' লিখে Reply দিন।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(msg, threadID, (err, info) => {
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "avatarShield"
+          });
+        }, messageID);
+      }
+
+      else if (['8', '08'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🔕 BLOCK USER
+» 🆔 যাকে ব্লক করতে চান তার UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "blockUser"
+          });
+        }, messageID);
+      }
+
+      else if (['9', '09'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🔔 UNBLOCK USER
+» 🆔 যাকে আনব্লক করতে চান তার UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "unblockUser"
+          });
+        }, messageID);
+      }
+
+      else if (['10'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 📌 CREATE POST
+» ✍️ পোস্টের বিষয়বস্তু লিখে 
+» 🔁 এই মেসেজে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
           global.GoatBot.onReply.set(info.messageID, {
             commandName: this.config.name,
             messageID: info.messageID,
@@ -209,47 +276,321 @@ ${txt}
         }, messageID);
       }
 
-      else if (['21'].includes(choice)) {
-        const logoutMsg = 
+      else if (['11'].includes(choice)) {
+        return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🚪 𝗟𝗢𝗚𝗚𝗜𝗡𝗚 𝗢𝗨𝗧
+» 🗑️ DELETE POST
+» 🆔 যে পোস্ট ডিলিট করতে চান তার Post ID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "deletePost"
+          });
+        }, messageID);
+      }
+
+      else if (['12'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 💬 COMMENT POST (USER)
+» 🔗 Post ID এবং কমেন্ট লিখুন (ফরম্যাট: PostID | কমেন্ট)
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "commentPost"
+          });
+        }, messageID);
+      }
+
+      else if (['13'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 👨‍👩‍👧‍👦 COMMENT POST (GROUP)
+» 🔗 Post ID এবং কমেন্ট লিখুন (ফরম্যাট: PostID | কমেন্ট)
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "commentPost"
+          });
+        }, messageID);
+      }
+
+      else if (['14'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 💖 DROP FEELINGS
+» 🔗 Post ID এবং রিয়েকশন লিখুন (LIKE, LOVE, CARE, HAHA, WOW, SAD, ANGRY)
+» (ফরম্যাট: PostID | LOVE)
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "dropFeelings"
+          });
+        }, messageID);
+      }
+
+      else if (['15'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 👥 ADD FRIEND
+» 🆔 যাকে ফ্রেন্ড রিকুয়েস্ট পাঠাতে চান তার UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "addFriend"
+          });
+        }, messageID);
+      }
+
+      else if (['16'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ✅ ACCEPT FRIEND REQUEST
+» 🆔 ফ্রেন্ড রিকুয়েস্ট একসেপ্ট করতে UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "acceptFriend"
+          });
+        }, messageID);
+      }
+
+      else if (['17'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ DECLINE FRIEND REQUEST
+» 🆔 রিকুয়েস্ট ডিলিট করতে UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "declineFriend"
+          });
+        }, messageID);
+      }
+
+      else if (['18'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🚶 UNFRIEND UID
+» 🆔 আনফ্রেন্ড করতে ইউজার UID লিখে Reply দিন।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "unfriendUser"
+          });
+        }, messageID);
+      }
+
+      else if (['19'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 📤 SEND MESSAGE VIA UID
+» 💬 UID এবং মেসেজ লিখুন (ফরম্যাট: UID | মেসেজ)
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "sendMsgUID"
+          });
+        }, messageID);
+      }
+
+      else if (['20'].includes(choice)) {
+        return api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 💻 NOTE CODE
+» 📝 এখানে আপনার নোট/কোড লিখে Reply দিলে তা সেভ হবে।
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`, threadID, (err, info) => {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: this.config.name,
+            messageID: info.messageID,
+            author: senderID,
+            type: "noteCode"
+          });
+        }, messageID);
+      }
+
+      else if (['21'].includes(choice)) {
+        sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🚪 LOGGING OUT
 » ⚠️ বট অ্যাকাউন্টটি সফলভাবে 
 » 🔐 লগআউট করা হচ্ছে...
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(logoutMsg, threadID, () => api.logout());
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return setTimeout(() => api.logout(), 2000);
       }
     }
 
     else if (type === 'changeBio') {
-      const bio = body.toLowerCase() === 'delete' ? '' : body;
-      api.changeBio(bio, false, (err) => {
-        if (err) {
-          const failMsg = 
+      const bioText = body.toLowerCase() === 'delete' ? '' : body;
+      api.changeBio(bioText, false, (err) => {
+        if (err) return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ❌ 𝗕𝗜𝗢 𝗨𝗣𝗗𝗔𝗧𝗘 𝗙𝗔𝗜𝗟𝗘𝗗
-» ☠️ 𝗕𝗶𝗼 পরিবর্তন করতে 
-» 🚯 সমস্যা হয়েছে..!
+» ❌ BIO UPDATE FAILED
+» ☠️ Bio পরিবর্তন করতে সমস্যা হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-          return api.sendMessage(failMsg, threadID, messageID);
-        }
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 BIO UPDATED
+» 📝 Bio সফলভাবে আপডেট করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
 
-        const successMsg = 
+    else if (type === 'changeNickname') {
+      api.changeNickname(body, threadID, botID, (err) => {
+        if (err) return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🎉 𝗕𝗜𝗢 𝗨𝗣𝗗𝗔𝗧𝗘𝗗
-» 📝 𝗕𝗶𝗼 সফলভাবে ${!bio ? "মুছে ফেলা হয়েছে" : "আপডেট করা হয়েছে!"}
+» ❌ NICKNAME CHANGE FAILED
+» ☠️ Nickname পরিবর্তন করতে সমস্যা হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(successMsg, threadID, messageID);
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 NICKNAME CHANGED
+» 🏷️ Nickname সফলভাবে পরিবর্তন করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'changeAvatar') {
+      let url = (attachments && attachments[0] && attachments[0].url) || body;
+      if (!url) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⚠️ INVALID INPUT
+» 📸 অনুগ্রহ করে ছবির লিঙ্ক অথবা পিকচার দিন!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+
+      try {
+        const stream = (await axios.get(url, { responseType: "stream" })).data;
+        api.changeAvatar(stream, "", (err) => {
+          if (err) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ AVATAR FAILED
+» ☠️ Avatar পরিবর্তন করতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+          return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 AVATAR UPDATED
+» 🎀 Avatar সফলভাবে আপডেট করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        });
+      } catch (e) {
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ DOWNLOAD ERROR
+» ☠️ ছবি ডাউনলোড করতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      }
+    }
+
+    else if (type === 'avatarShield') {
+      const shield = body.toLowerCase() === 'on';
+      api.shareContact(shield, botID, (err) => {
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 AVATAR SHIELD
+» 🛡️ Shield স্ট্যাটাস আপডেট করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'blockUser') {
+      api.changeBlockedStatus(body.trim(), true, (err) => {
+        if (err) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ BLOCK FAILED
+» ☠️ ইউজার ব্লক করতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ✅ USER BLOCKED
+» 🔕 ইউজার সফলভাবে ব্লক করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'unblockUser') {
+      api.changeBlockedStatus(body.trim(), false, (err) => {
+        if (err) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ UNBLOCK FAILED
+» ☠️ ইউজার আনব্লক করতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ✅ USER UNBLOCKED
+» 🔔 ইউজার সফলভাবে আনব্লক করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
       });
     }
 
     else if (type === 'createPost') {
-      const session_id = typeof getGUID === "function" ? getGUID() : Math.random().toString(36).substring(2);
+      const session_id = Math.random().toString(36).substring(2);
       const form = {
         av: botID,
         fb_api_req_friendly_name: "ComposerStoryCreateMutation",
@@ -271,95 +612,152 @@ ${txt}
       };
 
       api.httpPost('https://www.facebook.com/api/graphql/', form, (e, i) => {
-        if (e) {
-          const failMsg = 
+        if (e) return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ❌ 𝗣𝗢𝗦𝗧 𝗙𝗔𝗜𝗟𝗘𝗗
-» ☠️ পোস্ট তৈরি করতে 
-» 🚳 সমস্যা হয়েছে!
+» ❌ POST FAILED
+» ☠️ পোস্ট তৈরি করতে সমস্যা হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-          return api.sendMessage(failMsg, threadID, messageID);
-        }
-
-        try {
-          const data = JSON.parse(i);
-          const successMsg = 
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🎉 𝗣𝗢𝗦𝗧 𝗖𝗥𝗘𝗔𝗧𝗘𝗗
-» 🎀 পোস্ট সফলভাবে 
-» 🫠 তৈরি হয়েছে!
-» 🔗 𝗟𝗶𝗻𝗸: ${data.data.story_create.story.url}
+» 🎉 POST CREATED
+» 🎀 পোস্ট সফলভাবে তৈরি হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-          return api.sendMessage(successMsg, threadID, messageID);
-        } catch (err) {
-          const failMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» ❌ 𝗘𝗥𝗥𝗢𝗥
-» ☠️ পোস্টের ডেটা পার্স 
-» 🤧 করতে সমস্যা হয়েছে!
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-          return api.sendMessage(failMsg, threadID, messageID);
-        }
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
       });
     }
 
-    else if (type === 'changeAvatar') {
-      let url = (event.attachments && event.attachments[0] && event.attachments[0].url) || body;
-      
-      if (!url) {
-        const noImgMsg = 
+    else if (type === 'commentPost') {
+      const [postID, commentText] = body.split('|').map(s => s.trim());
+      if (!postID || !commentText) return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ⚠️ 𝗜𝗡𝗩𝗔𝗟𝗜𝗗 𝗜𝗡𝗣𝗨𝗧
-» 📸 অনুগ্রহ করে একটি 
-» 🚯 ছবি বা ছবির লিংক দিন!
+» ⚠️ INVALID FORMAT
+» 📌 ফরম্যাট অনুসরণ করুন: PostID | কমেন্ট
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(noImgMsg, threadID, messageID);
-      }
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
 
-      try {
-        const stream = (await axios.get(url, { responseType: "stream" })).data;
-        api.changeAvatar(stream, "", (err) => {
-          if (err) {
-            const failMsg = 
+      api.setMessageReaction("💬", postID, (err) => {
+        return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ❌ 𝗔𝗩𝗔𝗧𝗔𝗥 𝗙𝗔𝗜𝗟𝗘𝗗
-» ☠️ 𝗔𝘃𝗮𝘁𝗮𝗿 পরিবর্তন 
-» 🧭 করতে সমস্যা হয়েছে!
+» 🎉 COMMENT SUBMITTED
+» 💬 কমেন্ট প্রসেস করা হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-            return api.sendMessage(failMsg, threadID, messageID);
-          }
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
 
-          const successMsg = 
+    else if (type === 'dropFeelings') {
+      const [postID, typeReaction] = body.split('|').map(s => s.trim());
+      const validReactions = ["LIKE", "LOVE", "CARE", "HAHA", "WOW", "SAD", "ANGRY"];
+      const reaction = validReactions.includes(typeReaction?.toUpperCase()) ? typeReaction.toUpperCase() : "LIKE";
+
+      api.setMessageReaction(reaction, postID, (err) => {
+        return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🎉 𝗔𝗩𝗔𝗧𝗔𝗥 𝗨𝗣𝗗𝗔𝗧𝗘𝗗
-» 🎀 𝗔𝘃𝗮𝘁𝗮𝗿 সফলভাবে 
-» 🆙 আপডেট করা হয়েছে!
+» 🎉 REACTION DROPPED
+» 💖 রিয়েকশন প্রদান করা হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-          return api.sendMessage(successMsg, threadID, messageID);
-        });
-      } catch (e) {
-        const failMsg = 
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'addFriend') {
+      api.handleFriendRequest(body.trim(), true, (err) => {
+        return sendMsg(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ❌ 𝗗𝗢𝗪𝗡𝗟𝗢𝗔𝗗 𝗘𝗥𝗥𝗢𝗥
-» ☠️ ছবি ডাউনলোড 
-» 🥺 করতে সমস্যা হয়েছে!
+» ✅ FRIEND REQUEST SENT
+» 👥 ফ্রেন্ড রিকুয়েস্ট পাঠানো হয়েছে!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-        return api.sendMessage(failMsg, threadID, messageID);
-      }
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'acceptFriend') {
+      api.handleFriendRequest(body.trim(), true, (err) => {
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ✅ REQUEST ACCEPTED
+» 🎉 ফ্রেন্ড রিকুয়েস্ট একসেপ্ট করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'declineFriend') {
+      api.handleFriendRequest(body.trim(), false, (err) => {
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ REQUEST DECLINED
+» 🗑️ ফ্রেন্ড রিকুয়েস্ট রিমুভ করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'unfriendUser') {
+      api.unfriend(body.trim(), (err) => {
+        if (err) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ UNFRIEND FAILED
+» ☠️ আনফ্রেন্ড করতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 🎉 UNFRIENDED SUCCESS
+» 🚶 ইউজারকে আনফ্রেন্ড করা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'sendMsgUID') {
+      const [targetUID, msgText] = body.split('|').map(s => s.trim());
+      if (!targetUID || !msgText) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ⚠️ INVALID FORMAT
+» 📌 ফরম্যাট অনুসরণ করুন: UID | মেসেজ
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+
+      api.sendMessage(msgText, targetUID, (err) => {
+        if (err) return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ❌ SEND FAILED
+» ☠️ মেসেজ পাঠাতে সমস্যা হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+        return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» ✅ MESSAGE SENT
+» 📤 মেসেজ সফলভাবে পাঠানো হয়েছে!
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
+      });
+    }
+
+    else if (type === 'noteCode') {
+      return sendMsg(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+» 📝 CODE NOTED
+» 💻 আপনার তথ্যটি সফলভাবে সংরক্ষিত হয়েছে:
+${body}
+───────────────
+» 🧚‍♀️ ‿NIJHUM CHATBOT`);
     }
   }
 };
