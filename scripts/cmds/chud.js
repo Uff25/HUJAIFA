@@ -22,24 +22,32 @@ module.exports = {
         const timeouts = activeSessions.get(threadID);
         timeouts.forEach(clearTimeout);
         activeSessions.delete(threadID);
-        return api.sendMessage("🛑 সফলভাবে অফ করা হয়েছে!", threadID);
+        return api.sendMessage("☑️", threadID);
       } else {
-        return api.sendMessage("❌ কোনো রানিং প্রসেস খুঁজে পাওয়া যায়নি!", threadID);
+        return api.sendMessage("❌", threadID);
       }
     }
 
     var mention = Object.keys(event.mentions)[0];
     if(!mention) return api.sendMessage("👉 সিয়াম বস যাকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ__🖕🥵", threadID);
 
-    let realName = event.mentions[mention];
-    if (typeof realName === "string" && realName.startsWith("@")) {
-      realName = realName.replace("@", "");
+    let realName = "";
+    try {
+      if (userData && typeof userData.getName === "function") {
+        realName = await userData.getName(mention);
+      } else {
+        let userInfo = await api.getUserInfo(mention);
+        realName = userInfo[mention]?.name || "মাগি";
+      }
+    } catch (e) {
+      realName = "আবাল";
     }
-    
-    var arraytag = [{ id: mention, tag: realName }];
+
+    var tagText = "@" + realName;
+    var arraytag = [{ id: mention, tag: tagText }];
 
     var a = function (text) {
-      return api.sendMessage({ body: text + " " + realName, mentions: arraytag }, threadID);
+      return api.sendMessage({ body: text + " " + tagText, mentions: arraytag }, threadID);
     };
 
     if (activeSessions.has(threadID)) {
@@ -49,7 +57,7 @@ module.exports = {
     const timeouts = [];
 
     const messages = [
-      { msg: "কিরে মাদারচোত সিয়াম বস এর চুদন খাওয়ায় জন্য রেডি তো? লে চুদা খা মাঙ্গের বেটা 😂😂", time: 3000 },
+     { msg: "কিরে মাদারচোত সিয়াম বস এর চুদন খাওয়ায় জন্য রেডি তো? লে চুদা খা মাঙ্গের বেটা 😂😂", time: 3000 },
       { msg: "মাঘি চুদা শরের বাচ্চা কার লগে পঙ্গা নিতে আসছিস 🤬🤬🤬", time: 5000 },
       { msg: " চুদে গুহা ফাঁক করে দিব খানকীর পোলা 🤤", time: 7000 },
       { msg: " মাদারচোত বোকাচোদা খানকীর পোলা ", time: 9000 },
