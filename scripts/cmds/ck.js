@@ -5,7 +5,7 @@ module.exports.config = {
   name: "ck",
   version: "1.2.1",
   permission: 0,
-  credits: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+  credits: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
   prefix: true,
   description: "Reply or tag to get user info",
   category: "Media",
@@ -18,7 +18,6 @@ module.exports.config = {
   },
 };
 
-// MAIN HANDLER (FIXED STRUCTURE)
 async function handle({ api, event, args }) {
   const { threadID, messageID, senderID, type, messageReply, mentions } =
     event;
@@ -91,7 +90,6 @@ async function handle({ api, event, args }) {
   }
 }
 
-// ================= BOX INFO =================
 async function getBoxInfo(api, event, args) {
   try {
     let targetTID = args[1] || event.threadID;
@@ -130,7 +128,6 @@ async function getBoxInfo(api, event, args) {
   }
 }
 
-// ================= ADMIN INFO =================
 async function getAdminInfo(api, event) {
   let msg = `👤 𝐀𝐝𝐦𝐢𝐧: Joy Ahmed\n🔗 fb.com/100003661522127`;
   let path = __dirname + "/cache/admin.png";
@@ -153,6 +150,5 @@ async function getAdminInfo(api, event) {
     });
 }
 
-// IMPORTANT FRAMEWORK FIX (THIS IS THE KEY)
 module.exports.run = handle;
 module.exports.onStart = handle;
