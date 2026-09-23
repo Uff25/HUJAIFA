@@ -17,7 +17,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 module.exports = {
   config: {
     name: "copy",
-    aliases: ["repeat", "spamtext"],
+    aliases: ["repeat"],
     version: "2.0.0",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
