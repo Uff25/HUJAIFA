@@ -40,7 +40,7 @@ module.exports = {
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 ❌ 𝐖𝐫𝐨𝐧𝐠 𝐅𝐨𝐫𝐦𝐚𝐭!
-💡 𝐓𝐫𝐲: fbcover v1 - name - title - address - email - phone - color
+👻 𝐓𝐫𝐲: fbcover v1 - name - title - address - email - phone - color
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return api.sendMessage(
