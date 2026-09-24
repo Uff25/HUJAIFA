@@ -28,13 +28,13 @@ module.exports = {
     },
     bn: {
       noReply: "───────────────\n\n» ❌ একটা মেসেজে 𝗿𝗲𝗽𝗹𝘆 করে কমান্ড দিন!\n\n───────────────\n\n» 👑 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
-      error: "───────────────\n\n» ❌ তৈরি করতে সমস্যা হয়েছে।\n\n───────────────\n\n» 👑 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍"
+      error: "───────────────\n\n» ✅ তৈরি করতে সমস্যা হয়েছে।\n\n───────────────\n\n» 👑 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍"
     }
   },
 
   onStart: async function ({ event, message, getLang, usersData, args, role }) {
     try {
-      // ডায়নামিক এডমিন পারমিশন চেক (config.json ফাইল থেকে সরাসরি পারমিশন ভ্যালিডেশন)
+      
       const configPath = process.cwd() + "/config.json";
       let adminIDs = [];
       if (fs.existsSync(configPath)) {
