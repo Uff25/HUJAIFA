@@ -1,6 +1,6 @@
 module.exports.config = {
  name: "daily",
- aliases: ["claim"],
+ aliases: ["💸"],
  version: "1.0",
  author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
  countDown: 5,
