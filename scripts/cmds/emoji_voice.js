@@ -7,7 +7,7 @@ module.exports = {
   config: {
     name: "emoji_voice",
     version: "2.0.2",
-    author: "亗 SIYAM HASAN 亗",
+    author: "SIYAM HASAN",
     countDown: 5,
     role: 0,
     shortDescription: "Sends a cute girl's voice when an emoji is used 😍",
@@ -72,7 +72,7 @@ module.exports = {
       "সিয়াম ভাই": ["https://files.catbox.moe/9w6moo.mp3"],
       "সিয়াম": ["https://files.catbox.moe/9w6moo.mp3"],
       "সিয়া.ম": ["https://files.catbox.moe/9w6moo.mp3"],
-      "@ট্ঁপ্ঁ গা্ঁলি্ঁ বা্ঁজ্ঁ হৃ্ঁদ্ঁয়্ঁ": ["https://files.catbox.moe/cciqsq.mp4"],
+      "@পি্ঁচ্চি্ঁ উ্ঁদ্ঁয়্ঁ তা্ঁহ্ঁ": ["https://files.catbox.moe/cciqsq.mp4"],
       "@everyone": ["https://files.catbox.moe/stcply.mp3"],
       "নিঝুম": ["https://files.catbox.moe/3u6shs.mp3"],
       "👍": ["https://files.catbox.moe/4ojlc3.mp4"]
@@ -108,7 +108,7 @@ module.exports = {
 
     fs.ensureDirSync(cacheDir);
 
-    // সকল অডিও/ভিডিও লিঙ্ককে ডাইরেক্ট অডিও (.mp3) হিসেবে সংরক্ষণ করার জন্য এক্সটেনশন ফিক্স করা হলো
+    // 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
     const filePath = path.join(
       cacheDir,
       `${encodeURIComponent(triggerKey)}_${Date.now()}_${Math.floor(Math.random() * 1000)}.mp3`
