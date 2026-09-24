@@ -16,7 +16,7 @@ module.exports = {
 
   onStart: async function ({ api, event, args }) {
 
-    // ===== AUTHOR LOCK SYSTEM =====
+    
     const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
     if (module.exports.config.author !== LOCKED_AUTHOR) {
@@ -36,7 +36,7 @@ module.exports = {
         event.messageID
       );
     }
-    // ==============================
+    //𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
 
     const url = args[0];
 
