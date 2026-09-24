@@ -35,7 +35,7 @@ module.exports = {
 
 	langs: {
 		vi: {
-			missingFileName: "⚠️ | Vui lòng nhập vào tên lệnh bạn muốn reload",
+			missingFileName: "🐲 | Vui lòng nhập vào tên lệnh bạn muốn reload",
 			loaded: "✅ | Đã load event command \"%1\" thành công",
 			loadedError: "❌ | Load event command \"%1\" thất bại với lỗi\n%2: %3",
 			loadedSuccess: "✅ | Đã load thành công \"%1\" event command",
