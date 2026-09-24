@@ -70,7 +70,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
     const config = global.GoatBot.config;
     const { adminBot, hideNotiMessage } = config;
 
-    // check if user banned
     const infoBannedUser = userData.banned;
     if (infoBannedUser.status == true) {
         const { reason, date } = infoBannedUser;
@@ -79,7 +78,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
         return true;
     }
 
-    // check if only admin bot
     if (
         config.adminOnly.enable == true
         && !adminBot.includes(senderID)
@@ -90,7 +88,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
         return true;
     }
 
-    // ========== Check Thread ========== //
     if (isGroup == true) {
         if (
             threadData.data.onlyAdminBox === true
@@ -102,7 +99,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
             return true;
         }
 
-        // check if thread banned
         const infoBannedThread = threadData.banned;
         if (infoBannedThread.status == true) {
             const { reason, date } = infoBannedThread;
@@ -178,21 +174,21 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             }
         }
 
-        // ==================== CUSTOM GROUP BAN CHECK ==================== //
         const isBotAdmin = (config.adminBot || []).includes(senderID);
         const isGroupBannedCustom = isGroup && threadData && threadData.data && threadData.data.banned === true;
 
         if (isGroupBannedCustom && !isBotAdmin) {
             const userKey = `${threadID}_${senderID}`;
 
-            // ইউজারের জন্য প্রথমবার নোটিশ পাঠানো হবে
             if (!global.notifiedUsersInBannedGroup.has(userKey)) {
                 global.notifiedUsersInBannedGroup.add(userKey);
 
-                const noticeText = "━━━━━━━━━━━━━━━
+                const groupName = threadData.threadName || "Group";
+
+                const noticeText = `━━━━━━━━━━━━━━━
 🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
 ━━━━━━━━━━━━━━━
-👥 𝐆𝐫𝐨𝐮𝐩 :
+👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
 
 🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
 ❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
@@ -205,15 +201,12 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
 📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: wwww/68
 ━━━━━━━━━━━━━━━
 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-━━━━━━━━━━━━━━━
-    ";
+━━━━━━━━━━━━━━━`;
                 api.sendMessage(noticeText, threadID);
             }
 
-            // গ্রুপ ব্যান থাকলে আর কোনো রেসপন্স বা ইভেন্ট এক্সিকিউট হবে না
             return;
         }
-        // ================================================================ //
 
         if (typeof threadData.settings.hideNotiMessage == "object")
             hideNotiMessage = threadData.settings.hideNotiMessage;
