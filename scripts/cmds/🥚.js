@@ -25,7 +25,7 @@ const fetchAvatar = async (uid) => {
 module.exports = {
   config: {
     name: 'dim',
-    aliases: ['anda'],
+    aliases: ['🥚'],
     version: '2.1',
     author: '𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍', // নাম পরিবর্তন করলে বট বন্ধ হয়ে যাবে
     role: 0,
