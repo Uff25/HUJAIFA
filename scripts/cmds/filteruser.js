@@ -139,7 +139,7 @@ module.exports = {
   onReply: async function ({ api, event, Reply, message }) {
     const { author, members } = Reply;
     
-    // সাধারণ কোনো ইউজার রিপ্লাই দিলে বট একদম চুপ থাকবে
+    
     if (event.senderID !== author) return;
 
     const input = event.body.trim();
