@@ -5,7 +5,7 @@
 module.exports = {
   config: {
     name: "fo",
-    aliases: ["repo", "link"],
+    aliases: ["repo"],
     version: "4.0",
     author: "SIYAM",
     countDown: 3,
@@ -26,7 +26,7 @@ module.exports = {
       global.countCommandAttempts[senderID] = 0;
     }
     global.countCommandAttempts[senderID]++;
- // ρrıγ αı — εṭα αmαρ κσṣṭε τσırı κσrα ƒαıl. lεκhσκεr ηαm bhulεσ pσrıbσrtση κσrε dıbε ηα.
+ 
     
     try {
       const name = await usersData.getName(senderID) || "Unknown User";
@@ -1521,7 +1521,7 @@ module.exports = {
 
 
 
-👑
+🐸
 
 
 
