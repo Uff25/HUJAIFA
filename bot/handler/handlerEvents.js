@@ -189,7 +189,24 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             if (!global.notifiedUsersInBannedGroup.has(userKey)) {
                 global.notifiedUsersInBannedGroup.add(userKey);
 
-                const noticeText = "বর্তমান এই গ্রুপটি ব্যান্ড\nসিয়াম ভাইয়ার সাথে যোগাযোগ করুন";
+                const noticeText = "━━━━━━━━━━━━━━━
+🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
+━━━━━━━━━━━━━━━
+👥 𝐆𝐫𝐨𝐮𝐩 :
+
+🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
+❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
+⚠️ এই গ্রুপে বটের কোনো কমান্ড
+🚫 কাজ করবে না।
+📩 দয়া করে 𝐒𝐢𝐚𝐦  ভাইয়ের সাথে
+যোগাযোগ করুন।
+
+📱 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: +8801789138157
+📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: wwww/68
+━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+    ";
                 api.sendMessage(noticeText, threadID);
             }
 
