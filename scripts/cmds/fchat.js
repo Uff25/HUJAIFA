@@ -12,7 +12,7 @@ module.exports = {
     version: "2.2.0",
     author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
-    role: 0,
+    role: 2,
     description: {
       en: "Fake Messenger chat screenshot",
       bn: "ফেক মেসেঞ্জার চ্যাট স্ক্রিনশট"
