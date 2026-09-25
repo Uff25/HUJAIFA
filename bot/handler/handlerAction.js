@@ -1,130 +1,117 @@
 const createFuncMessage = global.utils.message;
 const handlerCheckDB = require("./handlerCheckData.js");
 
-function isBotAdmin(senderID) {
-    const adminBot = global.GoatBot.config.adminBot || [];
-    return adminBot.includes(senderID);
-}
-
 module.exports = (
-  api,
-  threadModel,
-  userModel,
-  dashBoardModel,
-  globalModel,
-  usersData,
-  threadsData,
-  dashBoardData,
-  globalData
+  api,
+  threadModel,
+  userModel,
+  dashBoardModel,
+  globalModel,
+  usersData,
+  threadsData,
+  dashBoardData,
+  globalData
 ) => {
-  const handlerEvents = require(
-    process.env.NODE_ENV == "development"
-      ? "./handlerEvents.dev.js"
-      : "./handlerEvents.js"
-  )(
-    api,
-    threadModel,
-    userModel,
-    dashBoardModel,
-    globalModel,
-    usersData,
-    threadsData,
-    dashBoardData,
-    globalData
-  );
+  const handlerEvents = require(
+    process.env.NODE_ENV == "development"
+      ? "./handlerEvents.dev.js"
+      : "./handlerEvents.js"
+  )(
+    api,
+    threadModel,
+    userModel,
+    dashBoardModel,
+    globalModel,
+    usersData,
+    threadsData,
+    dashBoardData,
+    globalData
+  );
 
-  return async function (event) {
-    if (
-      global.GoatBot.config.antiInbox == true &&
-      (event.senderID == event.threadID ||
-        event.userID == event.senderID ||
-        event.isGroup == false) &&
-      (event.senderID || event.userID || event.isGroup == false)
-    )
-      return;
+  return async function (event) {
+    // ✅ Anti-Inbox Protection
+    if (
+      global.GoatBot.config.antiInbox == true &&
+      (event.senderID == event.threadID ||
+        event.userID == event.senderID ||
+        event.isGroup == false) &&
+      (event.senderID || event.userID || event.isGroup == false)
+    )
+      return;
 
-    const message = createFuncMessage(api, event);
-    await handlerCheckDB(usersData, threadsData, event);
+    const message = createFuncMessage(api, event);
+    await handlerCheckDB(usersData, threadsData, event);
 
-    if (event.threadID) {
-      const threadData = await threadsData.get(event.threadID);
-      const isBanned = threadData?.data?.banned?.status === true;
-      const senderID = event.senderID || event.userID;
+    const handlerChat = await handlerEvents(event, message);
+    if (!handlerChat) return;
 
-      if (isBanned && !isBotAdmin(senderID)) {
-        return;
-      }
-    }
+    const {
+      onAnyEvent,
+      onFirstChat,
+      onStart,
+      onChat,
+      onReply,
+      onEvent,
+      handlerEvent,
+      onReaction,
+      typ,
+      presence,
+      read_receipt
+    } = handlerChat;
 
-    const handlerChat = await handlerEvents(event, message);
-    if (!handlerChat) return;
+    onAnyEvent();
 
-    const {
-      onAnyEvent,
-      onFirstChat,
-      onStart,
-      onChat,
-      onReply,
-      onEvent,
-      handlerEvent,
-      onReaction,
-      typ,
-      presence,
-      read_receipt
-    } = handlerChat;
+    switch (event.type) {
+      case "message":
+      case "message_reply":
+      case "message_unsend":
+        onFirstChat();
+        onChat();
+        onStart();
+        onReply();
+        break;
 
-    await onAnyEvent();
+      case "event":
+        handlerEvent();
+        onEvent();
+        break;
 
-    switch (event.type) {
-      case "message":
-      case "message_reply":
-      case "message_unsend":
-        onFirstChat();
-        onChat();
-        onStart();
-        onReply();
-        break;
+      case "message_reaction":
+        onReaction();
 
-      case "event":
-        handlerEvent();
-        onEvent();
-        break;
+        // 💣 React-Unsend System
+        try {
+          const cfg = global.GoatBot.config.reactUnsend || {};
+          const adminIDs = global.GoatBot.config.adminBot || [];
+          const isAdmin = adminIDs.includes(event.userID || event.senderID);
 
-      case "message_reaction":
-        onReaction();
+          if (
+            cfg.enable &&
+            cfg.emojis?.includes(event.reaction) &&
+            (!cfg.onlyAdmin || isAdmin)
+          ) {
+            await api.unsendMessage(event.messageID);
+          }
+        } catch (err) {
+          console.error("❌ React-Unsend Error:", err);
+        }
 
-        try {
-          const cfg = global.GoatBot.config.reactUnsend || {};
-          const adminIDs = global.GoatBot.config.adminBot || [];
-          const isAdmin = adminIDs.includes(event.userID || event.senderID);
+        break;
 
-          if (
-            cfg.enable &&
-            cfg.emojis?.includes(event.reaction) &&
-            (!cfg.onlyAdmin || isAdmin)
-          ) {
-            await api.unsendMessage(event.messageID);
-          }
-        } catch (err) {
-          console.error("❌ React-Unsend Error:", err);
-        }
+      case "typ":
+        typ();
+        break;
 
-        break;
+      case "presence":
+        presence();
+        break;
 
-      case "typ":
-        typ();
-        break;
+      case "read_receipt":
+        read_receipt();
+        break;
 
-      case "presence":
-        presence();
-        break;
-
-      case "read_receipt":
-        read_receipt();
-        break;
-
-      default:
-        break;
-    }
-  };
+      default:
+        break;
+    }
+  };
 };
