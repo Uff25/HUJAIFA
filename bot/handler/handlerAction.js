@@ -1,6 +1,11 @@
 const createFuncMessage = global.utils.message;
 const handlerCheckDB = require("./handlerCheckData.js");
 
+function isBotAdmin(senderID) {
+    const adminBot = global.GoatBot.config.adminBot || [];
+    return adminBot.includes(senderID);
+}
+
 module.exports = (
   api,
   threadModel,
@@ -29,7 +34,6 @@ module.exports = (
   );
 
   return async function (event) {
-    // ✅ Anti-Inbox Protection
     if (
       global.GoatBot.config.antiInbox == true &&
       (event.senderID == event.threadID ||
@@ -41,6 +45,16 @@ module.exports = (
 
     const message = createFuncMessage(api, event);
     await handlerCheckDB(usersData, threadsData, event);
+
+    if (event.threadID) {
+      const threadData = await threadsData.get(event.threadID);
+      const isBanned = threadData?.data?.banned?.status === true;
+      const senderID = event.senderID || event.userID;
+
+      if (isBanned && !isBotAdmin(senderID)) {
+        return;
+      }
+    }
 
     const handlerChat = await handlerEvents(event, message);
     if (!handlerChat) return;
@@ -59,7 +73,7 @@ module.exports = (
       read_receipt
     } = handlerChat;
 
-    onAnyEvent();
+    await onAnyEvent();
 
     switch (event.type) {
       case "message":
@@ -79,7 +93,6 @@ module.exports = (
       case "message_reaction":
         onReaction();
 
-        // 💣 React-Unsend System
         try {
           const cfg = global.GoatBot.config.reactUnsend || {};
           const adminIDs = global.GoatBot.config.adminBot || [];
