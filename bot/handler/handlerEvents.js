@@ -1,5 +1,6 @@
 const fs = require("fs-extra");
 const nullAndUndefined = [undefined, null];
+const userBanNoticeCooldown = new Map();
 
 function getType(obj) {
     return Object.prototype.toString.call(obj).slice(8, -1);
@@ -61,21 +62,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
         return true;
     }
 
-    if (isGroup == true && threadData) {
-        const infoBannedThread = threadData.data?.banned || threadData.banned;
-        if (infoBannedThread && infoBannedThread.status == true) {
-            return true;
-        }
-
-        if (
-            threadData.data?.onlyAdminBox === true
-            && !threadData.adminIDs?.includes(senderID)
-            && !(threadData.data?.ignoreCommanToOnlyAdminBox || []).includes(commandName)
-        ) {
-            return true;
-        }
-    }
-
     if (
         config.adminOnly?.enable == true
         && !adminBot.includes(senderID)
@@ -85,6 +71,43 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
     }
 
     return false;
+}
+
+function sendBanNoticeOnly(api, message, threadID, senderID, threadData) {
+    const key = `${threadID}_${senderID}`;
+    const now = Date.now();
+    const lastTime = userBanNoticeCooldown.get(key) || 0;
+
+    if (now - lastTime < 30000) {
+        return;
+    }
+
+    userBanNoticeCooldown.set(key, now);
+
+    const groupName = threadData?.threadInfo?.threadName || "This Group";
+    const banNoticeText = `🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
+━━━━━━━━━━━━━━━
+👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
+
+🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
+❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
+⚠️ বটের কোনো অটো-রিপ্লাই বা কমান্ড
+🚫 কাজ করবে না।
+📩 𝐒𝐈𝐘𝐀𝐌-👑 ভাই এর সাথে যোগাযোগ করুন।
+
+📱 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: +8801789138157
+📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: 
+https://www.facebook.com/profile.php?id=61591371186179
+━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
+
+    message.reply(banNoticeText, (err, info) => {
+        if (!err && info && info.messageID) {
+            setTimeout(() => {
+                api.unsendMessage(info.messageID).catch(() => {});
+            }, 35000);
+        }
+    });
 }
 
 function createGetText2(langCode, pathCustomLang, prefix, command) {
@@ -112,7 +135,6 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
         const { utils, client, GoatBot } = global;
         const { getPrefix, removeHomeDir, log, getTime } = utils;
         const { config, configCommands: { envGlobal, envCommands, envEvents } } = GoatBot;
-        const { autoRefreshThreadInfoFirstTime } = config.database;
 
         const { body, messageID, threadID, isGroup } = event;
 
@@ -138,6 +160,7 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
         const isBotAdminUser = config.adminBot?.includes(senderID);
 
         if (isBannedGroup && !isBotAdminUser) {
+            sendBanNoticeOnly(api, message, threadID, senderID, threadData);
             return;
         }
 
@@ -209,8 +232,6 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
                     return;
             }
 
-            const time = getTime("DD/MM/YYYY HH:mm:ss");
-            isUserCallCommand = true;
             try {
                 createMessageSyntaxError(commandName);
                 const getText2 = createGetText2(langCode, `${process.cwd()}/languages/cmds/${langCode}.js`, prefix, command);
@@ -406,26 +427,15 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             }
         }
 
-        async function onFirstChat() {
-            if (isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, "", message, langCode))
-                return;
-            // First chat logic
-        }
-
-        async function handlerEvent() {
-            if (isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, "", message, langCode))
-                return;
-        }
-
         return {
             onAnyEvent,
-            onFirstChat,
+            onFirstChat: async () => {},
             onChat,
             onStart,
             onReaction,
             onReply,
             onEvent,
-            handlerEvent,
+            handlerEvent: async () => {},
             presence: async () => {},
             read_receipt: async () => {},
             typ: async () => {}
