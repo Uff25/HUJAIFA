@@ -1,6 +1,9 @@
 const fs = require("fs-extra");
 const nullAndUndefined = [undefined, null];
-const userBanNoticeCooldown = new Map();
+
+// Trackers
+const groupBanNoticeCooldown = new Map();
+const userBanNoticeTracker = new Map();
 
 function getType(obj) {
     return Object.prototype.toString.call(obj).slice(8, -1);
@@ -50,6 +53,93 @@ function getRoleConfig(utils, command, isGroup, threadData, commandName) {
     return roleConfig;
 }
 
+// 1. Group Ban Notice Handler
+function handleGroupBanNotice(api, message, threadID, senderID, threadData) {
+    const key = `${threadID}_${senderID}`;
+    const now = Date.now();
+    const lastTime = groupBanNoticeCooldown.get(key) || 0;
+
+    if (now - lastTime < 30000) {
+        return;
+    }
+
+    groupBanNoticeCooldown.set(key, now);
+
+    const groupName = threadData?.threadInfo?.threadName || "This Group";
+    const groupBanNoticeText = `🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
+━━━━━━━━━━━━━━━
+👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
+
+🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
+❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
+⚠️ বটের কোনো অটো-রিপ্লাই বা কমান্ড
+🚫 কাজ করবে না।
+📩 সিয়াম ভাই এর সাথে যোগাযোগ করুন।
+
+📱 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: +8801789138157
+📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: 
+https://www.facebook.com/profile.php?id=61591371186179
+━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
+
+    message.reply(groupBanNoticeText, (err, info) => {
+        if (!err && info && info.messageID) {
+            setTimeout(() => {
+                api.unsendMessage(info.messageID).catch(() => {});
+            }, 35000);
+        }
+    });
+}
+
+// 2. User Ban Notice Handler
+function handleUserBanNotice(api, message, senderID, userData) {
+    const now = Date.now();
+    let tracker = userBanNoticeTracker.get(senderID) || { count: 0, lastNoticeTime: 0 };
+
+    if (tracker.count >= 3) {
+        return; 
+    }
+
+    if (now - tracker.lastNoticeTime < 180000) {
+        return; 
+    }
+
+    tracker.count += 1;
+    tracker.lastNoticeTime = now;
+    userBanNoticeTracker.set(senderID, tracker);
+
+    const name = userData?.name || "Unknown User";
+    const reason = userData?.banned?.reason || "No reason specified";
+    const timeOnly = userData?.banned?.timeOnly || "Unknown";
+    const dateOnly = userData?.banned?.dateOnly || "Unknown";
+
+    const userBanNoticeMsg = `
+━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+🆔 𝐁𝐀𝐍-𝐍𝐎𝐓𝐈𝐂𝐄
+━━━━━━━━━━━━━━━
+» ❌ তুই আবাল তাই তোকে 
+» 🌝 ব্যান করে রাখছি!
+» 👤 𝐍𝐚𝐦𝐞: ${name}
+» 🆔 𝐔𝐈𝐃: ${senderID}
+» 📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${reason}
+» ⏰ 𝐓𝐢𝐦𝐞: ${timeOnly}
+» 📅 𝐃𝐚𝐭𝐞: ${dateOnly}
+━━━━━━━━━━━━━━━
+⚠️ (Warning Notice: ${tracker.count}/3)
+━━━━━━━━━━━━━━━
+🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓`;
+
+    message.reply(userBanNoticeMsg, (err, info) => {
+        if (!err && info && info.messageID) {
+            setTimeout(() => {
+                api.unsendMessage(info.messageID).catch(() => {});
+            }, 180000);
+        }
+    });
+}
+
 function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, commandName, message, lang) {
     const config = global.GoatBot.config;
     const { adminBot } = config;
@@ -73,43 +163,6 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
     return false;
 }
 
-function sendBanNoticeOnly(api, message, threadID, senderID, threadData) {
-    const key = `${threadID}_${senderID}`;
-    const now = Date.now();
-    const lastTime = userBanNoticeCooldown.get(key) || 0;
-
-    if (now - lastTime < 30000) {
-        return;
-    }
-
-    userBanNoticeCooldown.set(key, now);
-
-    const groupName = threadData?.threadInfo?.threadName || "This Group";
-    const banNoticeText = `🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
-━━━━━━━━━━━━━━━
-👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
-
-🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
-❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
-⚠️ বটের কোনো অটো-রিপ্লাই বা কমান্ড
-🚫 কাজ করবে না।
-📩 𝐒𝐈𝐘𝐀𝐌-👑 ভাই এর সাথে যোগাযোগ করুন।
-
-📱 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: +8801789138157
-📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: 
-https://www.facebook.com/profile.php?id=61591371186179
-━━━━━━━━━━━━━━━
-👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
-
-    message.reply(banNoticeText, (err, info) => {
-        if (!err && info && info.messageID) {
-            setTimeout(() => {
-                api.unsendMessage(info.messageID).catch(() => {});
-            }, 35000);
-        }
-    });
-}
-
 function createGetText2(langCode, pathCustomLang, prefix, command) {
     const commandType = command.config.countDown ? "command" : "command event";
     const commandName = command.config.name;
@@ -130,6 +183,8 @@ function createGetText2(langCode, pathCustomLang, prefix, command) {
 }
 
 module.exports = function (api, threadModel, userModel, dashBoardModel, globalModel, usersData, threadsData, dashBoardData, globalData) {
+    global.resetUserBanNoticeTracker = (uid) => userBanNoticeTracker.delete(uid);
+
     return async function (event, message) {
 
         const { utils, client, GoatBot } = global;
@@ -156,11 +211,19 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             global.db.receivedTheFirstMessage[threadID] = true;
         }
 
-        const isBannedGroup = isGroup && (threadData?.data?.banned?.status === true || threadData?.banned?.status === true);
         const isBotAdminUser = config.adminBot?.includes(senderID);
+        const isBannedGroup = isGroup && (threadData?.data?.banned?.status === true || threadData?.banned?.status === true);
+        const isUserBanned = userData && userData.banned && userData.banned.status === true;
 
+        // Group Ban Notice Check
         if (isBannedGroup && !isBotAdminUser) {
-            sendBanNoticeOnly(api, message, threadID, senderID, threadData);
+            handleGroupBanNotice(api, message, threadID, senderID, threadData);
+            return;
+        }
+
+        // User Ban Notice Check
+        if (isUserBanned && !isBotAdminUser) {
+            handleUserBanNotice(api, message, senderID, userData);
             return;
         }
 
