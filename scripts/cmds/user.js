@@ -1,7 +1,7 @@
 const { getTime } = global.utils;
 
 const bannedWarningData = new Map();
-const userCommandCount = new Map();
+const userCommandTracker = new Map();
 
 function isBotAdmin(senderID) {
     const adminBot = global.GoatBot.config.adminBot || [];
@@ -11,7 +11,7 @@ function isBotAdmin(senderID) {
 module.exports = {
     config: {
         name: "user",
-        version: "2.1",
+        version: "2.2",
         author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
         countDown: 5,
         role: 0,
@@ -158,18 +158,21 @@ module.exports = {
                     );
                 }
 
-                const time = getTime("DD/MM/YYYY HH:mm:ss");
+                const time = getTime("HH:mm:ss");
+                const date = getTime("DD/MM/YYYY");
 
                 await usersData.set(uid, {
                     banned: {
                         status: true,
                         reason,
-                        date: time
+                        date: `${date} - ${time}`,
+                        timeOnly: time,
+                        dateOnly: date
                     }
                 });
 
                 bannedWarningData.delete(uid);
-                userCommandCount.delete(uid);
+                userCommandTracker.delete(uid);
 
                 const banSuccessMsg = `
 ━━━━━━━━━━━━━━━
@@ -183,7 +186,8 @@ module.exports = {
 » 👤 𝐍𝐚𝐦𝐞: ${name}
 » 🆔 𝐔𝐈𝐃: ${uid}
 » 📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${reason}
-» ⏰ 𝐃𝐚𝐭𝐞: ${time}
+» ⏰ 𝐓𝐢𝐦𝐞: ${time}
+» 📅 𝐃𝐚𝐭𝐞: ${date}
 ━━━━━━━━━━━━━━━
 🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
 ━━━━━━━━━━━━━━━`;
@@ -243,12 +247,14 @@ module.exports = {
                     banned: {
                         status: false,
                         reason: null,
-                        date: null
+                        date: null,
+                        timeOnly: null,
+                        dateOnly: null
                     }
                 });
 
                 bannedWarningData.delete(uid);
-                userCommandCount.delete(uid);
+                userCommandTracker.delete(uid);
 
                 const unbanSuccessMsg = `
 ━━━━━━━━━━━━━━━
@@ -299,11 +305,15 @@ module.exports = {
                 let listText = "";
 
                 bannedUsers.forEach((user, index) => {
+                    const timeOnly = user.banned.timeOnly || (user.banned.date ? user.banned.date.split(" ")[1] : "Unknown");
+                    const dateOnly = user.banned.dateOnly || (user.banned.date ? user.banned.date.split(" ")[0] : "Unknown");
+
                     listText += `
 [ ${index + 1} ] 👤 𝐍𝐚𝐦𝐞: ${user.name || "Unknown"}
      🆔 𝐔𝐈𝐃: ${user.userID}
      📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${user.banned.reason || "No reason"}
-     ⏰ 𝐃𝐚𝐭𝐞: ${user.banned.date || "Unknown"}
+     ⏰ 𝐓𝐢𝐦𝐞: ${timeOnly}
+     📅 𝐃𝐚𝐭𝐞: ${dateOnly}
 `;
                 });
 
@@ -350,8 +360,7 @@ ${listText}
         event,
         usersData,
         message,
-        prefix,
-        getLang
+        prefix
     }) {
         try {
             if (!event || !event.senderID || !event.body) return;
@@ -359,12 +368,10 @@ ${listText}
             const uid = event.senderID;
             const currentPrefix = prefix || global.GoatBot.config.prefix || "/";
 
-            // শুধুমাত্র বটের প্রিফিক্স দিয়ে শুরু হওয়া কমান্ডগুলোর উপর সিস্টেমটি কার্যকর হবে
             if (!event.body.startsWith(currentPrefix)) return;
 
             const userData = await usersData.get(uid);
 
-            // ইউজার ব্যানড থাকলে অরিজিনাল মেসেজ শো করবে এবং সর্বোচ্চ ৩ বার ওয়ার্নিং পাঠাবে
             if (userData && userData.banned && userData.banned.status === true) {
                 let warningCount = bannedWarningData.get(uid) || 0;
 
@@ -374,39 +381,66 @@ ${listText}
 
                     const name = userData.name || "Unknown";
                     const reason = userData.banned.reason || "No reason";
-                    const date = userData.banned.date || "Unknown";
+                    const timeOnly = userData.banned.timeOnly || "Unknown";
+                    const dateOnly = userData.banned.dateOnly || "Unknown";
 
-                    const defaultBanMsg = getLang("userHasBanned", uid, name, reason, date);
+                    const defaultBanMsg = `
+━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+📸 𝐁𝐨𝐭 𝐒𝐲𝐬𝐭𝐞𝐦 𝐍𝐨𝐭𝐢𝐜𝐞
+👤 𝐁𝐚𝐧𝐧𝐞𝐝 𝐔𝐬𝐞𝐫
+🆔 𝐁𝐀𝐍-𝐍𝐎𝐓𝐈𝐂𝐄
+━━━━━━━━━━━━━━━
+» ❌ আপনি সিস্টেমে ব্যানড আছেন!
+» 👤 𝐍𝐚𝐦𝐞: ${name}
+» 🆔 𝐔𝐈𝐃: ${uid}
+» 📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${reason}
+» ⏰ 𝐓𝐢𝐦𝐞: ${timeOnly}
+» 📅 𝐃𝐚𝐭𝐞: ${dateOnly}
+━━━━━━━━━━━━━━━
+🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
+━━━━━━━━━━━━━━━`;
 
                     return message.reply(`${defaultBanMsg}\n\n⚠️ (Warning Notice: ${warningCount}/3)`);
                 } else {
-                    // ৩ বার পার হয়ে গেলে পুরো সাইলেন্ট (কোনো নোটিশ যাবে না)
                     return;
                 }
             }
 
-            // বট এডমিন স্পাম করলেও ব্যান হবে না
             if (isBotAdmin(uid)) return;
 
-            // সাধারণ ইউজারদের কমান্ড ইউসেজ ট্র্যাকিং (১০ বার ব্যবহারে অটো-ব্যান)
-            let count = userCommandCount.get(uid) || 0;
-            count += 1;
-            userCommandCount.set(uid, count);
+            const now = Date.now();
+            let tracker = userCommandTracker.get(uid) || { timestamps: [], count: 0 };
 
-            if (count >= 10) {
-                const time = getTime("DD/MM/YYYY HH:mm:ss");
+            tracker.timestamps = tracker.timestamps.filter(timestamp => now - timestamp < 10000);
+            tracker.timestamps.push(now);
+            tracker.count += 1;
+
+            userCommandTracker.set(uid, tracker);
+
+            const isFastSpam = tracker.timestamps.length >= 5;
+            const isTotalSpam = tracker.count >= 12;
+
+            if (isFastSpam || isTotalSpam) {
+                const time = getTime("HH:mm:ss");
+                const date = getTime("DD/MM/YYYY");
                 const name = userData ? (userData.name || "Unknown") : "Unknown";
-                const reason = "🙄স্পাম করার কারণে তোকে ব্যান করা হলো 😴🌚";
+                const reason = isFastSpam 
+                    ? "🙄 খুব দ্রুত কমান্ড ব্যবহার করে স্প্যাম করার কারণে অটো ব্যান 😴🌚"
+                    : "🙄 অতিরিক্ত স্পাম করার কারণে অটো ব্যান 😴🌚";
 
                 await usersData.set(uid, {
                     banned: {
                         status: true,
                         reason: reason,
-                        date: time
+                        date: `${date} - ${time}`,
+                        timeOnly: time,
+                        dateOnly: date
                     }
                 });
 
-                userCommandCount.delete(uid);
+                userCommandTracker.delete(uid);
                 bannedWarningData.set(uid, 1);
 
                 const autoBanNotice = `
@@ -417,12 +451,13 @@ ${listText}
 👤 𝐒𝐩𝐚𝐦 𝐏𝐫𝐨𝐭𝐞𝐜𝐭𝐢𝐨𝐧
 🆔 𝐀𝐔𝐓𝐎-𝐁𝐀𝐍𝐍𝐄𝐃
 ━━━━━━━━━━━━━━━
-» 🚫 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐮𝐭𝐨-𝐁𝐚𝐧𝐧𝐞d!
+» 🚫 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐀𝐮𝐭𝐨-𝐁𝐚𝐧𝐧𝐞𝐝!
 » 👤 𝐍𝐚𝐦𝐞: ${name}
 » 🆔 𝐔𝐈𝐃: ${uid}
 » 📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${reason}
-» ⏰ 𝐃𝐚𝐭𝐞: ${time}
-» ⚠️ তুই স্পাম করতেছিস 
+» ⏰ 𝐓𝐢𝐦𝐞: ${time}
+» 📅 𝐃𝐚𝐭𝐞: ${date}
+» ⚠️ হাই স্প্যামিং সনাক্ত হয়েছে
 » (Warning: 1/3)
 ━━━━━━━━━━━━━━━
 🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
@@ -439,15 +474,20 @@ ${listText}
         event,
         api,
         handleReply,
+        Reply,
+        onReply,
         usersData,
         message
     }) {
-        if (event.senderID !== handleReply.author) return;
+        const replyData = handleReply || Reply || onReply;
+        if (!replyData) return;
+
+        if (event.senderID !== replyData.author) return;
 
         const input = (event.body || "").trim().split(/\s+/);
-        const bannedUsers = handleReply.bannedUsers || [];
+        const bannedUsers = replyData.bannedUsers || [];
 
-        let successCount = 0;
+        let unbannedUserNames = [];
         const failedNames = [];
 
         for (const numStr of input) {
@@ -461,18 +501,24 @@ ${listText}
                     banned: {
                         status: false,
                         reason: null,
-                        date: null
+                        date: null,
+                        timeOnly: null,
+                        dateOnly: null
                     }
                 });
 
                 bannedWarningData.delete(targetUser.userID);
-                userCommandCount.delete(targetUser.userID);
+                userCommandTracker.delete(targetUser.userID);
 
-                successCount++;
+                unbannedUserNames.push(targetUser.name || "Unknown User");
             } else {
                 failedNames.push(numStr);
             }
         }
+
+        let unbannedText = unbannedUserNames.length > 0
+            ? unbannedUserNames.map(name => `» 👤 ${name}`).join("\n")
+            : "» ❌ কোনো ইউজারের নাম পাওয়া যায়নি!";
 
         let resultMsg = `
 ━━━━━━━━━━━━━━━
@@ -482,13 +528,11 @@ ${listText}
 👤 𝐀𝐝𝐦𝐢𝐧 𝐀𝐜𝐭𝐢𝐨𝐧
 🆔 𝐔𝐍𝐁𝐀𝐍-𝐑𝐄𝐒
 ━━━━━━━━━━━━━━━
-» ✅ সফলভাবে ${successCount} জন
-» 🐸 User-কে আনব্যান করা হয়েছে!`;
+» ✅ সফলভাবে আনব্যান করা হয়েছে:
+${unbannedText}`;
 
         if (failedNames.length > 0) {
-            resultMsg += `
-» ⚠️ ভুল নাম্বার:
-» ${failedNames.join(", ")}`;
+            resultMsg += `\n» ⚠️ ভুল নাম্বার: ${failedNames.join(", ")}`;
         }
 
         resultMsg += `
@@ -498,7 +542,7 @@ ${listText}
 
         return message.reply(resultMsg, () => {
             try {
-                api.unsendMessage(handleReply.messageID);
+                api.unsendMessage(replyData.messageID);
             } catch (e) {}
         });
     }
