@@ -1,23 +1,30 @@
+const { getTime } = global.utils;
+
+function isBotAdmin(senderID) {
+    const adminBot = global.GoatBot.config.adminBot || [];
+    return adminBot.includes(senderID);
+}
+
 module.exports = {
     config: {
         name: "gcban",
-        version: "4.0",
+        version: "1.0",
         author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
         countDown: 5,
         role: 2,
         description: {
-            bn: "গ্রুপ ব্যান এবং আনব্যান সিস্টেম পরিচালনা করুন",
-            en: "Manage group ban and unban system"
+            bn: "গ্রুপ চ্যাট ব্যান ও ম্যানেজমেন্ট সিস্টেম",
+            en: "Group chat ban and management system"
         },
         guide: {
-            bn: "{pn}\n{pn} list",
-            en: "{pn}\n{pn} list"
+            bn: "{pn} - সকল যুক্ত থাকা গ্রুপের লিস্ট দেখতে\n{pn} list - ব্যান থাকা গ্রুপগুলির লিস্ট দেখতে",
+            en: "{pn} - Show all joined group list\n{pn} list - Show banned group list"
         },
         category: "owner"
     },
 
-    onStart: async function ({ args, threadsData, message, event, role, api }) {
-        if (role < 2) {
+    onStart: async function ({ api, event, message, threadsData, args }) {
+        if (!isBotAdmin(event.senderID)) {
             return message.reply("❌ অনলি মাই বস 𝐒𝐈𝐘𝐀𝐌 🧘🫣");
         }
 
@@ -26,102 +33,95 @@ module.exports = {
         if (type === "list" || type === "-l") {
             const allThreads = await threadsData.getAll();
             const bannedThreads = allThreads.filter(
-                item => item.data && item.data.banned && item.data.banned.status === true
+                t => t.data && t.data.banned && t.data.banned.status === true
             );
 
             if (bannedThreads.length === 0) {
-                const noBanMsg = `
-━━━━━━━━━━━━━━━
+                return message.reply(`━━━━━━━━━━━━━━━
 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━
-🆔 𝐆𝐂-𝐁𝐀𝐍-𝟎𝟎
-━━━━━━━━━━━━━━━
-» ❌ বর্তমানে কোনো 
-» 😭 ব্যান গ্রুপ নেই!
-━━━━━━━━━━━━━━━
-🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
-━━━━━━━━━━━━━━━`;
-                return message.reply(noBanMsg);
+❌ বর্তমানে কোনো গ্রুপ ব্যান নেই!
+━━━━━━━━━━━━━━━`);
             }
 
-            let listText = "";
-            bannedThreads.forEach((thread, index) => {
-                listText += `\n[ ${index + 1} ] 👥 𝐆𝐫𝐨𝐮𝐩: ${thread.threadInfo?.threadName || "Unknown Group"}\n     🆔 𝐓𝐈𝐃: ${thread.threadID}\n     📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${thread.data.banned.reason || "No reason"}\n`;
-            });
-
-            const form = `
-━━━━━━━━━━━━━━━
+            let msg = `━━━━━━━━━━━━━━━
 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━
-📸 𝐓𝐨𝐭𝐚𝐥 𝐁𝐚𝐧𝐧𝐞𝐝 𝐆𝐂: ${bannedThreads.length}
-🆔 𝐆𝐂-𝐁𝐀𝐍-𝐋𝐈𝐒𝐓
-━━━━━━━━━━━━━━━
-${listText}
-━━━━━━━━━━━━━━━
-» 🔰 যে গ্রুপ আনব্যান করতে
-» 🌝 চান সেই নাম্বারটি 
-» ✅ (যেমন: 1 বা 1 2)
-» 🙄 এই মেসেজে রিপ্লাই দিন।
-━━━━━━━━━━━━━━━
-🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
+🆔 𝐁𝐀𝐍𝐍𝐄𝐃-𝐆𝐂-𝐋𝐈𝐒𝐓
+━━━━━━━━━━━━━━━\n`;
+
+            bannedThreads.forEach((thread, index) => {
+                msg += `[ ${index + 1} ] 📌 ${thread.threadName || "Unknown Group"}
+     🆔 TID: ${thread.threadID}\n`;
+            });
+
+            msg += `\n» 🔰 আনব্যান করতে সেই নাম্বারটি লিখে (যেমন: 1 বা 1 2) এই মেসেজে রিপ্লাই দিন!
 ━━━━━━━━━━━━━━━`;
 
-            return message.reply(form, (err, info) => {
+            return message.reply(msg, (err, info) => {
                 if (err) return;
                 if (!global.GoatBot.onReply) global.GoatBot.onReply = new Map();
                 global.GoatBot.onReply.set(info.messageID, {
                     commandName: module.exports.config.name,
                     messageID: info.messageID,
                     author: event.senderID,
-                    type: "unban",
+                    type: "UNBAN_LIST",
                     bannedThreads
                 });
             });
         }
 
-        try {
-            const threadList = await api.getThreadList(100, null, ["INBOX"]);
-            const activeGroupThreads = threadList.filter(t => t.isGroup && t.isSubscribed);
+        const allThreads = await threadsData.getAll();
+        const activeThreads = allThreads.filter(t => t.isGroup !== false);
 
-            if (!activeGroupThreads || activeGroupThreads.length === 0) {
-                return message.reply("❌ বট বর্তমানে কোনো গ্রুপে যুক্ত নেই!");
-            }
+        if (activeThreads.length === 0) {
+            return message.reply("❌ কোনো গ্রুপ ডাটা পাওয়া যায়নি!");
+        }
 
-            let gcListText = "";
-            activeGroupThreads.forEach((thread, index) => {
-                gcListText += `\n[ ${index + 1} ] 👥 𝐍𝐚𝐦𝐞: ${thread.name || "Unknown Group"}\n     🆔 𝐓𝐈𝐃: ${thread.threadID}\n`;
-            });
-
-            const mainListForm = `
-━━━━━━━━━━━━━━━
+        let listMsg = `━━━━━━━━━━━━━━━
 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━
-📸 𝐓𝐨𝐭𝐚𝐥 𝐀𝐜𝐭𝐢𝐯𝐞 𝐆𝐂: ${activeGroupThreads.length}
-🆔 𝐀𝐋𝐋-𝐆𝐑𝐎𝐔𝐏-𝐋𝐈𝐒𝐓
-━━━━━━━━━━━━━━━
-${gcListText}
-━━━━━━━━━━━━━━━
-» 🚫 যে গ্রুপ ব্যান করতে চান:
-» 🔢 নাম্বার লিখে রিপ্লাই দিন।
-» 💡 যেমন: "1" অথবা 
-» 😀 1 ban" অথবা "1 2 ban"
-━━━━━━━━━━━━━━━
-🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
+📸 𝐓𝐎𝐓𝐀𝐋 𝐀𝐂𝐓𝐈𝐕𝐄 𝐆𝐑𝐎𝐔𝐏𝐒: ${activeThreads.length}
+━━━━━━━━━━━━━━━\n`;
+
+        activeThreads.forEach((thread, index) => {
+            const isBanned = thread.data && thread.data.banned && thread.data.banned.status === true;
+            listMsg += `[ ${index + 1} ] 📌 ${thread.threadName || "Unknown Group"}
+     🆔 TID: ${thread.threadID} ${isBanned ? "(🚫 Banned)" : ""}\n`;
+        });
+
+        listMsg += `\n━━━━━━━━━━━━━━━
+» 🐸 অ্যাকশন নিতে এই মেসেজে রিপ্লাই দিন:
+» উদাহরণ: "1 ban" (ব্যান করতে)
+» উদাহরণ: "1 out" (লিভ নিতে)
 ━━━━━━━━━━━━━━━`;
 
-            return message.reply(mainListForm, (err, info) => {
-                if (err) return;
-                if (!global.GoatBot.onReply) global.GoatBot.onReply = new Map();
-                global.GoatBot.onReply.set(info.messageID, {
-                    commandName: module.exports.config.name,
-                    messageID: info.messageID,
-                    author: event.senderID,
-                    type: "ban",
-                    activeThreads: activeGroupThreads
-                });
+        return message.reply(listMsg, (err, info) => {
+            if (err) return;
+            if (!global.GoatBot.onReply) global.GoatBot.onReply = new Map();
+            global.GoatBot.onReply.set(info.messageID, {
+                commandName: module.exports.config.name,
+                messageID: info.messageID,
+                author: event.senderID,
+                type: "MAIN_LIST",
+                activeThreads
             });
-        } catch (error) {
-            return message.reply("❌ গ্রুপ লিস্ট আনতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+        });
+    },
+
+    onAnyEvent: async function ({ event, threadsData }) {
+        try {
+            if (!event || !event.threadID) return;
+
+            if (isBotAdmin(event.senderID)) return;
+
+            const threadData = await threadsData.get(event.threadID);
+            if (threadData && threadData.data && threadData.data.banned && threadData.data.banned.status === true) {
+                event.body = ""; 
+                delete event.name;
+                throw new Error("THREAD_BANNED_IGNORE_EVENT");
+            }
+        } catch (e) {
         }
     },
 
@@ -131,108 +131,129 @@ ${gcListText}
 
         if (event.senderID !== replyData.author) return;
 
-        const bodyText = (event.body || "").trim();
-        const inputNumbers = bodyText.replace(/ban/gi, "").trim().split(/\s+/);
+        const time = getTime("HH:mm:ss");
+        const date = getTime("DD/MM/YYYY");
+        const input = (event.body || "").trim().split(/\s+/);
 
-        if (replyData.type === "ban") {
-            const activeThreads = replyData.activeThreads || [];
-            let bannedGroupNames = [];
+        if (replyData.type === "MAIN_LIST") {
+            const action = input[input.length - 1].toLowerCase();
+            const indexes = input.slice(0, -1);
 
-            for (const numStr of inputNumbers) {
-                const cleanNumber = numStr.replace(/[^\d]/g, "");
-                const index = parseInt(cleanNumber) - 1;
+            if (action === "ban") {
+                let successCount = 0;
+                for (const numStr of indexes) {
+                    const idx = parseInt(numStr) - 1;
+                    const targetThread = replyData.activeThreads[idx];
 
-                if (!isNaN(index) && activeThreads[index]) {
-                    const targetThread = activeThreads[index];
-                    const targetTID = targetThread.threadID;
-                    const groupName = targetThread.name || "This Group";
+                    if (targetThread) {
+                        const tID = targetThread.threadID;
 
-                    const currentThreadData = await threadsData.get(targetTID) || {};
-                    const currentData = currentThreadData.data || {};
-                    currentData.banned = {
-                        status: true,
-                        reason: "Banned by Admin/Owner"
-                    };
+                        await threadsData.set(tID, {
+                            data: {
+                                ...(targetThread.data || {}),
+                                banned: {
+                                    status: true,
+                                    date: `${date} - ${time}`
+                                }
+                            }
+                        });
 
-                    await threadsData.set(targetTID, { data: currentData });
-
-                    bannedGroupNames.push(groupName);
-
-                    const banNoticeMsg = `🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
+                        const gcNotice = `━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━
-👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
-
-🚫 𝐆𝐑𝐎𝐔𝐏 𝐁𝐀𝐍𝐍𝐄𝐃
-❌ এই গ্রুপটি বট থেকে ব্যান করা হয়েছে।
-⚠️ সাধারণ ইউজারদের জন্য বটের কাজ বন্ধ থাকবে।
-📩 বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।
-
-📱 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩: +8801789138157
-📘 𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: 
-https://www.facebook.com/profile.php?id=61591371186179
+🆔 𝐆𝐑𝐎𝐔𝐏-𝐁𝐀𝐍𝐍𝐄𝐃
 ━━━━━━━━━━━━━━━
-👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
+» ❌ এই গ্রুপটি স্পাম করার 
+» 😡 কারণে ব্যান করা হলো
+» ⏰ 𝐓𝐢𝐦𝐞: ${time}
+» 📅 𝐃𝐚𝐭𝐞: ${date}
+» 📌 এখন কেউ বট ব্যবহার 
+» 🔰 করতে পারবেন না
+━━━━━━━━━━━━━━━
+🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
+━━━━━━━━━━━━━━━`;
+                        try {
+                            await api.sendMessage(gcNotice, tID);
+                        } catch (e) {}
 
-                    api.sendMessage(banNoticeMsg, targetTID).catch(() => {});
+                        successCount++;
+                    }
                 }
-            }
 
-            if (bannedGroupNames.length > 0) {
-                message.reply(`✅ সফলভাবে নিচের ${bannedGroupNames.length}টি গ্রুপ ব্যান করা হয়েছে:\n\n${bannedGroupNames.map(n => `» 👥 ${n}`).join("\n")}`);
-            } else {
-                message.reply("❌ সঠিক ইনপুট নম্বর দেননি।");
+                return message.reply(`━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+✅ সফলভাবে ${successCount} টি গ্রুপ ব্যান করা হয়েছে!
+━━━━━━━━━━━━━━━`);
+            } 
+            
+            else if (action === "out") {
+                let leftCount = 0;
+                for (const numStr of indexes) {
+                    const idx = parseInt(numStr) - 1;
+                    const targetThread = replyData.activeThreads[idx];
+
+                    if (targetThread) {
+                        const tID = targetThread.threadID;
+                        try {
+                            await api.removeUserFromGroup(api.getCurrentUserID(), tID);
+                            leftCount++;
+                        } catch (e) {}
+                    }
+                }
+
+                return message.reply(`━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+✅ সফলভাবে ${leftCount} টি গ্রুপ থেকে লিভ নেওয়া হয়েছে!
+━━━━━━━━━━━━━━━`);
             }
         }
 
-        if (replyData.type === "unban") {
-            const bannedThreads = replyData.bannedThreads || [];
-            let unbannedGroupNames = [];
+        if (replyData.type === "UNBAN_LIST") {
+            let unbannedCount = 0;
+            for (const numStr of input) {
+                const idx = parseInt(numStr) - 1;
+                const targetThread = replyData.bannedThreads[idx];
 
-            for (const numStr of inputNumbers) {
-                const cleanNumber = numStr.replace(/[^\d]/g, "");
-                const index = parseInt(cleanNumber) - 1;
+                if (targetThread) {
+                    const tID = targetThread.threadID;
 
-                if (!isNaN(index) && bannedThreads[index]) {
-                    const targetThread = bannedThreads[index];
-                    const targetTID = targetThread.threadID;
-                    const groupName = targetThread.threadInfo?.threadName || "This Group";
+                    await threadsData.set(tID, {
+                        data: {
+                            ...(targetThread.data || {}),
+                            banned: {
+                                status: false,
+                                date: null
+                            }
+                        }
+                    });
 
-                    const currentThreadData = await threadsData.get(targetTID) || {};
-                    const currentData = currentThreadData.data || {};
-                    currentData.banned = {
-                        status: false,
-                        reason: null
-                    };
-
-                    await threadsData.set(targetTID, { data: currentData });
-
-                    unbannedGroupNames.push(groupName);
-
-                    const unbanNoticeMsg = `🌸 𝐀𝐬𝐬𝐚𝐥𝐚𝐦𝐮 𝐀𝐥𝐚𝐢𝐤𝐮𝐦 🌸
+                    const unbanNotice = `━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━
-👥 𝐆𝐫𝐨𝐮𝐩 : ${groupName}
-
-✅ 𝐆𝐑𝐎𝐔𝐏 𝐔𝐍𝐁𝐀𝐍𝐍𝐄𝐃
-🎉 এই গ্রুপের ব্যান উঠিয়ে দেওয়া হয়েছে!
-✨ এখন থেকে আপনারা আগের মতোই বটের
-সকল কমান্ড ব্যবহার করতে পারবেন।
-
+🆔 𝐆𝐑𝐎𝐔𝐏-𝐔𝐍𝐁𝐀𝐍𝐍𝐄𝐃
 ━━━━━━━━━━━━━━━
-👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
+» ✅ এই গ্রুপটি সফলভাবে 
+» 🐲 আনব্যান করা হয়েছে!
+» 🌝 এখন থেকে সবাই বট 
+» 🙄 ব্যবহার করতে পারবেন।
+━━━━━━━━━━━━━━━
+🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
+━━━━━━━━━━━━━━━`;
+                    try {
+                        await api.sendMessage(unbanNotice, tID);
+                    } catch (e) {}
 
-                    api.sendMessage(unbanNoticeMsg, targetTID).catch(() => {});
+                    unbannedCount++;
                 }
             }
 
-            if (unbannedGroupNames.length > 0) {
-                message.reply(`✅ সফলভাবে নিচের ${unbannedGroupNames.length}টি গ্রুপ আনব্যান করা হয়েছে:\n\n${unbannedGroupNames.map(n => `» 👥 ${n}`).join("\n")}`);
-            } else {
-                message.reply("❌ সঠিক ইনপুট নম্বর দেননি।");
-            }
+            return message.reply(`━━━━━━━━━━━━━━━
+👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+━━━━━━━━━━━━━━━
+✅ সফলভাবে ${unbannedCount} টি গ্রুপ আনব্যান করা হয়েছে!
+━━━━━━━━━━━━━━━`);
         }
-
-        try {
-            api.unsendMessage(replyData.messageID);
-        } catch (e) {}
     }
 };
