@@ -11,7 +11,7 @@ function isBotAdmin(senderID) {
 module.exports = {
     config: {
         name: "user",
-        version: "2.2",
+        version: "2.3",
         author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
         countDown: 5,
         role: 0,
@@ -365,60 +365,19 @@ ${listText}
             const userData = await usersData.get(uid);
 
             if (userData && userData.banned && userData.banned.status === true) {
-                let warningCount = bannedWarningData.get(uid) || 0;
-
-                if (warningCount < 3) {
-                    warningCount += 1;
-                    bannedWarningData.set(uid, warningCount);
-
-                    const name = userData.name || "Unknown";
-                    const reason = userData.banned.reason || "No reason";
-                    const timeOnly = userData.banned.timeOnly || "Unknown";
-                    const dateOnly = userData.banned.dateOnly || "Unknown";
-
-                    const defaultBanMsg = `
-━━━━━━━━━━━━━━━
-👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-━━━━━━━━━━━━━━━
-🆔 𝐁𝐀𝐍-𝐍𝐎𝐓𝐈𝐂𝐄
-━━━━━━━━━━━━━━━
-» ❌ আপনি ban আছেন!
-» 👤 𝐍𝐚𝐦𝐞: ${name}
-» 🆔 𝐔𝐈𝐃: ${uid}
-» 📌 𝐑𝐞𝐚𝐬𝐨𝐧: ${reason}
-» ⏰ 𝐓𝐢𝐦𝐞: ${timeOnly}
-» 📅 𝐃𝐚𝐭𝐞: ${dateOnly}
-━━━━━━━━━━━━━━━
-🧚‍♀️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓
-━━━━━━━━━━━━━━━`;
-
-                    return message.reply(`${defaultBanMsg}\n\n⚠️ (Warning Notice: ${warningCount}/3)`);
-                } else {
-                    return;
-                }
+                return;
             }
 
             if (isBotAdmin(uid)) return;
 
-            const now = Date.now();
-            let tracker = userCommandTracker.get(uid) || { timestamps: [], count: 0 };
+            let count = (userCommandTracker.get(uid) || 0) + 1;
+            userCommandTracker.set(uid, count);
 
-            tracker.timestamps = tracker.timestamps.filter(timestamp => now - timestamp < 10000);
-            tracker.timestamps.push(now);
-            tracker.count += 1;
-
-            userCommandTracker.set(uid, tracker);
-
-            const isFastSpam = tracker.timestamps.length >= 5;
-            const isTotalSpam = tracker.count >= 12;
-
-            if (isFastSpam || isTotalSpam) {
+            if (count >= 10) {
                 const time = getTime("HH:mm:ss");
                 const date = getTime("DD/MM/YYYY");
                 const name = userData ? (userData.name || "Unknown") : "Unknown";
-                const reason = isFastSpam 
-                    ? "😴"
-                    : "🌚";
+                const reason = "🤭🔰✅";
 
                 await usersData.set(uid, {
                     banned: {
@@ -431,7 +390,6 @@ ${listText}
                 });
 
                 userCommandTracker.delete(uid);
-                bannedWarningData.set(uid, 1);
 
                 const autoBanNotice = `
 ━━━━━━━━━━━━━━━
