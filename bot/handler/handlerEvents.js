@@ -65,14 +65,15 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
     const config = global.GoatBot.config;
     const { adminBot, hideNotiMessage } = config;
 
-    const infoBannedUser = userData.banned;
-    if (infoBannedUser.status == true) {
+    const isBotAdmin = adminBot.includes(senderID);
+
+    if (userData?.banned?.status === true && !isBotAdmin) {
         return true;
     }
 
     if (
         config.adminOnly.enable == true
-        && !adminBot.includes(senderID)
+        && !isBotAdmin
         && !config.adminOnly.ignoreCommand.includes(commandName)
     ) {
         if (hideNotiMessage.adminOnly == false)
@@ -92,10 +93,7 @@ function isBannedOrOnlyAdmin(userData, threadData, senderID, threadID, isGroup, 
         }
 
         const infoBannedThread = threadData.banned;
-        if (infoBannedThread.status == true) {
-            const { reason, date } = infoBannedThread;
-            if (hideNotiMessage.threadBanned == false)
-                message.reply(getText("threadBanned", reason, date, threadID, lang));
+        if (infoBannedThread.status == true && !isBotAdmin) {
             return true;
         }
     }
@@ -136,28 +134,14 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             return;
 
         const senderID = event.userID || event.senderID || event.author;
+        const adminBotList = config.adminBot || [];
+        const isBotAdmin = adminBotList.includes(senderID);
 
         let threadData = global.db.allThreadData.find(t => t.threadID == threadID);
         let userData = global.db.allUserData.find(u => u.userID == senderID);
 
         if (!userData && !isNaN(senderID))
             userData = await usersData.create(senderID);
-
-        if (userData?.banned?.status === true) {
-            return {
-                onAnyEvent: async () => {},
-                onFirstChat: async () => {},
-                onChat: async () => {},
-                onStart: async () => {},
-                onReaction: async () => {},
-                onReply: async () => {},
-                onEvent: async () => {},
-                handlerEvent: async () => {},
-                presence: async () => {},
-                read_receipt: async () => {},
-                typ: async () => {}
-            };
-        }
 
         if (!threadData && !isNaN(threadID)) {
             if (global.temp.createThreadDataError.includes(threadID))
@@ -173,6 +157,25 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
                 global.db.receivedTheFirstMessage[threadID] = true;
                 await threadsData.refreshInfo(threadID);
             }
+        }
+
+        const isUserBanned = userData?.banned?.status === true;
+        const isThreadBanned = isGroup && threadData?.banned?.status === true;
+
+        if ((isUserBanned || isThreadBanned) && !isBotAdmin) {
+            return {
+                onAnyEvent: async () => {},
+                onFirstChat: async () => {},
+                onChat: async () => {},
+                onStart: async () => {},
+                onReaction: async () => {},
+                onReply: async () => {},
+                onEvent: async () => {},
+                handlerEvent: async () => {},
+                presence: async () => {},
+                read_receipt: async () => {},
+                typ: async () => {}
+            };
         }
 
         if (typeof threadData.settings.hideNotiMessage == "object")
@@ -215,7 +218,7 @@ module.exports = function (api, threadModel, userModel, dashBoardModel, globalMo
             } else if (event.messageReply && event.messageReply.senderID) {
                 event.mentions = { [event.messageReply.senderID]: "" };
             } else {
-                const tagMatch = body.match(/@([^ ]+)/);
+                const tagMatch = body ? body.match(/@([^ ]+)/) : null;
                 if (tagMatch) {
                     const tagName = tagMatch[1].toLowerCase();
                     const info = await api.getThreadInfo(threadID);
