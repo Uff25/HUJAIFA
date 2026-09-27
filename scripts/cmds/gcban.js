@@ -1,4 +1,5 @@
-const { getTime } = global.utils;
+//এই কোডটি আবার কাজ করাতে চাইলে দুই নাম্বার লাইনে থাকা /*এই দুইটি চিহ্ন কেটে দাও এবং এক নাম্বার লাইন পুরোটুকু কেটে দাও তাহলে এই কাজ করবে
+/*const { getTime } = global.utils;
 
 function isBotAdmin(senderID) {
     const adminBot = global.GoatBot.config.adminBot || [];
