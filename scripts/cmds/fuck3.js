@@ -21,7 +21,7 @@ module.exports = {
       const id1 = event.senderID;
       const mentions = Object.keys(event.mentions || {});
       
-      // রিপ্লাই অথবা মেনশন থেকে টার্গেট ইউজার আইডি বের করা
+      
       const id2 = event.type === "message_reply"
         ? event.messageReply.senderID
         : mentions.length > 0
@@ -33,7 +33,7 @@ module.exports = {
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » ❌ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐦𝐞𝐧𝐭𝐢𝐨𝐧 𝐬𝐨𝐦𝐞𝐨𝐧𝐞
-» ⚠️ 𝐨𝐫 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!
+» ⚠️ 𝐨𝐫 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐦𝐞𝐬𝐬𝐚𝐠𝐞
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
         return api.sendMessage(noMentionError, event.threadID, event.messageID);
