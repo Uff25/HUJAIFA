@@ -1,17 +1,16 @@
 const fs = require("fs");
 const axios = require("axios");
 const path = require("path");
+const crypto = require("crypto");
 
 let lastPlayed = -1;
-
-const AUTHOR_LOCK = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 module.exports = {
   config: {
     name: "gan",
     version: "1.0.2",
     role: 0,
-    author: AUTHOR_LOCK,
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     shortDescription: "Play random song with command 🎶",
     longDescription: "Sends a random mp3 song from preset Catbox links.",
     category: "media",
@@ -21,9 +20,10 @@ module.exports = {
   onStart: async function({ api, event }) {
     const { threadID, messageID } = event;
 
-    if (module.exports.config.author !== AUTHOR_LOCK) {
+    const authorHash = crypto.createHash("sha256").update(module.exports.config.author || "").digest("hex");
+    if (authorHash !== "30fb7ef490db0beed090ffc2c96b797e87bcf95fa5012e841f32a7e7ffc7cf4c") {
       return api.sendMessage(
-        "⛔ 𝗔𝘂𝘁𝗵𝗼𝗿 𝗹𝗼𝗰𝗸 𝗳𝗮𝗶𝗹𝗲𝗱! 𝗙𝗶𝗹𝗲 𝗺𝗼𝗱𝗶𝗳𝗶𝗲𝗱.",
+        "😼কিরে আবাল 𝐒𝐈𝐘𝐀𝐌- ভাইয়ের নাম চেঞ্জ করলি কেন 😼ফাইল কি তোর বাপে বানাই ছিল😭😂",
         threadID,
         messageID
       );
