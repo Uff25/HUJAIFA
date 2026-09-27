@@ -4,8 +4,7 @@ const path = require("path");
 
 let lastPlayed = -1;
 
-// 🔐 AUTHOR LOCK (DO NOT CHANGE)
-const AUTHOR_LOCK = "FARHAN-KHAN";
+const AUTHOR_LOCK = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 module.exports = {
   config: {
@@ -22,7 +21,6 @@ module.exports = {
   onStart: async function({ api, event }) {
     const { threadID, messageID } = event;
 
-    // 🔐 ANTI-CHANGE LOCK CHECK
     if (module.exports.config.author !== AUTHOR_LOCK) {
       return api.sendMessage(
         "⛔ 𝗔𝘂𝘁𝗵𝗼𝗿 𝗹𝗼𝗰𝗸 𝗳𝗮𝗶𝗹𝗲𝗱! 𝗙𝗶𝗹𝗲 𝗺𝗼𝗱𝗶𝗳𝗶𝗲𝗱.",
