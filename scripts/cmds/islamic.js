@@ -18,14 +18,14 @@ module.exports = {
   },
 
   onStart: async function ({ api, event }) {
-    // 💔 Random captions
+    
     const captions = [
       "===「𝐏𝐑𝐄𝐅𝐈𝐗-𝐄𝐕𝐄𝐍𝐓」=== \n--❖(✷‿𝐍𝐈𝐉𝐇𝐔𝐌-𝐁𝐎𝐓‿✷)❖-- \n✢━━━━━━━━━━━━━━━✢        \n🕋 ♡-𝐈𝐒𝐋𝐀𝐌𝐈𝐂-𝐕𝐈𝐃𝐄𝐎-♡ 🕋 \n✢━━━━━━━━━━━━━━━✢\n(✷‿𝐎𝐖𝐍𝐄𝐑:-‿𝐃-𝐒 𝐒𝐈𝐘𝐀𝐌‿✷)"
     ];
 
     const caption = captions[Math.floor(Math.random() * captions.length)];
 
-    // 🎥 Videos list
+    
     const links = [
       "https://drive.google.com/uc?id=14emH_6vF3fuJe2vmeC52e575TppboHne",
       "https://drive.google.com/uc?id=15APJbSuGLY7zCiZsAgU7HjCJeinYDX9K",
