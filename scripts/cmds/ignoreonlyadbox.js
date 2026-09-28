@@ -38,7 +38,7 @@ module.exports = {
 			commandNotFound: "❌ 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐧𝐨𝐭 𝐟𝐨𝐮𝐧𝐝 𝐢𝐧 𝐛𝐨𝐭'𝐬 𝐜𝐨𝐦𝐦𝐚𝐧𝐝 𝐥𝐢𝐬𝐭",
 			commandAlreadyInList: "❌ 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐚𝐥𝐫𝐞𝐚𝐝𝐲 𝐢𝐧 𝐢𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭",
 			commandAdded: "✅ 𝐀𝐝𝐝𝐞𝐝 𝐜𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐭𝐨 𝐢𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭",
-			commandNotInList: "❌ 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐧𝐨𝐭 𝐢𝐧 𝐢𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭",
+			commandNotInList: "🧐 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐧𝐨𝐭 𝐢𝐧 𝐢𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭",
 			commandDeleted: "✅ 𝐑𝐞𝐦𝐨𝐯𝐞𝐝 𝐜𝐨𝐦𝐦𝐚𝐧𝐝 \"%1\" 𝐟𝐫𝐨𝐦 𝐢𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭",
 			ignoreList: "📑 𝐈𝐠𝐧𝐨𝐫𝐞 𝐥𝐢𝐬𝐭 𝐢𝐧 𝐲𝐨𝐮𝐫 𝐠𝐫𝐨𝐮𝐩:\n%1"
 		}
