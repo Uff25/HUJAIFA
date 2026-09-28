@@ -88,7 +88,7 @@ ${listad.trim()}
         if (fs.existsSync(__dirname + '/cache/thread.png')) fs.unlinkSync(__dirname + '/cache/thread.png');
       }, event.messageID);
 
-      // যদি গ্রুপের কোনো ছবি না থাকে তবে শুধু টেক্সট পাঠাবে
+      
       if (!threadInfo.imageSrc) {
         return api.sendMessage(infoMsg, event.threadID, event.messageID);
       }
