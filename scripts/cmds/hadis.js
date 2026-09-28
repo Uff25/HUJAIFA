@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-/* ================== 🔐 AUTHOR LOCK SYSTEM ================== */
+
 const REAL_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 function checkAuthorLock(config, api, event) {
@@ -42,7 +42,7 @@ module.exports = {
   },
 
   onStart: async function ({ message, api, event }) {
-    // 🔐 AUTHOR CHECK
+    
     if (!checkAuthorLock(module.exports.config, api, event)) return;
 
     try {
