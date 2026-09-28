@@ -14,7 +14,7 @@ module.exports = {
   onStart: async function ({ api, event, args }) {
     const emoji = args.join(" ");
 
-    // ⚠️ যদি কোনো ইমোজি না দেয়
+    
     if (!emoji) {
       const noEmojiMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
@@ -28,7 +28,7 @@ module.exports = {
     }
 
     try {
-      // ✅ গ্রুপ ইমোজি পরিবর্তন
+      
       await api.changeThreadEmoji(emoji, event.threadID);
       const successMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
