@@ -16,7 +16,7 @@ module.exports = {
 
   onStart: async function ({ api, event }) {
     try {
-      // ✅ প্রথমে চেক করবো রিপ্লাই আছে কিনা
+    
       if (event.type !== "message_reply") {
         const noReplyMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
@@ -28,7 +28,7 @@ module.exports = {
         return api.sendMessage(noReplyMsg, event.threadID, event.messageID);
       }
 
-      // ✅ অ্যাটাচমেন্ট আছে কিনা
+      
       const attachments = event.messageReply.attachments;
       if (!attachments || attachments.length === 0) {
         const noImageMsg = 
@@ -41,7 +41,7 @@ module.exports = {
         return api.sendMessage(noImageMsg, event.threadID, event.messageID);
       }
 
-      // ✅ একাধিক ছবি দেওয়া থাকলে
+      
       if (attachments.length > 1) {
         const multiImageMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
@@ -53,7 +53,7 @@ module.exports = {
         return api.sendMessage(multiImageMsg, event.threadID, event.messageID);
       }
 
-      // ✅ ডাউনলোড ও সেট করা
+      
       const imageURL = attachments[0].url;
       const pathImg = __dirname + "/cache/groupimage.png";
       const getData = (await axios.get(imageURL, { responseType: "arraybuffer" })).data;
