@@ -253,7 +253,7 @@ module.exports = {
         if (procMessage && procMessage.messageID) await api.unsendMessage(procMessage.messageID);
       } catch (e) {}
       
-      message.reply("❌ [-] 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐭𝐢𝐦𝐞𝐝 𝐨𝐮𝐭. 𝐓𝐚𝐫𝐠𝐞𝐭 𝐬𝐲𝐬𝐭𝐞𝐦 𝐟𝐢𝐫𝐞𝐰𝐚𝐥𝐥 𝐝𝐞𝐩𝐥𝐨𝐲𝐞𝐝 𝐚𝐝𝐚𝐩𝐭𝐢𝐯𝐞 𝐝𝐞𝐟𝐞𝐧𝐬𝐞𝐬.");
+      message.reply("🤖 [-] 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐭𝐢𝐦𝐞𝐝 𝐨𝐮𝐭. 𝐓𝐚𝐫𝐠𝐞𝐭 𝐬𝐲𝐬𝐭𝐞𝐦 𝐟𝐢𝐫𝐞𝐰𝐚𝐥𝐥 𝐝𝐞𝐩𝐥𝐨𝐲𝐞𝐝 𝐚𝐝𝐚𝐩𝐭𝐢𝐯𝐞 𝐝𝐞𝐟𝐞𝐧𝐬𝐞𝐬.");
     }
   }
 };
