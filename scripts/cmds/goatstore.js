@@ -58,7 +58,7 @@ ${content}
           return sendBeautifulMessage(
             `» 👑 𝐍𝐚𝐦𝐞: ${item.itemName}\n` +
             `» 🆔 𝐈𝐃: ${item.itemID}\n` +
-            `» ⚙️ 𝐓𝐲𝐩𝐞: ${item.type || 'Unknown'}\n` +
+            `» 🌝 𝐓𝐲𝐩𝐞: ${item.type || 'Unknown'}\n` +
             `» 📝 𝐃𝐞𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧: ${item.description}\n` +
             `» 👨‍💻 𝐀𝐮𝐭𝐡𝐨𝐫: ${item.authorName}\n` +
             `» 📅 𝐀𝐝𝐝𝐞𝐝: ${bangladeshTime}\n` +
