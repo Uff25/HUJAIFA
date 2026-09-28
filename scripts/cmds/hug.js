@@ -74,7 +74,7 @@ async function makeImage({ one, two }) {
 function stylishCaption(name) {
   return `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 🤗 ${name} তোমাকে 🥰
+» 🤗 ${name} তোমাকে 
 » 😘 জড়িয়ে ধরে হাগ দিলাম
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
@@ -89,7 +89,7 @@ module.exports.run = async function ({ api, event }) {
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » 🥺 দয়া করে যাকে হাগ 
-» 🥵 দিতে চান মেনশন করুন!
+» 🥵 দিতে চান মেনশন করুন
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
     return api.sendMessage(noMentionMsg, threadID, messageID);
@@ -119,12 +119,12 @@ module.exports.run = async function ({ api, event }) {
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » ❌ ছবিটি তৈরি করতে 
-» 🤧 সমস্যা হয়েছে। 
+» 🤧 সমস্যা হয়েছে
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
     return api.sendMessage(errorMsg, threadID, messageID);
   }
 };
 
-/* ✅ FRAMEWORK FIX */
+
 module.exports.onStart = module.exports.run;
