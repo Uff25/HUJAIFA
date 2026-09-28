@@ -79,7 +79,7 @@ global.gcAdminList = async function (api, event, tID) {
       return acc;
     }, {}) : {};
 
-    let msg = `👑 𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥 ⇢ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n\n✦ 𝗚𝗥𝗢𝗨𝗣 𝗔𝗗𝗠𝗜𝗡 𝗟𝗜𝗦𝗧\n\n`;
+    let msg = `👑 𝗢𝗪𝗡𝗘𝗥 ⇢ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n\n✦ 𝗚𝗥𝗢𝗨𝗣 𝗔𝗗𝗠𝗜𝗡 𝗟𝗜𝗦𝗧\n\n`;
     
     const currentAdmins = [];
 
@@ -132,7 +132,7 @@ global.gcRemoveByIndex = async function (api, event, tID, index) {
     global.gcAdminSession[tID].splice(index, 1);
 
     api.sendMessage(
-`👑 𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥 ⇢ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`👑 𝗢𝗪𝗡𝗘𝗥 ⇢ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 
 ✦ 𝗔𝗗𝗠𝗜𝗡 𝗠𝗔𝗡𝗔𝗚𝗘𝗥
 
