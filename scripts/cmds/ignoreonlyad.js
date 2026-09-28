@@ -33,7 +33,7 @@ module.exports = {
 			commandAdded: "✅ Đã thêm lệnh \"%1\" vào danh sách bỏ qua",
 			commandNotInList: "❌ Lệnh \"%1\" không có trong danh sách bỏ qua",
 			commandDeleted: "✅ Đã xóa lệnh \"%1\" khỏi danh sách bỏ qua",
-			ignoreList: "📑 Danh sách lệnh bỏ qua trong adminonly:\n%1"
+			ignoreList: "🤖 Danh sách lệnh bỏ qua trong adminonly:\n%1"
 		},
 		en: {
 			missingCommandNameToAdd: "⚠️ Please enter the command name you want to add to the ignore list",
