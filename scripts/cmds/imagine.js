@@ -33,7 +33,7 @@ module.exports = {
       return message.reply(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-📖 𝐈𝐌𝐀𝐆𝐈𝐍𝐄 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄 :
+📖 𝐈𝐌𝐀𝐆𝐈𝐍𝐄 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄 
 » imagine Pomot
 » 🫶 যেমন: 
 imagine a cute cat playing with a glowing ball in futuristic neon city
@@ -48,7 +48,7 @@ imagine a cute cat playing with a glowing ball in futuristic neon city
 » 🎨 𝗔𝗜 𝗜𝗺𝗮𝗴𝗲 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗶𝗻𝗴...
 » ✅ আপনার চাহিদা চাহিদা অনুযায়ী 
 » 🤖 নিঝুম বট দিয়ে ছবি তৈরি করা হচ্ছে
-» 🤧 অনুগ্রহ করে অপেক্ষা করুন!
+» 🤧 অনুগ্রহ করে অপেক্ষা করুন
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`
     );
