@@ -3,7 +3,7 @@ module.exports = {
     name: "inbox",
     aliases: ["in"],
     version: "1.0",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //🧐siyam
     countDown: 10,
     role: 0,
     shortDescription: {
