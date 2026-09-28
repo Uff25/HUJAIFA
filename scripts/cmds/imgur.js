@@ -1,4 +1,4 @@
-const axios = require('axios'); // ✅ Axios সরাসরি import করা হয়েছে
+const axios = require('axios'); 
 
 module.exports = {
   config: {
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   onStart: async function ({ api, event }) {
-    // Get API link from JSON
+    
     let Shaon;
     try {
       const apis = await axios.get('https://raw.githubusercontent.com/shaonproject/Shaon/main/api.json');
