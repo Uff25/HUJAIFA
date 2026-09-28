@@ -5,7 +5,7 @@ const https = require("https");
 module.exports = {
   config: {
     name: "help",
-    aliases: ["commands"], // 'menu' সরানো হয়েছে কনফ্লিক্ট এড়ানোর জন্য
+    aliases: ["commands"], 
     version: "6.3",
     author: "EryXenX",
     shortDescription: "Show all commands",
