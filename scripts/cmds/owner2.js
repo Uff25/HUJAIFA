@@ -98,7 +98,7 @@ module.exports = {
         console.log(err);
 
         api.sendMessage(
-          "❌ GIF Write Failed",
+          "🧐 GIF Write Failed",
           event.threadID,
           event.messageID
         );
