@@ -19,7 +19,7 @@ const videoList = [
 const USER_COOLDOWN = 3 * 60 * 1000;
 const lastReplyUser = {};
 
-// ব্যাকগ্রাউন্ডে ভিডিও ডাউনলোড করার ফাংশন
+
 async function downloadVideos() {
   for (const vid of videoList) {
     const filePath = path.join(CACHE_DIR, vid.file);
