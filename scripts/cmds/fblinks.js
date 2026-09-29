@@ -14,7 +14,7 @@ const _0x4f2a = [
 
 module.exports = {
   config: {
-    name: "links",
+    name: "fblinks",
     version: "1.0",
     author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     role: 0,
