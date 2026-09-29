@@ -288,7 +288,7 @@ module.exports = {
 	config: {
 		name: "antiunsend",
 		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "11.0",
+		version: "12.0",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
@@ -341,7 +341,7 @@ module.exports = {
 » 🎀 𝐃𝐄𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄𝐃!
 » 📌 𝐒𝐭𝐚𝐭𝐮𝐬: Disabled ❌
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝐀𝗧𝗕𝗢𝗧`, threadID, event.messageID);
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 		}
 
 		if (option === "status" || option === "info") {
@@ -369,15 +369,16 @@ module.exports = {
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 	},
 
+	// GoatBot standard entry points
 	onChat: async function (params) {
 		return await handleUnsendLogic(params);
 	},
 
-	handleEvent: async function (params) {
+	onEvent: async function (params) {
 		return await handleUnsendLogic(params);
 	},
 
-	onEvent: async function (params) {
+	handleEvent: async function (params) {
 		return await handleUnsendLogic(params);
 	}
 };
