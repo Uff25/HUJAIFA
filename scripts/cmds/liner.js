@@ -65,7 +65,7 @@ async function getLinerResponse(prompt) {
 
 module.exports = {
   config: {
-    name: "liner",
+    name: "nijhumai",
     version: "1.0",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     role: 0,
