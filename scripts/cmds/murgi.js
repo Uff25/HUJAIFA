@@ -1,6 +1,6 @@
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-// active loop storage
+
 const activeMurgi = new Map();
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     name: "murgi",
     version: "1.1.0",
     role: 2,
-    author: "FARHAN-KHAN",
+    author: "𝐒𝐢𝐚𝐦 𝐇𝐚𝐬𝐚𝐧",
     description: "Loop bad word messages until stopped",
     category: "fun",
     usages: "@mention | off",
@@ -16,7 +16,7 @@ module.exports = {
   },
 
   onStart: async function({ message, event, args }) {
-    // OFF command
+    
     if (args[0] && args[0].toLowerCase() === "off") {
       if (activeMurgi.has(event.threadID)) {
         activeMurgi.set(event.threadID, false);
