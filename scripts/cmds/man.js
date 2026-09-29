@@ -26,7 +26,7 @@ module.exports = {
       const noMentionMsg = 
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» 👤  𝗣𝗟𝗘𝗔𝗦𝗘 𝗠𝗘𝗡𝗧𝗜𝗢𝗡 𝗦𝗢𝗠𝗘𝗢𝗡𝗘!
+» 👤  𝗣𝗟𝗘𝗔𝗦𝗘 𝗠𝗘𝗡𝗧𝗜𝗢𝗡 𝗦𝗢𝗠𝗘𝗢𝗡𝗘
 ───────────────
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return message.reply(noMentionMsg);
