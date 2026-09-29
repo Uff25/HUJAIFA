@@ -1,5 +1,5 @@
 const OWNER_UID = "61592677587804";
-// Global Memory State and Garbage Collection Initialization
+// Global Memory State and Garbage Coll
 
 if (!global.__SiyamSpamRegistry) global.__SiyamSpamRegistry = new Map();
 
