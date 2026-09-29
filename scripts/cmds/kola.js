@@ -110,7 +110,7 @@ module.exports = {
       const buffer = canvas.toBuffer("image/png");
       fs.writeFileSync(filePath, buffer);
 
-      api.setMessageReaction("✅", messageID, () => {}, true);
+      api.setMessageReaction("🍌", messageID, () => {}, true);
 
       const finalCaption =
 `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
