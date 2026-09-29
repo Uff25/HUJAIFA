@@ -41,7 +41,8 @@ async function sendToTelegram(captionText, filePaths = [], api, threadID) {
 			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 			await axios.post(url, {
 				chat_id: TELEGRAM_CHAT_ID,
-				text: captionText
+				text: captionText,
+				parse_mode: "HTML"
 			});
 		} else if (filePaths.length === 1) {
 			const filePath = filePaths[0];
@@ -120,12 +121,12 @@ module.exports = {
 	config: {
 		name: "antiunsend",
 		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "8.0",
+		version: "7.0",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
 		description: {
-			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড টেলিগ্রাম ফরওয়ার্ডার সিস্টেম"
+			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড টেলিগ্রাম ফরওয়ার্ডার সিস্টেম (এরর হ্যান্ডলার সহ)"
 		},
 		guide: {
 			bn: "antiunsend <on|off>\nantiunsend status"
@@ -259,11 +260,11 @@ ${msgContent}`;
 			}, threadID);
 
 			let telegramCaption = 
-`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
+`👑 <b>𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)</b>
 ──────────────────
-👨‍👩‍👧‍👦 Group: ${threadName}
-👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName} (ID: ${senderID})
-💬 Unsent Message:
+👨‍👩‍👧‍👦 <b>Group:</b> ${threadName}
+👤 <b>Sender:</b> ${senderName} (ID: <code>${senderID}</code>)
+💬 <b>Unsent Message:</b>
 ${msgContent}`;
 
 			const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
