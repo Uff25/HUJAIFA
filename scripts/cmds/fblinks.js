@@ -67,11 +67,7 @@ module.exports = {
 `https://www.facebook.com/profile.php?id=${uid}`;
 
       const msg =
-`Bot Owner: 
- 🫶𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍🪽
-
-
-${profileLink}`;
+`${profileLink}`;
 
       return message.reply(msg);
 
