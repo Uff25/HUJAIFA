@@ -5,7 +5,7 @@ const LOCKED_AUTHOR = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 module.exports = {
 	config: {
 		name: "nicknoti",
-		version: "3.0",
+		version: "3.1",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
@@ -37,8 +37,15 @@ module.exports = {
 
 		if (event.logMessageType === "log:user-nickname") {
 			try {
+				const botID = api.getCurrentUserID(); // বটের নিজের UID
 				const authorID = event.author;
 				const targetID = event.logMessageData.participant_id;
+
+				// যদি নিকনেম পরিবর্তনের টার্গেট বটের নিজের ID হয়, তবে রিটার্ন করবে (নোটিফিকেশন দেবে না)
+				if (targetID === botID) {
+					return;
+				}
+
 				const newNickname = event.logMessageData.nickname || "𝐑𝐄𝐒𝐄𝐓 / 𝐑𝐄𝐌𝐎𝐕𝐄𝐃";
 
 				const authorData = await usersData.get(authorID);
@@ -70,7 +77,7 @@ module.exports = {
 » 🆔 𝐔𝐈𝐃 : ${targetID}
 » 🏷️ 𝐍𝐄𝐖 : [ ${newNickname} ]
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝐀𝐓𝗕𝗢𝗧`
+» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`
 					);
 				}
 			} catch (err) {
