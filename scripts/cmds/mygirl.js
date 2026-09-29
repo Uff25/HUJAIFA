@@ -23,7 +23,8 @@ module.exports.onStart = async ({ event, api, args }) => {
     if (!mention)
       return api.sendMessage(`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
-» ⚠️ অনুগ্রহ করে কাউকে ট্যাগ বা রিপ্লাই দিন।
+» ⚠️ অনুগ্রহ করে কাউকে
+» 🥚 ট্যাগ বা রিপ্লাই দিন।
 ───────────────
 » 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, messageID);
 
