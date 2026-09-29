@@ -1,3 +1,4 @@
+
 const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
 // active loop storage
@@ -8,7 +9,7 @@ module.exports = {
     name: "murgi2",
     version: "1.1.0",
     role: 2,
-    author: "FARHAN-KHAN",
+    author: "𝐒𝐢𝐚𝐦 𝐇𝐚𝐬𝐚𝐧",
     description: "Loop bad word messages until stopped",
     category: "fun",
     usages: "@mention | off",
