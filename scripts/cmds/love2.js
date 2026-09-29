@@ -19,7 +19,7 @@ module.exports = {
 
   onStart: async function ({ api, event, args }) {
     try {
-      // 🔒 AUTHOR LOCK SYSTEM
+      
       if (module.exports.config.author !== AUTHOR) {
         return api.sendMessage(
           "⛔ This file is locked!\nAuthor change detected.",
@@ -50,7 +50,7 @@ module.exports = {
         name2 = event.mentions[id2].replace("@", "");
       }
 
-      // ১. লাভ পার্সেন্টেজ হিসাব
+      
       const combined = (id1 + id2).toString();
       let sum = 0;
       for (let i = 0; i < combined.length; i++) {
