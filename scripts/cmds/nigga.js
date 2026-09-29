@@ -21,15 +21,15 @@ module.exports = {
     try {
       let targetUID;
 
-      // If user replied to a message
+      
       if (event.type === "message_reply") {
         targetUID = event.messageReply.senderID;
       }
-      // If user mentioned someone
+      
       else if (event.mentions && Object.keys(event.mentions).length > 0) {
         targetUID = Object.keys(event.mentions)[0];
       }
-      // Otherwise use self
+      
       else {
         targetUID = event.senderID;
       }
