@@ -6,7 +6,7 @@ module.exports = {
   config: {
     name: "pikachu",
     version: "1.0",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //🕵️@ri_siyam
     countDown: 5,
     role: 0,
     shortDescription: {
