@@ -65,7 +65,7 @@ module.exports = {
       fs.writeFileSync(imgPath, buffer);
 
       return api.sendMessage({
-        body: `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ এই যে দেখেন আমাদের নতুন রাজাকার: ${userName}\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+        body: `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» 🥚 এই যে দেখেন আমাদের নতুন রাজাকার: ${userName}\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
         mentions: [{ tag: userName, id: targetID }],
         attachment: fs.createReadStream(imgPath)
       }, threadID, () => {
