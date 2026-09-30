@@ -23,7 +23,7 @@ const profileInfo = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 » 🤝 আপনাদের ভালোবাসাই  
 » 📿 আমাদের অনুপ্রেরণা।
 ───────────────
-» 🌐 𝗚𝗶𝘁𝗛𝘂𝗯: https://github.com/official-siyam/siyam-bpot-V2-V3-V5-`;
+» 🌐 𝗚𝗶𝘁𝗛𝘂𝗯: https://github.com/siyamxpro/siyamxpro.git`;
 
 function extractData(args) {
     let data = args.join(" ").trim();
