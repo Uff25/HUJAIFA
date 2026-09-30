@@ -1,14 +1,7 @@
-// ✅ Image list for random selection
-const imageList = [
-  "https://i.imgur.com/3fBvpps.jpeg",
-  "https://i.imgur.com/586Aq55.jpeg"
-];
-
-// Function to pick a random image stream
 const getRandomImage = async () => {
   try {
-    const randomUrl = imageList[Math.floor(Math.random() * imageList.length)];
-    return await global.utils.getStreamFromURL(randomUrl);
+    const res = await global.utils.getStreamFromURL("https://i.imgur.com/3fBvpps.jpeg");
+    return res;
   } catch (err) {
     return null;
   }
@@ -18,10 +11,10 @@ module.exports = {
   config: {
     name: "pending",
     aliases: ["pen", "pend", "pe"],
-    version: "2.0.5",
+    version: "2.0.6",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
-    role: 2, // Admin only
+    role: 2,
     shortDescription: "Handle pending requests",
     longDescription: "Approve or reject pending user or group requests",
     category: "utility",
@@ -36,7 +29,6 @@ module.exports = {
 
     const { body, threadID } = event;
 
-    // Cancel operation
     if (body.trim().toLowerCase() === "c") {
       try {
         await api.unsendMessage(messageID);
@@ -49,14 +41,16 @@ module.exports = {
       }
     }
 
-    const indexes = body
+    const rawIndexes = body
       .split(/\s+/)
       .map(s => Number(s.trim()))
       .filter(n => !isNaN(n) && n > 0 && n <= pending.length);
 
+    const indexes = [...new Set(rawIndexes)];
+
     if (indexes.length === 0) {
       return api.sendMessage(
-        "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝗔𝗡 👑\n───────────────\n» ⚠️ 𝗜𝗡𝗩𝗔𝗟𝗜𝗗\n» ❌ সঠিক সংখ্যা নির্বাচন করুন!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+        "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗜𝗡𝗩𝗔𝗟𝗜𝗗\n» ❌ সঠিক সংখ্যা নির্বাচন করুন!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
         threadID
       );
     }
@@ -65,33 +59,34 @@ module.exports = {
     const sortedIndexes = [...indexes].sort((a, b) => a - b);
 
     for (const idx of sortedIndexes) {
-      const group = pending[idx - 1];
+      const item = pending[idx - 1];
 
       try {
-        const welcomeMedia = await getRandomImage();
+        const prefix = global.GoatBot?.config?.prefix || "/";
         const msgPayload = {
-          body: `「 𝐆𝐫𝐨𝐮𝐩 𝐀𝐩𝐩𝐫𝐨𝐯𝐞𝐝 」\n[🤖] 𝐆𝐥𝐨𝐛𝐚𝐥 𝐏𝐫𝐞𝐟𝐢𝐱: {${global.GoatBot.config.prefix}}\n______________[🤖]______________\n\n⎯͢⎯⃝🩷🐰 *গা্ঁই্ঁস্ঁ* *মু্ঁই্ঁ* *পি্ঁচ্ছি্ঁ* *সি্ঁয়া্ঁম্ঁ* *এ্ঁরৃঁ* *বৃঁটৃঁ* *আ্ঁই্ঁয়া্ঁ* *পৃঁরৃঁছি্ঁ* *মো্ঁরে্ঁ* *কি্ঁ* *দে্ঁহা্ঁ* *যা্ঁয়্ঁ* ⎯͢⎯⃝🩷🐰\n______________[🤖]______________`
+          body: `「 𝐆𝐫𝐨𝐮𝐩 𝐀𝐩𝐩𝐫𝐨𝐯𝐞𝐝 」\n[🤖] 𝐆𝐥𝐨𝐛𝐚𝐥 𝐏𝐫𝐞𝐟𝐢𝐱: {${prefix}}\n______________[🤖]______________\n\n⎯͢⎯⃝🩷🐰 *গা্ঁই্ঁস্ঁ* *মু্ঁই্ঁ* *পি্ঁচ্ছি্ঁ* *সি্ঁয়া্ঁম্ঁ* *এ্ঁরৃঁ* *বৃঁটৃঁ* *আ্ঁই্ঁয়া্ঁ* *পৃঁরৃঁছি্ঁ* *মো্ঁরে্ঁ* *কি্ঁ* *দে্ঁহা্ঁ* *যা্ঁয়্ঁ* ⎯͢⎯⃝🩷🐰\n______________[🤖]______________`
         };
 
-        if (welcomeMedia) msgPayload.attachment = welcomeMedia;
+        await api.sendMessage(msgPayload, item.threadID);
 
-        await api.sendMessage(msgPayload, group.threadID);
-
-        const botNickname = global.GoatBot?.config?.nickNameBot || "[ , ] 𝘽𝙤𝙩 - 𝐀𝐩𝐡𝐞𝐥𝐢𝐨𝐧🌊🪶";
-
-        await api.changeNickname(
-          botNickname,
-          group.threadID,
-          api.getCurrentUserID()
-        );
+        if (item.isGroup) {
+          const botNickname = global.GoatBot?.config?.nickNameBot || "[ , ] 𝘽𝙤𝙩 - 𝐀𝐩𝐡𝐞𝐥𝐢𝐨𝐧🌊🪶";
+          try {
+            await api.changeNickname(
+              botNickname,
+              item.threadID,
+              api.getCurrentUserID()
+            );
+          } catch (e) {}
+        }
 
         count++;
       } catch (err) {
-        console.error(`Failed to approve thread ${group.threadID}:`, err.message);
+        console.error(`Failed to approve thread ${item.threadID}:`, err.message);
       }
     }
 
-    await api.unsendMessage(messageID);
+    try { await api.unsendMessage(messageID); } catch (e) {}
     return api.sendMessage(
       `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ✅ 𝗦𝗨𝗖𝗖𝗘𝗦𝗦\n» 🎉 সফলভাবে ${count} টি গ্রুপ/ইউজার এপ্রুভ করা হয়েছে!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID
@@ -104,7 +99,7 @@ module.exports = {
     const type = args[0]?.toLowerCase();
     if (!type || !["user", "thread", "all"].includes(type)) {
       return api.sendMessage(
-        "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗨𝗦𝗔𝗚𝗘\n» 📌 ব্যবহারবিধি: pending [user/thread/all]\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+        "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗨𝗦𝗔𝗚𝗘\n» 📌 ব্যবহারবিধি: pending [user/thread/all]\n───────────────\n» 🧚‍♀️️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
         threadID
       );
     }
@@ -130,18 +125,20 @@ module.exports = {
       let index = 1;
 
       for (const single of filteredList) {
-        const name = single.isGroup
-          ? single.name
-          : (await usersData.getName(single.threadID)) || "Unknown";
+        let name = "Unknown";
+        if (single.isGroup) {
+          name = single.name || "Group Chat";
+        } else {
+          const userData = await usersData.get(single.threadID);
+          name = userData ? userData.name : "Facebook User";
+        }
         msg += `» [ ${index} ] ${name} (${single.threadID})\n`;
         index++;
       }
 
       const finalMessage = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» 📑 𝗣𝗘𝗡𝗗𝗜𝗡𝗚 ${type.toUpperCase()} 𝗟𝗜𝗦𝗧\n\n${msg}\n───────────────\n» 📌 এপ্রুভ করতে নম্বর লিখে রিপ্লাই দিন!\n» ❌ বাতিল করতে "c" লিখে রিপ্লাই দিন।\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
-      const randomMedia = await getRandomImage();
       const sendPayload = { body: finalMessage };
-      if (randomMedia) sendPayload.attachment = randomMedia;
 
       return api.sendMessage(
         sendPayload,
@@ -149,7 +146,6 @@ module.exports = {
         (error, info) => {
           if (error) return console.error(error);
 
-          // GoatBot Reply System Mechanism
           global.GoatBot.onReply.set(info.messageID, {
             commandName: commandName,
             messageID: info.messageID,
