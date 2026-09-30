@@ -26,7 +26,7 @@ module.exports = {
     }
 
     try {
-      // 1️⃣ Get Real Facebook Avatar URL
+      
       const avatarUrl = `https://graph.facebook.com/${userid}/picture?width=512&height=512&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
 
       // 2️⃣ Generate Petpet GIF with Real Profile Picture
