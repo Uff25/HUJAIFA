@@ -1,6 +1,6 @@
 module.exports = {
   config: {
-    name: "protect",
+    name: "🔐",
     version: "3.1",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     role: 1,
