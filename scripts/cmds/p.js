@@ -42,7 +42,9 @@ module.exports = {
       if (isCancel) {
         api.removeUserFromGroup(api.getCurrentUserID(), group.threadID);
       } else {
-        api.sendMessage("『 👑 𝗡𝗜𝗝𝗛𝗨𝗠 𝗕𝗢𝗧 』\n\n✦ Bot activated successfully\n✦ Group: " + group.name + "\n\n➤ Owner: 𓆩👑𝐒𝐈𝐘𝐀𝐌-👑𓆪", group.threadID);
+        const prefix = global.GoatBot.config.prefix || "/";
+        const welcomeMsg = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n🌸 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 —\n ${group.name} \n\n» 🤖 হ্যালো আমি 🤪\n» 🧚‍♀️ 𝗡𝗜𝗝𝗛𝗨𝗠 𝗧𝗕𝗢𝗧\n» 🕵️ এই 𝐆𝐫𝐨𝐮𝐩-এ আমাকে 𝐀𝐝𝐝\n» 😁  করার জন্য ধন্যবাদ বাস 😂! \n\n» ⚡ 𝐁𝐨𝐭 𝐏𝐫𝐞𝐟𝐢𝐱 : ${prefix}\n» 📖 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐋𝐢𝐬𝐭 : ${prefix}help\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+        api.sendMessage(welcomeMsg, group.threadID);
       }
       count++;
     }
