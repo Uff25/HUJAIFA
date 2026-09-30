@@ -7,13 +7,13 @@ module.exports = {
   config: {
     name: "pair",
     aliases: ["match", "couple"],
-    version: "2.0",
+    version: "2.5",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     category: "love",
     countDown: 5,
     role: 0,
     shortDescription: { en: "Find a love match in the group" },
-    guide: { en: "{pn}" }
+    guide: { en: "{pn} | reply | mention" }
   },
 
   onStart: async function ({ api, event, usersData }) {
@@ -23,44 +23,76 @@ module.exports = {
 
     try {
       const senderData = await usersData.get(event.senderID);
-      const senderName = senderData.name;
-      const threadData = await api.getThreadInfo(event.threadID);
-      const users = threadData.userInfo || [];
+      const senderName = senderData ? senderData.name : "Unknown";
 
-      const myData = users.find((user) => user.id === event.senderID);
-      if (!myData || !myData.gender) {
-        return api.sendMessage(
-          "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚\n» ❌ আপনার জেন্ডার নির্ধারণ করা যায়নি!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
-          event.threadID,
-          event.messageID
-        );
+      let targetID = null;
+
+      // ১. যদি মেসেজে রিপ্লাই দেওয়া হয়
+      if (event.type === "message_reply") {
+        targetID = event.messageReply.senderID;
+      } 
+      // ২. যদি কাউকেই মেনশন করা হয়
+      else if (event.mentions && Object.keys(event.mentions).length > 0) {
+        targetID = Object.keys(event.mentions)[0];
       }
 
-      const myGender = myData.gender.toUpperCase();
-      let matchCandidates = [];
+      let matchID = null;
+      let matchName = "";
 
-      if (myGender === "MALE") {
-        matchCandidates = users.filter(user => user.gender === "FEMALE" && user.id !== event.senderID);
-      } else if (myGender === "FEMALE") {
-        matchCandidates = users.filter(user => user.gender === "MALE" && user.id !== event.senderID);
-      } else {
-        return api.sendMessage(
-          "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚\n» ❌ আপনার জেন্ডার ডিফাইন করা নেই!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
-          event.threadID,
-          event.messageID
-        );
+      // যদি মেনশন বা রিপ্লাই থাকে
+      if (targetID) {
+        if (targetID === event.senderID) {
+          return api.sendMessage(
+            "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚\n» ❌ নিজেকে নিজে পেয়ার করতে পারবেন না!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+            event.threadID,
+            event.messageID
+          );
+        }
+        matchID = targetID;
+        const targetData = await usersData.get(targetID);
+        matchName = targetData ? targetData.name : "Unknown User";
+      } 
+      // ৩. যদি মেনশন বা রিপ্লাই না থাকে (র‍্যান্ডম সিলেক্ট)
+      else {
+        const threadData = await api.getThreadInfo(event.threadID);
+        const users = threadData.userInfo || [];
+
+        const myData = users.find((user) => user.id === event.senderID);
+        if (!myData || !myData.gender) {
+          return api.sendMessage(
+            "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚\n» ❌ আপনার জেন্ডার নির্ধারণ করা যায়নি!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+            event.threadID,
+            event.messageID
+          );
+        }
+
+        const myGender = myData.gender.toUpperCase();
+        let matchCandidates = [];
+
+        if (myGender === "MALE") {
+          matchCandidates = users.filter(user => user.gender === "FEMALE" && user.id !== event.senderID);
+        } else if (myGender === "FEMALE") {
+          matchCandidates = users.filter(user => user.gender === "MALE" && user.id !== event.senderID);
+        } else {
+          return api.sendMessage(
+            "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗪𝗔𝗥𝗡𝗜𝗡𝗚\n» ❌ আপনার জেন্ডার ডিফাইন করা নেই!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+            event.threadID,
+            event.messageID
+          );
+        }
+
+        if (matchCandidates.length === 0) {
+          return api.sendMessage(
+            "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗡𝗢 𝗠𝗔𝗧𝗖𝗛\n» ❌ গ্রুপে বিপরীত লিঙ্গের কোনো মেম্বার পাওয়া যায়নি!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
+            event.threadID,
+            event.messageID
+          );
+        }
+
+        const selectedMatch = matchCandidates[Math.floor(Math.random() * matchCandidates.length)];
+        matchID = selectedMatch.id;
+        matchName = selectedMatch.name;
       }
-
-      if (matchCandidates.length === 0) {
-        return api.sendMessage(
-          "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗡𝗢 𝗠𝗔𝗧𝗖𝗛\n» ❌ গ্রুপে বিপরীত লিঙ্গের কোনো মেম্বার পাওয়া যায়নি!\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧",
-          event.threadID,
-          event.messageID
-        );
-      }
-
-      const selectedMatch = matchCandidates[Math.floor(Math.random() * matchCandidates.length)];
-      const matchName = selectedMatch.name;
 
       const width = 800;
       const height = 400;
@@ -77,7 +109,7 @@ module.exports = {
         `https://graph.facebook.com/${event.senderID}/picture?width=720&height=720&access_token=${token}`
       );
       const pairPersonImage = await loadImage(
-        `https://graph.facebook.com/${selectedMatch.id}/picture?width=720&height=720&access_token=${token}`
+        `https://graph.facebook.com/${matchID}/picture?width=720&height=720&access_token=${token}`
       );
 
       // Draw circular avatars
@@ -124,7 +156,7 @@ module.exports = {
       if (fs.existsSync(outputPath)) fs.removeSync(outputPath);
 
       api.sendMessage(
-        `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗘𝗥𝗥𝗢𝗥\n» ❌ জোড়া তৈরি করতে সমস্যা হয়েছে! পরে আবার চেষ্টা করুন।\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+        `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ⚠️ 𝗘𝗥𝗥𝗢𝗥\n» ❌ জোড়া তৈরি করতে সমস্যা হয়েছে! পরে আবার চেষ্টা করুন।\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
         event.threadID,
         event.messageID
       );
