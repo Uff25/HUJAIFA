@@ -5,7 +5,7 @@ const path = require("path");
 module.exports = {
   config: {
     name: "pfp",
-    aliases: ["pp", "profilepic", "profile"],
+    aliases: ["profilepic", "profile"],
     version: "1.0",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
