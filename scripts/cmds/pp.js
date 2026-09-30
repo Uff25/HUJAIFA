@@ -23,23 +23,23 @@ module.exports = {
     try {
       let uid;
 
-      // ১️⃣ রিপ্লাই করা মেসেজের ইউজারের প্রোফাইল
+      
       if (event.type === "message_reply") {
         uid = event.messageReply.senderID;
       }
 
-      // ২️⃣ @mention করা ইউজারের প্রোফাইল
+      
       else if (Object.keys(event.mentions || {}).length > 0) {
         uid = Object.keys(event.mentions)[0];
       }
 
-      // ৩️⃣ লিংক দেওয়া থাকলে
+      
       else if (args[0] && args[0].includes(".com/")) {
         const resID = await api.getUID(args[0]);
         uid = resID;
       }
 
-      // ৪️⃣ কিছু না দিলে নিজের প্রোফাইল
+      
       else {
         uid = event.senderID;
       }
