@@ -26,7 +26,7 @@ const surahMap = {
     111: ["Masad", "লাহাব"], 112: ["Ikhlas", "ইখলাস"], 113: ["Falaq", "ফালাক"], 114: ["Nas", "নাস"]
 };
 
-// ড্রাইভ আইডিগুলো এখানে যোগ করুন
+
 const driveAudioIds = {
     1: "1QVxonQa7JBcBbuQQHWySwsp4wJpvDonG",
     3: "1QgawsTyDvdrrcDbtD57X13CKCIievFAD",
