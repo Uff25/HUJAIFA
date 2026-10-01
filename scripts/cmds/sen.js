@@ -5,7 +5,7 @@ module.exports = {
 	config: {
 		name: "sen",
 		version: "1.0",
-		author: "siyam",
+		author: "siyam", //𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
 		countDown: 5,
 		role: 2,
 		shortDescription: "Send command file",
