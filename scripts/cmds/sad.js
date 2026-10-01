@@ -8,7 +8,7 @@ module.exports.config = {
   name: "sad",
   version: "1.0.1",
   role: 0,
- author: "💋𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍👑",
+ author: "💋𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
  description: "🎬 প্রতিবার কমান্ডে আলাদা ভিডিও এবং স্যাড ক্যাপশন পাঠাবে",
  category: "Fun",
  countDown: 5,
