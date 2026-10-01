@@ -2,7 +2,7 @@ module.exports.config = {
   name: "ruls",
   version: "1.0.3",
   permission: 0,
-  credits: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+  credits: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", // 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
   prefix: true,
   description: "rules",
   category: "rules",
