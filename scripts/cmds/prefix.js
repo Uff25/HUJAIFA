@@ -1,19 +1,45 @@
-const fs = require("fs-extra");
 const moment = require("moment-timezone");
-
-const getStreamFromURL = global.utils.getStreamFromURL;
+const axios = require("axios");
 
 const mediaList = [
-  "https://tmpfiles.org/dl/wdwFibqdw8im/catbox_1785488054781.gif",
-  "https://tmpfiles.org/dl/wCwXisPFpvOc/catbox_1785488006710.gif"
+  "https://i.imgur.com/8pT5G8g.gif",
+  "https://i.imgur.com/7iqtimo.gif"
 ];
 
-global.GoatBot.prefixVideoToggle = global.GoatBot.prefixVideoToggle || {};
+function toBoldFont(text) {
+  if (text === undefined || text === null) return "";
+  const str = String(text);
+  const boldMap = {
+    'A': '𝐀', 'B': '𝐁', 'C': '𝐂', 'D': '𝐃', 'E': '𝐄', 'F': '𝐅', 'G': '𝐆', 'H': '𝐇', 'I': '𝐈',
+    'J': '𝐉', 'K': '𝐊', 'L': '𝐋', 'M': '𝐌', 'N': '𝐍', 'O': '𝐎', 'P': '𝐏', 'Q': '𝐐', 'R': '𝐑',
+    'S': '𝐒', 'T': '𝐓', 'U': '𝐔', 'V': '𝐕', 'W': '𝐖', 'X': '𝐗', 'Y': '𝐘', 'Z': '𝐙',
+    'a': '𝐚', 'b': '𝐛', 'c': '𝐜', 'd': '𝐝', 'e': '𝐞', 'f': '𝐟', 'g': '𝐠', 'h': '𝐡', 'i': '𝐢',
+    'j': '𝐣', 'k': '𝐤', 'l': '𝐥', 'm': '𝐦', 'n': '𝐧', 'o': '𝐨', 'p': '𝐩', 'q': '𝐪', 'r': '𝐫',
+    's': '𝐬', 't': '𝐭', 'u': '𝐮', 'v': '𝐯', 'w': '𝐰', 'x': '𝐱', 'y': '𝐲', 'z': '𝐳',
+    '0': '𝟎', '1': '𝟏', '2': '𝟐', '3': '𝟑', '4': '𝟒', '5': '𝟓', '6': '𝟔', '7': '𝟕', '8': '𝟖', '9': '𝟗'
+  };
+  return str.split('').map(char => boldMap[char] || char).join('');
+}
+
+async function getImgurStream(url) {
+  try {
+    const response = await axios.get(url, {
+      responseType: "stream",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+        "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+      }
+    });
+    return response.data;
+  } catch (err) {
+    return null;
+  }
+}
 
 module.exports = {
   config: {
     name: "prefix",
-    version: "2.6",
+    version: "3.2",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 0,
@@ -23,7 +49,7 @@ module.exports = {
 
   langs: {
     en: {
-      usage: "❌ 𝐔𝐬𝐚𝐠𝐞: 𝐩𝐫𝐞𝐟𝐢𝐱 <𝐧𝐞𝐰> | 𝐩𝐫𝐞𝐟𝐢𝐱 𝐫𝐞𝐬𝐞𝐭 | 𝐩𝐫𝐞𝐟𝐢𝐱 <𝐧𝐞𝐰> -g",
+      usage: "❌ 𝐔𝐬𝐚𝐠𝐞: 𝐩𝐫𝐞𝐟𝐢𝐱 <𝐧𝐞𝐰> | 𝐩𝐫𝐞𝐟𝐢𝐱 𝐫𝐞𝐬𝐞𝐭 | 𝐩𝐫𝐞𝐟𝐢𝐱 <𝐧𝐞𝐰> -𝐠",
       reset: "✅ 𝐏𝐫𝐞𝐟𝐢𝐱 𝐑𝐞𝐬𝐞𝐭 𝐒𝐮𝐜𝐜𝐞𝐬𝐬!\n🔰 𝐒𝐲𝐬𝐭𝐞𝐦: %1",
       onlyAdmin: "⛔ 𝐎𝐧𝐥𝐲 𝐁𝐨𝐭 𝐀𝐝𝐦𝐢𝐧 𝐂𝐚𝐧 𝐂𝐡𝐚𝐧𝐠𝐞 𝐆𝐥𝐨𝐛𝐚𝐥 𝐏𝐫𝐞𝐟𝐢𝐱.",
       confirmGlobal: "⚠️ 𝐆𝐥𝐨𝐛𝐚𝐥 𝐏𝐫𝐞𝐟𝐢𝐱 𝐂𝐡𝐚𝐧𝐠𝐞?\n👉 𝐑𝐞𝐚𝐜𝐭 𝐓𝐨 𝐂𝐨𝐧𝐟𝐢𝐫𝐦",
@@ -34,30 +60,27 @@ module.exports = {
   },
 
   onStart: async function ({ message, role, args, commandName, event, threadsData, getLang }) {
-    if (!args[0]) return message.reply(getLang("usage"));
+    try {
+      if (!args[0]) return message.reply(getLang("usage"));
 
-    const threadID = event.threadID;
+      const threadID = event.threadID;
 
-    if (args[0] === "reset") {
-      await threadsData.set(threadID, null, "data.prefix");
-      return message.reply(getLang("reset", global.GoatBot.config.prefix));
-    }
+      if (args[0] === "reset") {
+        await threadsData.set(threadID, null, "data.prefix");
+        return message.reply(getLang("reset", global.GoatBot.config.prefix));
+      }
 
-    const newPrefix = args[0];
-    const setGlobal = args[1] === "-g";
+      const newPrefix = args[0];
+      const setGlobal = args[1] === "-g";
 
-    if (setGlobal && role < 2)
-      return message.reply(getLang("onlyAdmin"));
+      if (setGlobal && role < 2)
+        return message.reply(getLang("onlyAdmin"));
 
-    const media = await getStreamFromURL(mediaList[0]);
+      const confirmMsg = setGlobal
+        ? getLang("confirmGlobal")
+        : getLang("confirmThisThread");
 
-    const confirmMsg = setGlobal
-      ? getLang("confirmGlobal")
-      : getLang("confirmThisThread");
-
-    message.reply(
-      { body: confirmMsg, attachment: media },
-      (err, info) => {
+      message.reply(confirmMsg, (err, info) => {
         if (err) return;
 
         global.GoatBot.onReaction.set(info.messageID, {
@@ -66,89 +89,113 @@ module.exports = {
           newPrefix,
           setGlobal
         });
-      }
-    );
+      });
+    } catch (error) {
+      return message.reply(`❌ Error: ${error.message}`);
+    }
   },
 
   onReaction: async function ({ event, message, threadsData, Reaction, getLang }) {
-    if (event.userID !== Reaction.author) return;
+    try {
+      if (event.userID !== Reaction.author) return;
 
-    global.GoatBot.onReaction.delete(event.messageID);
+      global.GoatBot.onReaction.delete(event.messageID);
 
-    if (Reaction.setGlobal) {
-      global.GoatBot.config.prefix = Reaction.newPrefix;
+      if (Reaction.setGlobal) {
+        global.GoatBot.config.prefix = Reaction.newPrefix;
+        return message.reply(getLang("successGlobal", Reaction.newPrefix));
+      }
 
-      fs.writeFileSync(
-        global.client.dirConfig,
-        JSON.stringify(global.GoatBot.config, null, 2)
+      await threadsData.set(
+        event.threadID,
+        Reaction.newPrefix,
+        "data.prefix"
       );
 
-      return message.reply(getLang("successGlobal", Reaction.newPrefix));
+      return message.reply(getLang("successThisThread", Reaction.newPrefix));
+    } catch (error) {
+      return message.reply(`❌ Reaction Error: ${error.message}`);
     }
-
-    await threadsData.set(
-      event.threadID,
-      Reaction.newPrefix,
-      "data.prefix"
-    );
-
-    return message.reply(getLang("successThisThread", Reaction.newPrefix));
   },
 
-  onChat: async function ({ event, message, threadsData }) {
-    if (!event.body || event.body.toLowerCase() !== "prefix") return;
+  onChat: async function ({ event, message }) {
+    try {
+      if (!event.body || event.body.trim().toLowerCase() !== "prefix") return;
 
-    const threadID = event.threadID;
+      const threadID = event.threadID;
 
-    if (global.GoatBot.prefixVideoToggle[threadID] === undefined)
-      global.GoatBot.prefixVideoToggle[threadID] = 0;
+      const systemPrefix = global.GoatBot.config.prefix || "/";
+      const groupPrefix = (global.utils && typeof global.utils.getPrefix === "function") 
+        ? global.utils.getPrefix(threadID) 
+        : systemPrefix;
 
-    const index = global.GoatBot.prefixVideoToggle[threadID];
-    global.GoatBot.prefixVideoToggle[threadID] = index === 0 ? 1 : 0;
+      const timeRaw = moment().tz("Asia/Dhaka").format("hh:mm A");
+      const dateRaw = moment().tz("Asia/Dhaka").format("DD MMM YYYY");
 
-    const media = await getStreamFromURL(mediaList[index]);
+      const sysPrefixBold = toBoldFont(systemPrefix);
+      const grpPrefixBold = toBoldFont(groupPrefix);
+      const timeBold = toBoldFont(timeRaw);
+      const dateBold = toBoldFont(dateRaw);
+      const ownerBold = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+      const totalCmdsBold = toBoldFont(global.GoatBot.commands ? global.GoatBot.commands.size : 0);
 
-    const systemPrefix = global.GoatBot.config.prefix;
-    const groupPrefix = global.utils.getPrefix(threadID);
+      const design1 = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+───────────────
+⚙️ 𝐏𝐑𝐄𝐅𝐈𝐗
+╰─➤ ${sysPrefixBold}
+💬 𝐆𝐑𝐎𝐔𝐏
+╰─➤ ${grpPrefixBold}
+» 🕐 𝐓𝐈𝐌𝐄  › ${timeBold}
+» 📆 𝐃𝐀𝐓𝐄  › ${dateBold}
+» 👑 𝐎𝐖𝐍𝐄𝐑 › ${ownerBold}
+» ⚡ 𝐂𝐌𝐃𝐒  › ${totalCmdsBold}
+» ⚛️ 𝐕𝐄𝐑   › 𝐕𝟐 • 𝐕𝟑 • 𝐕𝟓
+» ✅ 𝐒𝐓𝐀𝐓𝐔𝐒 › 𝐀𝐂𝐓𝐈𝐕𝐄
+───────────────
+╭─ 🔗 𝐆𝐈𝐓𝐇𝐔𝐁 ─╮
+╰➤ [ 𝐋𝐈𝐍𝐊 ]
+───────────────
+🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
-    const threadInfo = await threadsData.get(threadID);
-    const groupName = threadInfo?.threadName || "Unknown Group";
+      const design2 = `❖ ── [ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐈𝐍𝐅𝐎 ] ── ❖
 
-    const time = moment().tz("Asia/Dhaka").format("hh:mm A");
-    const date = moment().tz("Asia/Dhaka").format("DD MMM YYYY");
+⚡ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐏𝐑𝐄𝐅𝐈𝐗 : ➜ [ ${sysPrefixBold} ]
+💬 𝐂𝐔𝐑𝐑𝐄𝐍𝐓 𝐏𝐑𝐄𝐅𝐈𝐗 : ── ❖ ${grpPrefixBold} ❖── 
+⏰ 𝐓𝐈𝐌𝐄 : ${timeBold}
+📅 𝐃𝐀𝐓𝐄 : ${dateBold}
+👑 𝐎𝐖𝐍𝐄𝐑 : ${ownerBold}
+📊 𝐓𝐎𝐓𝐀𝐋 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 : ${totalCmdsBold}
+⚛️ 𝐕𝐄𝐑𝐒𝐈𝐎𝐍 : 𝐕𝟐 • 𝐕𝟑 • 𝐕𝟓
+✅ 𝐒𝐓𝐀𝐓𝐔𝐒 : 𝐀𝐂𝐓𝐈𝐕𝐄
+───────────────
+╭─ 🔗 𝐆𝐈𝐓𝐇𝐔𝐁 ─╮
+╰➤ [ 𝐋𝐈𝐍𝐊 ]
+───────────────────
+⚛️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓`;
 
-    const owner = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
-    
-    const totalCommands = global.GoatBot.commands ? global.GoatBot.commands.size : 0;
+      const designs = [design1, design2];
+      const randomDesign = designs[Math.floor(Math.random() * designs.length)];
+      const randomMediaURL = mediaList[Math.floor(Math.random() * mediaList.length)];
 
-    const design1 = `╭👑 𝐏𝐑𝐄𝐅𝐈𝐗 𝐏𝐀𝐍𝐄𝐋 👑 ╮
-🏷️ 𝐆𝐑𝐎𝐔𝐏 ➜ ${groupName}
-🔰 𝐒𝐘𝐒𝐓𝐄𝐌 ➜ ${systemPrefix}
-💬 𝐏𝐑𝐄𝐅𝐈𝐗 ➜ ${groupPrefix}
-⏰ 𝐓𝐈𝐌𝐄 ➜ ${time}
-📅 𝐃𝐀𝐓𝐄 ➜ ${date}
-👑 𝐎𝐖𝐍𝐄𝐑 ➜ ${owner}
-📊 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 ➜ ${totalCommands}
-🚀 𝐕𝐄𝐑𝐒𝐈𝐎𝐍 ➜ 𝐕𝟐 • 𝐕𝟑 • 𝐕𝟓
-⚡ 𝐒𝐓𝐀𝐓𝐔𝐒 ➜ 𝐎𝐍𝐋𝐈𝐍𝐄
-〔 💎𝐍𝐈𝐉𝐇𝐔𝐌 𝐁𝐎𝐓💎 〕`;
+      let mediaStream = await getImgurStream(randomMediaURL);
 
-    const design2 = `◢◤◢◤◢◤◢◤◢◤◢◤◢◤
-🔥 𝐏𝐑𝐄𝐅𝐈𝐗 𝐏𝐀𝐍𝐄𝐋 🔥
-➥ 👥 𝐆𝐑𝐎𝐔𝐏 :: ${groupName}
-➥ ⚙️ 𝐒𝐘𝐒𝐓𝐄𝐌 :: ${systemPrefix}
-➥ 💬 𝐏𝐑𝐄𝐅𝐈𝐗 :: ${groupPrefix}
-➥ ⏰ 𝐓𝐈𝐌𝐄 :: ${time}
-➥ 📆 𝐃𝐀𝐓𝐄 :: ${date}
-➥ 👑 𝐎𝐖𝐍𝐄𝐑 :: ${owner}
-➥ 📊 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒 :: ${totalCommands}
-➥ 🚀 𝐕𝐄𝐑𝐒𝐈𝐎𝐍 :: 𝐕𝟐 • 𝐕𝟑 • 𝐕𝟓
-➥ ⚡ 𝐒𝐓𝐀𝐓𝐔𝐒 :: 𝐎𝐍𝐋𝐈𝐍𝐄
-💎𝐒𝐈𝐘𝐀𝐌 𝐄𝐌𝐏𝐈𝐑𝐄💎`;
+      if (!mediaStream && global.utils && typeof global.utils.getStreamFromURL === "function") {
+        try {
+          mediaStream = await global.utils.getStreamFromURL(randomMediaURL);
+        } catch (e) {
+          mediaStream = null;
+        }
+      }
 
-    return message.reply({
-      body: index === 0 ? design1 : design2,
-      attachment: media
-    });
+      const msgPayload = {
+        body: randomDesign
+      };
+
+      if (mediaStream) msgPayload.attachment = mediaStream;
+
+      return message.reply(msgPayload);
+    } catch (err) {
+      return message.reply(`❌ Prefix Error: ${err.message}`);
+    }
   }
 };
