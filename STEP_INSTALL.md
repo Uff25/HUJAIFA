@@ -114,4 +114,4 @@ Keep account.txt private.
 • Click Create Monitor
 
 CONGRATULATIONS!
-𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 V2 is now successfully installed and running.
+𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 V2-V5 is now successfully installed and running.
