@@ -90,7 +90,7 @@ function lengthWhiteSpacesEndLine(text) {
 	let length = 0;
 	for (let i = text.length - 1; i >= 0; i--) {
 		if (text[i] == ' ')
-			length++;
+			length++; 
 		else
 			break;
 	}
