@@ -14,7 +14,7 @@ module.exports = {
     name: "trash",
     aliases: [],
     version: "1.7",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", // এই নাম কাটলে, বট বন্ধ হয়ে যাবে 
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", // এই নাম কাটলে, বট বন্ধ হয়ে যাবে 🤧 
     role: 0,
     category: "fun",
     cooldown: 10,
