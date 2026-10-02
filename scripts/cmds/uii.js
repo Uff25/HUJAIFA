@@ -735,8 +735,8 @@ const userLastSelection = new Map();
 
 module.exports = {
 	config: {
-		name: "uid",
-		aliases: ["id", "userid", "ইউ"],
+		name: "uii",
+		aliases: ["il"],
 		version: "6.0",
 		author: LOCKED_AUTHOR_1,
 		countDown: 3,
