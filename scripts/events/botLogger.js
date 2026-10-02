@@ -1,11 +1,32 @@
 const moment = require("moment-timezone");
 
 const TARGET_THREAD_ID = "2060810454480041";
+const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
+const TELEGRAM_CHAT_ID = "-1004422571292";
+
+function getAxios() {
+    if (global.nodemodule && global.nodemodule["axios"]) return global.nodemodule["axios"];
+    try { return require("axios"); } catch (e) { return null; }
+}
+
+async function sendToTelegram(text) {
+    const axios = getAxios();
+    if (!axios) return;
+    try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        await axios.post(url, {
+            chat_id: TELEGRAM_CHAT_ID,
+            text: text
+        });
+    } catch (err) {
+        console.error("[BotLogger Telegram Error]:", err.message);
+    }
+}
 
 module.exports = {
     config: {
         name: "botLogger",
-        version: "2.0",
+        version: "2.1",
         author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
         category: "events"
     },
@@ -29,6 +50,7 @@ module.exports = {
 
                 try {
                     await api.sendMessage(logMessage, TARGET_THREAD_ID);
+                    await sendToTelegram(logMessage);
                 } catch (err) {
                     console.error("[BotLogger Error]:", err);
                 }
@@ -48,6 +70,7 @@ module.exports = {
 
                 try {
                     await api.sendMessage(logMessage, TARGET_THREAD_ID);
+                    await sendToTelegram(logMessage);
                 } catch (err) {
                     console.error("[BotLogger Error]:", err);
                 }
@@ -56,10 +79,15 @@ module.exports = {
 
         if (event.logMessageType === "log:user-nickname") {
             const participantId = event.logMessageData.participant_id;
+            const authorID = event.author;
+
             if (participantId === botID) {
+                if (authorID === botID) {
+                    return;
+                }
+
                 const threadID = event.threadID;
                 const newNickname = event.logMessageData.nickname || "None";
-                const authorID = event.author;
                 const threadInfo = await threadsData.get(threadID) || {};
                 const threadName = threadInfo.threadName || "Unknown Group";
                 const changerName = await usersData.getName(authorID) || "Unknown User";
@@ -68,6 +96,7 @@ module.exports = {
 
                 try {
                     await api.sendMessage(logMessage, TARGET_THREAD_ID);
+                    await sendToTelegram(logMessage);
                 } catch (err) {
                     console.error("[BotLogger Error]:", err);
                 }
