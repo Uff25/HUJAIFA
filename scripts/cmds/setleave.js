@@ -5,7 +5,7 @@ module.exports = {
 		name: "setleave",
 		aliases: ["setl"],
 		version: "1.7",
-		author: "MR_FARHAN",
+		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
 		countDown: 5,
 		role: 0,
 		description: {
@@ -170,4 +170,4 @@ async function saveChanges(message, event, threadID, senderID, threadsData, getL
 		data
 	});
 	message.reply(getLang("addedFile", attachments.length));
-			}
+}
