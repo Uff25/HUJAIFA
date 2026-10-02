@@ -5,7 +5,7 @@ module.exports.config = {
   name: "v",
   aliases: ["vi", "mp4"],
   version: "1.0.0",
-  author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+  author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝐁𝐎𝐓
   countDown: 5,
   role: 0,
   shortDescription: "ভিডিও প্লেয়ার কমান্ড",
