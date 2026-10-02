@@ -3,7 +3,7 @@ module.exports = {
     name: "sex2",
     aliases: ["18+"],
     version: "2.0",
-    author: "kshitiz",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 30,
     role: 2,
     shortDescription: "",
