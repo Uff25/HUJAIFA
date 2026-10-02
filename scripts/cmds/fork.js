@@ -1,26 +1,81 @@
 module.exports = {
 	config: {
 		name: "fork",
-		version: "1.0.0",
+		aliases: ["repo", "github", "গিটহাব"],
+		version: "3.0",
 		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
 		countDown: 0,
 		role: 0,
-		description: {
-			vi: "Tự động gửi link fork khi có từ 'fork' trong tin nhắn",
-			en: "Auto send fork link when keyword 'fork' is matched in message"
+		shortDescription: {
+			bn: "বটের ফোর্ক লিঙ্ক ও আপডেট দেখাবে"
 		},
-		category: "no prefix"
+		longDescription: {
+			bn: "বটের আপডেট ফোর্ক গিটহাব লিঙ্ক সবাইকে মেনশন দিয়ে নোটিফিকেশন পাঠাবে"
+		},
+		category: "info",
+		guide: {
+			bn: ""
+		}
 	},
 
-	onStart: async function ({ message }) {
-		return message.reply("নিউ আপডেট fork সবাই ইউজ করো অনেক নতুন মজার এবং কাজের কমান্ড এড করা হইছে ইউজ কর তারপর বুঝতে পারবা!\n\n🔗 𝐆𝐢𝐭𝐇𝐮𝐛 𝐋𝐢𝐧𝐤:\n👇😼👇\nhttps://github.com/siyam404-bot/siyam-V2-V5-bot-.git");
+	onStart: async function ({ api, event, Threads }) {
+		return await module.exports.sendForkUpdate({ api, event, Threads });
 	},
 
-	onChat: async function ({ message, event }) {
-		const body = (event.body || "").toLowerCase();
+	onChat: async function ({ api, event, Threads }) {
+		const { body } = event;
+		if (!body) return;
 
-		if (body.includes("fork")) {
-			return message.reply("নিউ আপডেট fork\nসবাই ইউজ করো অনেক নতুন মজার এবং কাজের কমান্ড এড করা হইছে \nইউজ কর তারপর বুঝতে পারবা!\n\n🔗 𝐆𝐢𝐭𝐇𝐮𝐛 𝐋𝐢𝐧𝐤:\n👇😼👇\nhttps://github.com/siyam404-bot/siyam-V2-V5-bot-.git");
+		const text = body.toLowerCase();
+
+		if (text.includes("fork") || text.includes("ফোর্ক")) {
+			return await module.exports.sendForkUpdate({ api, event, Threads });
+		}
+	},
+
+	sendForkUpdate: async function ({ api, event, Threads }) {
+		const { threadID, messageID } = event;
+
+		try {
+			let threadInfo;
+			if (Threads && typeof Threads.getInfo === "function") {
+				threadInfo = await Threads.getInfo(threadID);
+			} else if (api && typeof api.getThreadInfo === "function") {
+				threadInfo = await api.getThreadInfo(threadID);
+			}
+
+			const participantIDs = threadInfo?.participantIDs || threadInfo?.userInfo?.map(u => u.id) || [];
+
+			const mentions = participantIDs.map(id => ({
+				id: id,
+				tag: "🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄"
+			}));
+
+			const messageBody = 
+`🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄 
+➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
+😼 𝐔𝐒𝐄 𝐈𝐓 → 
+😁𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
+
+🔗 𝐆𝐢𝐭𝐇𝐮𝐛 ↓
+👉 https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
+
+			return api.sendMessage({
+				body: messageBody,
+				mentions: mentions
+			}, threadID, messageID);
+
+		} catch (error) {
+			const fallbackBody = 
+`🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄 
+➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
+😼 𝐔𝐒𝐄 𝐈𝐓 → 
+😁𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
+
+🔗 𝐆𝐢𝐭𝐇𝐮𝐛 ↓
+👉 https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
+
+			return api.sendMessage(fallbackBody, threadID, messageID);
 		}
 	}
 };
