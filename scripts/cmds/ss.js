@@ -82,8 +82,7 @@ module.exports = {
       api.unsendMessage(loading.messageID);
 
       const msg =
-`      👑𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥🪄
-     ✡️ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`🪄 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ━━━━━━━━━━━━━━━━━━
 📱 𝗗𝗘𝗩𝗜𝗖𝗘
 ▸ ${device.toUpperCase()}
