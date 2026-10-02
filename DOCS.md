@@ -15,7 +15,7 @@ See [utils.js](https://github.com/ntkhang03/Goat-Bot-V2/blob/main/utils.js) for 
 
 <hr>
 
-### **🧠 Prepare**
+### **🤧 Prepare**
 - [Node.js](https://nodejs.org/en/download/) 16.x
 - IDE or Text Editor (VSCode, Sublime Text, Atom, Notepad++, ...)
 - Knowledge of Javascript, Node.js, JSON,...
