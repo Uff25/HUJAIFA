@@ -6,7 +6,7 @@ module.exports = {
   config: {
     name: "userinfo",
     version: "1.1.0",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝐁𝐎𝐓
     role: 0,
     category: "info",
     shortDescription: "User Information",
