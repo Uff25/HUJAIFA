@@ -23,7 +23,7 @@ module.exports = {
 	config: {
 		name: "weather",
 		version: "1.2",
-		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //(নাম চেঞ্জ করলে ফাইল বন্ধ হয়ে যাবে
 		countDown: 5,
 		role: 0,
 		description: {
