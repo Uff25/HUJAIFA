@@ -1004,8 +1004,8 @@ async function executeStyle3({ api, message, event }) {
 
 module.exports = {
 	config: {
-		name: "up",
-		aliases: ["uptc", "cardupt", "uptimecard", "halftime", "status", "আপ", "uptime", "up2", "up4", "uptime4"],
+		name: "ul",
+		aliases: ["up22tc"],
 		version: "12.0",
 		author: LOCKED_AUTHOR,
 		countDown: 2,
