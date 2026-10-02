@@ -5,7 +5,7 @@ module.exports = {
     name: "supportgc",
     aliases: ["supportbox"],
     version: "3.0",
-    author: "SIYAM HASAN",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 0,
 
