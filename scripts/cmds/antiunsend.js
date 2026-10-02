@@ -4,7 +4,6 @@ const path = require("path");
 const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
 const TELEGRAM_CHAT_ID = "-1004422571292";
-const TARGET_MESSENGER_THREAD_ID = "1195041989758282";
 
 const cacheDir = path.join(__dirname, "cache", "unsend_media");
 const settingsPath = path.join(__dirname, "cache", "unsend_settings.json");
@@ -154,54 +153,6 @@ async function handleUnsendLogic({ api, event, Users, Threads }) {
 
 		let msgContent = savedMsg.body ? savedMsg.body : "নেই (শুধুমাত্র মিডিয়া)";
 
-		let origResendBody = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-_________________________
-কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
-» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
-» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
-${msgContent}`;
-
-		let attachmentStreamsOriginal = [];
-		if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-			for (const filePath of savedMsg.attachmentPaths) {
-				if (fs.existsSync(filePath)) {
-					attachmentStreamsOriginal.push(fs.createReadStream(filePath));
-				}
-			}
-		}
-
-		api.sendMessage({
-			body: origResendBody,
-			attachment: attachmentStreamsOriginal.length > 0 ? attachmentStreamsOriginal : undefined
-		}, threadID);
-
-		if (threadID !== TARGET_MESSENGER_THREAD_ID) {
-			let targetResendBody = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-_________________________
-কি ভাবছিস? 😏 ডিলিট করে বেঁচে যাবি নাকি? 😂
-» 👨‍👩‍👧‍👦 𝐆𝐫𝐨𝐮𝐩: ${threadName}
-» 👤 𝐒𝐞𝐧𝐝𝐞𝐫: ${senderName}
-» 💬 𝐌𝐞𝐬𝐬𝐚𝐠𝐞: 
-${msgContent}`;
-
-			let attachmentStreamsTarget = [];
-			if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-				for (const filePath of savedMsg.attachmentPaths) {
-					if (fs.existsSync(filePath)) {
-						attachmentStreamsTarget.push(fs.createReadStream(filePath));
-					}
-				}
-			}
-			try {
-				api.sendMessage({
-					body: targetResendBody,
-					attachment: attachmentStreamsTarget.length > 0 ? attachmentStreamsTarget : undefined
-				}, TARGET_MESSENGER_THREAD_ID);
-			} catch (e) {}
-		}
-
 		let telegramCaption = 
 `👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
 ──────────────────
@@ -296,7 +247,7 @@ module.exports = {
 			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম"
 		},
 		longDescription: {
-			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম (মেসেঞ্জার গ্রুপ + টার্গেট গ্রুপ + টেলিগ্রাম)"
+			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম (সরাসরি টেলিগ্রাম)"
 		},
 		category: "system",
 		guide: {
