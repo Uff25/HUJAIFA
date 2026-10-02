@@ -1,109 +1,171 @@
-const axios = require("axios");
 const fs = require("fs-extra");
-const { loadImage, createCanvas } = require("canvas");
+const path = require("path");
+const { createCanvas, loadImage } = require("canvas");
 
 module.exports = {
   config: {
     name: "wish",
-    version: "2.0",
-    author: "MR_siyam",
+    version: "3.0.0",
+    author: "SIYAM HASAN",
+    countDown: 5,
     role: 0,
-    shortDescription: "Beautiful happy birthday wish",
-    longDescription: "Generate a premium style birthday wish card with avatar",
-    category: "birthday",
+    shortDescription: "Generate a HD Birthday Wish Card",
+    longDescription: "Creates a ultra-hd birthday wish card with avatar, real Facebook name, golden frame, and custom wishes.",
+    category: "fun",
     guide: {
-      en: "{pn} @tag"
+      en: "{p}ws [@mention | reply to a message | leave blank]"
     }
   },
 
-  wrapText(ctx, text, maxWidth) {
-    return new Promise(resolve => {
-      if (ctx.measureText(text).width < maxWidth) return resolve([text]);
-      const words = text.split(" ");
-      const lines = [];
-      let line = "";
+  onStart: async function ({ api, event }) {
+    const cacheDir = path.join(__dirname, "cache");
+    if (!fs.existsSync(cacheDir)) {
+      fs.mkdirSync(cacheDir, { recursive: true });
+    }
+    const imagePath = path.join(cacheDir, `birthday_${event.threadID}_${Date.now()}.png`);
 
-      for (let word of words) {
-        const testLine = line + word + " ";
-        if (ctx.measureText(testLine).width > maxWidth) {
-          lines.push(line.trim());
-          line = word + " ";
-        } else line = testLine;
-      }
-      lines.push(line.trim());
-      resolve(lines);
-    });
-  },
+    let targetID = "";
+    let targetName = "";
+    let senderName = "";
 
-  onStart: async function ({ api, event, args, usersData }) {
     try {
-      const bgPath = __dirname + "/cache/bgc.png";
-      const avtPath = __dirname + "/cache/avt.png";
+      const senderData = await api.getUserInfo(event.senderID);
+      senderName = senderData[event.senderID]?.name || senderData[event.senderID]?.fullName || "Your Friend";
 
-      // মেনশন, মেসেজ রিপ্লাই অথবা সরাসরি UID চেক করার লজিক
-      let mentionID;
-      if (Object.keys(event.mentions).length > 0) {
-        mentionID = Object.keys(event.mentions)[0];
+      if (event.mentions && Object.keys(event.mentions).length > 0) {
+        targetID = Object.keys(event.mentions)[0];
       } else if (event.type === "message_reply") {
-        mentionID = event.messageReply.senderID;
-      } else if (args[0] && !isNaN(args[0])) {
-        mentionID = args[0];
+        targetID = event.messageReply.senderID;
       } else {
-        mentionID = event.senderID;
+        targetID = event.senderID;
       }
 
-      const targetName = await usersData.getName(mentionID);
-      const senderName = await usersData.getName(event.senderID);
+      const targetData = await api.getUserInfo(targetID);
+      targetName = targetData[targetID]?.name || targetData[targetID]?.fullName || "Dear Friend";
 
-      // Background
-      const bgURL = "https://i.postimg.cc/k4RS69d8/20230921-195836.png";
+      const avatarUrl = `https://graph.facebook.com/${targetID}/picture?height=800&width=800&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`;
+      let avatarImage;
+      try {
+        avatarImage = await loadImage(avatarUrl);
+      } catch (e) {
+        try {
+          avatarImage = await loadImage(`https://graph.facebook.com/${targetID}/picture?type=large`);
+        } catch (err) {
+          avatarImage = await loadImage("https://i.ibb.co/3pQ0X4G/default-avatar.png");
+        }
+      }
 
-      // Fetch avatar
-      const avtData = (
-        await axios.get(
-          `https://graph.facebook.com/${mentionID}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`,
-          { responseType: "arraybuffer" }
-        )
-      ).data;
-      fs.writeFileSync(avtPath, Buffer.from(avtData, "utf-8"));
-
-      // Fetch bg
-      const bgData = (await axios.get(bgURL, { responseType: "arraybuffer" }))
-        .data;
-      fs.writeFileSync(bgPath, Buffer.from(bgData, "utf-8"));
-
-      // Canvas
-      const bg = await loadImage(bgPath);
-      const avt = await loadImage(avtPath);
-
-      const canvas = createCanvas(bg.width, bg.height);
+      const canvas = createCanvas(1200, 850);
       const ctx = canvas.getContext("2d");
 
-      ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+      const bgGrad = ctx.createRadialGradient(600, 425, 100, 600, 425, 750);
+      bgGrad.addColorStop(0, "#3A0057");
+      bgGrad.addColorStop(0.5, "#1F0033");
+      bgGrad.addColorStop(1, "#0A0012");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 1200, 850);
 
-      // Avatar Circle
+      for (let i = 0; i < 110; i++) {
+        const x = Math.random() * 1200;
+        const y = Math.random() * 850;
+        const size = Math.random() * 3.5 + 1;
+        const alpha = Math.random() * 0.8 + 0.2;
+        const colors = ["#FFD700", "#FF69B4", "#00FFFF", "#FFFFFF", "#FF4500"];
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+        ctx.globalAlpha = alpha;
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1.0;
+
+      ctx.lineWidth = 22;
+      const borderGrad = ctx.createLinearGradient(0, 0, 1200, 850);
+      borderGrad.addColorStop(0, "#FFD700");
+      borderGrad.addColorStop(0.2, "#FFF8DC");
+      borderGrad.addColorStop(0.5, "#DAA520");
+      borderGrad.addColorStop(0.8, "#FFD700");
+      borderGrad.addColorStop(1, "#B8860B");
+      ctx.strokeStyle = borderGrad;
+      ctx.strokeRect(25, 25, 1150, 800);
+
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
+      ctx.strokeRect(40, 40, 1120, 770);
+
+      const centerX = 600;
+      const centerY = 290;
+      const avatarRadius = 155;
+
       ctx.save();
+      ctx.shadowColor = "#FFD700";
+      ctx.shadowBlur = 40;
       ctx.beginPath();
-      ctx.arc(270, 470, 200, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.clip();
-      ctx.drawImage(avt, 70, 270, 400, 400);
+      ctx.arc(centerX, centerY, avatarRadius + 15, 0, Math.PI * 2);
+      ctx.fillStyle = borderGrad;
+      ctx.fill();
       ctx.restore();
 
-      // Name text
-      ctx.font = "bold 40px Arial";
-      ctx.fillStyle = "#ffffff";
-      ctx.textAlign = "left";
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, avatarRadius + 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#0A0012";
+      ctx.fill();
 
-      const nameLines = await this.wrapText(ctx, targetName, 900);
-      ctx.fillText(nameLines.join("\n"), 550, 420);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, avatarRadius, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(avatarImage, centerX - avatarRadius, centerY - avatarRadius, avatarRadius * 2, avatarRadius * 2);
+      ctx.restore();
 
-      const imageBuffer = canvas.toBuffer();
-      fs.writeFileSync(bgPath, imageBuffer);
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, avatarRadius, 0, Math.PI * 2);
+      ctx.lineWidth = 7;
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.stroke();
 
-      // Premium Birthday Message
-      const caption =
-        `🎉✦ 𝗛𝗔𝗣𝗣𝗬 𝗕𝗜𝗥𝗧𝗛𝗗𝗔𝗬 ✦
+      ctx.textAlign = "center";
+
+      ctx.font = "bold 50px sans-serif";
+      ctx.fillStyle = "#FFD700";
+      ctx.shadowColor = "rgba(255, 215, 0, 0.9)";
+      ctx.shadowBlur = 20;
+      ctx.fillText("🎉 HAPPY BIRTHDAY 🎉", 600, 510);
+
+      ctx.font = "bold 65px sans-serif";
+      const nameGrad = ctx.createLinearGradient(0, 530, 1200, 600);
+      nameGrad.addColorStop(0, "#FFFFFF");
+      nameGrad.addColorStop(0.3, "#FFF8DC");
+      nameGrad.addColorStop(0.7, "#FFD700");
+      nameGrad.addColorStop(1, "#FF8C00");
+      ctx.fillStyle = nameGrad;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.95)";
+      ctx.shadowBlur = 25;
+      ctx.fillText(targetName.toUpperCase(), 600, 595);
+
+      ctx.font = "bold 28px sans-serif";
+      ctx.fillStyle = "#E0E6ED";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+      ctx.shadowBlur = 10;
+      ctx.fillText("WISHING YOU A DAY FILLED WITH LOVE, JOY & HAPPINESS!", 600, 660);
+
+      ctx.beginPath();
+      ctx.moveTo(300, 700);
+      ctx.lineTo(900, 700);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(255, 215, 0, 0.6)";
+      ctx.stroke();
+
+      ctx.font = "bold 26px sans-serif";
+      ctx.fillStyle = "#00FFFF";
+      ctx.shadowColor = "rgba(0, 255, 255, 0.8)";
+      ctx.shadowBlur = 12;
+      ctx.fillText("👑 OWNER ➜ SIYAM-HASAN 👑", 600, 760);
+
+      const buffer = canvas.toBuffer("image/png");
+      await fs.writeFile(imagePath, buffer);
+
+      const wishText = `🎉✦ 𝗛𝗔𝗣𝗣𝗬 𝗕𝗜𝗥𝗧𝗛𝗗𝗔𝗬 ✦
 
 ❖ Dear ${targetName},
 
@@ -112,7 +174,7 @@ module.exports = {
 
 ◈ তোমার প্রতিটি স্বপ্ন পূরণ হোক।
 ◈ জীবন ভরে উঠুক সুখ, শান্তি ও সফলতায়।
-◈ প্রতিটি নতুন দিন বয়ে আনুক আনন্দ ও आशीर्वाद।
+◈ প্রতিটি নতুন দিন বয়ে আনুক আনন্দ ও আশীর্বাদ।
 
 🤲 আল্লাহ তোমাকে সুস্থতা, দীর্ঘ নেক হায়াত,
 হালাল রিজিক ও সুন্দর ভবিষ্যৎ দান করুন। আমীন।
@@ -122,28 +184,23 @@ module.exports = {
 — 𝗕𝗲𝘀𝘁 𝗪𝗶𝘀𝗵𝗲𝘀
 ${senderName}
 
-👑 𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥 ➜ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑  `;
+👑  𝗢𝗪𝗡𝗘𝗥 ➜ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
 
-      api.sendMessage(
+      await api.sendMessage(
         {
-          body: caption,
-          mentions: [
-            {
-              id: mentionID,
-              tag: targetName
-            }
-          ],
-          attachment: fs.createReadStream(bgPath)
+          body: wishText,
+          attachment: fs.createReadStream(imagePath)
         },
         event.threadID,
-        () => {
-          fs.unlinkSync(bgPath);
-          fs.unlinkSync(avtPath);
-        }
+        event.messageID
       );
-    } catch (e) {
-      console.error(e);
-      api.sendMessage("❌ Eʀʀᴏʀ Pʟᴇᴀsᴇ Tʀʏ Aɢᴀɪɴ ", event.threadID);
+
+    } catch (error) {
+      return api.sendMessage("❌ বার্থডে উইশ কার্ড তৈরি করতে সমস্যা হয়েছে! পরে আবার চেষ্টা করুন।", event.threadID, event.messageID);
+    } finally {
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
     }
   }
 };
