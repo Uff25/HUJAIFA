@@ -25,9 +25,9 @@ module.exports = {
     const { senderID, mentions, type, messageReply } = event;
 
     let uid;
-    if (Object.keys(mentions).length > 0) {
+    if (mentions && Object.keys(mentions).length > 0) {
       uid = Object.keys(mentions)[0];
-    } else if (type === "message_reply") {
+    } else if (type === "message_reply" && messageReply) {
       uid = messageReply.senderID;
     } else {
       uid = senderID;
@@ -35,15 +35,21 @@ module.exports = {
 
     const avatarURL = `https://graph.facebook.com/${uid}/picture?height=512&width=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
 
+    const cacheDir = path.join(__dirname, "cache");
+    if (!fs.existsSync(cacheDir)) {
+      fs.mkdirSync(cacheDir, { recursive: true });
+    }
+
+    const imagePath = path.join(cacheDir, `nokia_${uid}.jpg`);
+
     try {
       const res = await axios.get(`https://api.popcat.xyz/v2/nokia?image=${encodeURIComponent(avatarURL)}`, {
         responseType: "arraybuffer"
       });
 
-      const imagePath = path.join(__dirname, "cache", `nokia_${uid}.jpg`);
       fs.writeFileSync(imagePath, res.data);
 
-      message.reply({
+      await message.reply({
         body: `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
  »📱 𝗛𝗲𝗿𝗲'𝘀 𝘆𝗼𝘂𝗿 
@@ -51,9 +57,18 @@ module.exports = {
 ───────────────
 » 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
         attachment: fs.createReadStream(imagePath)
-      }, () => fs.unlinkSync(imagePath));
-    }» catch (err) {
+      });
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    } catch (err) {
       console.error(err);
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+
       message.reply(`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
 ───────────────
 » ❌ 𝗙𝗮𝗶𝗹𝗲𝗱 𝘁𝗼 𝗴𝗲𝗻𝗲𝗿𝗮𝘁𝗲 
