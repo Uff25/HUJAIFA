@@ -66,7 +66,7 @@ module.exports = {
     name: "vut",
     aliases: ["ghost", "spook", "scare"],
     version: "5.0",
-    author: "EryXenX & Siyam Hasan",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     shortDescription: "Target user with scary & dark romantic replies",
     longDescription: "Target specific users. Whenever they send any message, reply with formatted dark horror messages.",
     category: "fun",
