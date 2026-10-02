@@ -1,9 +1,9 @@
 module.exports = {
   config: {
     name: "sk",
-    aliases: ["ইসকেন", "nature", "vondo"],
+    aliases: ["ইসকেন", "scan", "vondo"],
     version: "1.0.5",
-    author: "Mr.King",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     countDown: 5,
     role: 0,
     shortDescription: { bn: "গ্রুপ মেম্বারদের আসল চরিত্র ফাঁস করা" },
