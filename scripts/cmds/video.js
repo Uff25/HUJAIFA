@@ -7,7 +7,7 @@ module.exports = {
   config: {
     name: "video",
     version: "2.2.3",
-    author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //কিরে আবাল নাম পরিবর্তন করবি ফাইল বন্ধ কইরা দিমু 😂😁
     countDown: 5,
     role: 0,
     shortDescription: "Search & download YouTube videos",
