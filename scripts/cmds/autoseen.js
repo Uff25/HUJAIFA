@@ -4,7 +4,7 @@ const path = __dirname + "/cache/autoseen.json";
 const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
 
 if (!fs.existsSync(path)) {
-  fs.writeFileSync(path, JSON.stringify({ status: false }, null, 2));
+  fs.writeFileSync(path, JSON.stringify({ status: true }, null, 2));
 }
 
 function toBoldStyle(text) {
@@ -27,41 +27,16 @@ module.exports = {
     role: 0,
     shortDescription: "স্বয়ংক্রিয়ভাবে seen সিস্টেম",
     longDescription: "বট স্বয়ংক্রিয়ভাবে সকল নতুন মেসেজ seen করবে।",
-    category: "𝐬𝐲𝐬𝐭𝐞𝐦",
-    guide: {
-      en: "{𝐩𝐧} 𝐨𝐧/𝐨𝐟𝐟",
-    },
+    category: "𝐬𝐲𝐬𝐭𝐞𝐦"
   },
 
-  onStart: async function ({ message, args }) {
+  onStart: async function () {
     if (module.exports.config.author !== LOCKED_AUTHOR) {
       console.log("🚫 𝐅𝐈𝐋𝐄 𝐋𝐎𝐂𝐊𝐄𝐃: 𝐀𝐮𝐭𝐡𝐨𝐫 𝐜𝐡𝐚𝐧𝐠𝐞𝐝!");
       return;
     }
 
-    const data = JSON.parse(fs.readFileSync(path));
-
-    if (!args[0]) {
-      return message.reply(
-        `📄 ${toBoldStyle("Autoseen")} বর্তমান অবস্থা: ${data.status ? "✅ চালু" : "❌ বন্ধ"}`
-      );
-    }
-
-    if (args[0].toLowerCase() === "on") {
-      data.status = true;
-      fs.writeFileSync(path, JSON.stringify(data, null, 2));
-      return message.reply(`✅ ${toBoldStyle("Autoseen")} এখন থেকে চালু!`);
-    } 
-    
-    else if (args[0].toLowerCase() === "off") {
-      data.status = false;
-      fs.writeFileSync(path, JSON.stringify(data, null, 2));
-      return message.reply(`❌ ${toBoldStyle("Autoseen")} এখন বন্ধ!`);
-    } 
-    
-    else {
-      return message.reply(`⚠️ ব্যবহার করুন: ${toBoldStyle("autoseen on / off")}`);
-    }
+    fs.writeFileSync(path, JSON.stringify({ status: true }, null, 2));
   },
 
   onChat: async function ({ event, api }) {
@@ -71,10 +46,7 @@ module.exports = {
         return;
       }
 
-      const data = JSON.parse(fs.readFileSync(path));
-      if (data.status === true) {
-        api.markAsReadAll();
-      }
+      api.markAsReadAll();
     } catch (e) {
       console.error(e);
     }
