@@ -2,7 +2,7 @@ module.exports.config = {
   name: "spamkick",
   version: "1.0.0",
   role: 0, 
-  author: "Dipto",
+  author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝐁𝐎𝐓
   usePrefix: true,
   description: { 
       en: "Automatically kick a user who spams messages in a group chat"
