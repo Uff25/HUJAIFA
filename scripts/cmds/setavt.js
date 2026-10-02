@@ -5,7 +5,7 @@ module.exports = {
 		name: "setavt",
 		aliases: ["changeavt", "setavatar"],
 		version: "1.3",
-		author: "MR_FARHAN",
+		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
 		countDown: 5,
 		role: 2,
 		description: {
