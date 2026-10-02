@@ -39,7 +39,7 @@ function getVideoID(url) {
 
 const config = {
     name: "video2",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝐁𝐎𝐓
     credits: "Mesbah Saxx",
     version: "1.0.0",
     role: 0,
