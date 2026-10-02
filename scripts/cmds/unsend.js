@@ -1,4 +1,4 @@
-ওহ্module.exports = {
+module.exports = {
 	config: {
 		name: "unsend",
 		aliases: ["u", "uns", "r"],
