@@ -4,7 +4,7 @@ module.exports = {
 	config: {
 		name: "warn",
 		version: "1.8",
-		author: "MR_FARHAN",
+		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
 		countDown: 5,
 		role: 0,
 		description: {
@@ -13,14 +13,6 @@ module.exports = {
 		},
 		category: "box chat",
 		guide: {
-			vi: "   {pn} @tag <lý do>: dùng cảnh cáo thành viên"
-				+ "\n   {pn} list: xem danh sách những thành viên đã bị cảnh cáo"
-				+ "\n   {pn} listban: xem danh sách những thành viên đã bị cảnh cáo đủ 3 lần và bị ban khỏi box"
-				+ "\n   {pn} info [@tag | <uid> | reply | để trống]: xem thông tin cảnh cáo của người được tag hoặc uid hoặc bản thân"
-				+ "\n   {pn} unban [@tag | <uid> | reply | để trống]: gỡ ban thành viên, đồng thời gỡ tất cả cảnh cáo của thành viên đó"
-				+ "\n   {pn} unwarn [@tag | <uid> | reply | để trống] [<số thứ tự> | để trống]: gỡ cảnh cáo thành viên bằng uid và số thứ tự cảnh cáo, nếu để trống sẽ gỡ cảnh cáo cuối cùng"
-				+ "\n   {pn} reset: reset tất cả dữ liệu cảnh cáo"
-				+ "\n⚠️ Cần set quản trị viên cho bot để bot tự kick thành viên bị ban",
 			en: "   {pn} @tag <reason>: warn member"
 				+ "\n   {pn} list: view list of warned members"
 				+ "\n   {pn} listban: view list of banned members"
@@ -90,8 +82,19 @@ module.exports = {
 	},
 
 	onStart: async function ({ message, api, event, args, threadsData, usersData, prefix, role, getLang }) {
-		if (!args[0])
-			return message.SyntaxError();
+		if (!args[0]) {
+			const helpText = `⚠️ 𝗪𝗔𝗥𝗡 𝗖𝗢𝗠𝗠𝗔𝗡𝗗 𝗨𝗦𝗔𝗚𝗘 𝗚𝗨𝗜𝗗𝗘 ⚠️\n\n` +
+				`🔹 ${prefix}warn @tag <কারণ>: কোনো সদস্যকে ওয়ার্নিং দিতে\n` +
+				`🔹 ${prefix}warn list: ওয়ার্নিং পাওয়া সদস্যদের তালিকা দেখতে\n` +
+				`🔹 ${prefix}warn listban: ৩ বার ওয়ার্নিং খেয়ে ব্যান হওয়া সদস্যদের দেখতে\n` +
+				`🔹 ${prefix}warn info [@tag/UID/reply]: কারো ওয়ার্নিং ডিটেইলস চেক করতে\n` +
+				`🔹 ${prefix}warn unwarn [@tag/UID/reply]: ওয়ার্নিং তুলে নিতে\n` +
+				`🔹 ${prefix}warn unban [@tag/UID/reply]: ব্যান পাওয়া সদস্যকে আনব্যান করতে\n` +
+				`🔹 ${prefix}warn reset: গ্রুপের সব ওয়ার্নিং ডাটা রিসেট করতে\n\n` +
+				`👑 𝗢𝗪𝗡𝗘𝗥 ➜ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍`;
+			return message.reply(helpText);
+		}
+
 		const { threadID, senderID } = event;
 		const warnList = await threadsData.get(threadID, "data.warn", []);
 
@@ -259,7 +262,7 @@ module.exports = {
 						api.removeUserFromGroup(uid, threadID, async (err) => {
 							if (err) {
 								const members = await threadsData.get(event.threadID, "members");
-								if (members.find(item => item.userID == uid)?.inGroup) // check if user is still in group
+								if (members.find(item => item.userID == uid)?.inGroup)
 									return message.reply(getLang("userNotInGroup", userName));
 								else
 									return message.reply(getLang("noPermission5"), (e, info) => {
@@ -351,7 +354,7 @@ module.exports = {
 async function removeUsers(hasBanned, warnList, api, event, message, getLang, members) {
 	const failed = [];
 	for (const user of hasBanned) {
-		if (members.find(item => item.userID == user.uid)?.inGroup) { // check if user is still in group
+		if (members.find(item => item.userID == user.uid)?.inGroup) {
 			try {
 				if (warnList.find(item => item.uid == user.uid)?.list.length ?? 0 >= 3)
 					await api.removeUserFromGroup(user.uid, event.threadID);
