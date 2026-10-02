@@ -13,7 +13,7 @@ module.exports.config = {
   role: 0
 };
 
-// 🔒 Author check
+
 function checkAuthor() {
   if (module.exports.config.author !== AUTHOR) {
     throw new Error("❌ Author changed! Command locked.");
@@ -42,7 +42,7 @@ module.exports.onStart = async function ({ api, event, args }) {
     fs.writeFileSync(path, JSON.stringify(data, null, 2));
 
     return api.sendMessage(
-      "✅ ওকে 𝆠፝𝐒𝐈𝐘𝐀𝐌-বস ওর চুদা বন্ধ করা হয়েছে!",
+      "✅ ওকে 𝆠፝𝐒𝐈𝐘𝐀𝐌-বস ওর আদর বন্ধ করা হয়েছে!",
       event.threadID,
       event.messageID
     );
@@ -74,7 +74,7 @@ module.exports.onStart = async function ({ api, event, args }) {
 
     fs.writeFileSync(path, JSON.stringify(data, null, 2));
 
-    const msg = `✅ ওকে সিয়াম বস 𓆩»${name}«𓆪\nএই খানকির পোলা SMS করলেই চুদা ফ্রী`;
+    const msg = `✅ ওকে সিয়াম বস 𓆩»${name}«𓆪\nএই ভাই SMS করলেই আদর ফ্রী`;
 
     return api.sendMessage(
       {
