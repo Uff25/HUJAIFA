@@ -7,7 +7,7 @@ module.exports = {
  name: "videocall",
  aliases: ["vcall"],
  version: "1.0.0",
- author: "EryXenX",
+ author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
  countDown: 5,
  role: 0,
  description: {
