@@ -19,7 +19,7 @@ module.exports = {
     name: "tiktok",
     aliases: ["tt"],
     version: "1.1.0",
-    author: "MR_FARHAN",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
     role: 0,
     countDown: 5,
     category: "media",
