@@ -5,7 +5,7 @@ module.exports = {
   config: {
     name: "trigger",
     version: "1.2",
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", //এই নাম পরিবর্তন করলে ফাইল বন্ধ হয়ে যাবে
     countDown: 5,
     role: 0,
     shortDescription: "Trigger image",
