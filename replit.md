@@ -1,6 +1,6 @@
 # Overview
 
-Goat Bot V2 is a comprehensive Facebook Messenger chatbot built with Node.js that operates using a personal Facebook account through an unofficial Facebook API. The bot provides extensive command handling, event management, user/thread data management, and a web-based dashboard for configuration. It supports multiple database backends (JSON, SQLite, MongoDB) and includes features like automated uptime monitoring, Google Drive integration, and extensive customization options.
+Goat Bot V2-V5 is a comprehensive Facebook Messenger chatbot built with Node.js that operates using a personal Facebook account through an unofficial Facebook API. The bot provides extensive command handling, event management, user/thread data management, and a web-based dashboard for configuration. It supports multiple database backends (JSON, SQLite, MongoDB) and includes features like automated uptime monitoring, Google Drive integration, and extensive customization options.
 
 # User Preferences
 
