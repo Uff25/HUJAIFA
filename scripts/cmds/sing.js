@@ -55,7 +55,7 @@ module.exports = {
         ytLink = search.videos[0].url;
       }
 
-      // ⏳ loading
+      
       api.setMessageReaction("⏳", messageID, () => {}, true);
 
       const loading = await api.sendMessage(
@@ -63,7 +63,7 @@ module.exports = {
         threadID
       );
 
-      // 📁 cache folder safe create
+      
       const cacheDir = path.join(__dirname, "cache");
       if (!fs.existsSync(cacheDir)) {
         fs.mkdirSync(cacheDir, { recursive: true });
@@ -102,7 +102,7 @@ module.exports = {
 
 📌 Title: ${title}
 🔗 Link: ${ytLink}
-👑𝗕𝗢𝗧 𝗢𝗪𝗡𝗘𝗥 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`,
+👑 𝗢𝗪𝗡𝗘𝗥 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`,
 
           attachment: fs.createReadStream(savedPath)
         },
