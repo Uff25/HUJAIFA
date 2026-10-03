@@ -2,8 +2,8 @@ const moment = require("moment-timezone");
 const axios = require("axios");
 
 const mediaList = [
-  "https://i.imgur.com/8pT5G8g.gif",
-  "https://i.imgur.com/7iqtimo.gif"
+  "https://files.catbox.moe/nd3nk5.mp4",
+  "https://i.imgur.com/W4lBm3J.jpeg"
 ];
 
 function toBoldFont(text) {
@@ -136,10 +136,10 @@ module.exports = {
       const grpPrefixBold = toBoldFont(groupPrefix);
       const timeBold = toBoldFont(timeRaw);
       const dateBold = toBoldFont(dateRaw);
-      const ownerBold = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+      const ownerBold = "𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑";
       const totalCmdsBold = toBoldFont(global.GoatBot.commands ? global.GoatBot.commands.size : 0);
 
-      const design1 = `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+      const design1 = `» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 ⚙️ 𝐏𝐑𝐄𝐅𝐈𝐗
 ╰─➤ ${sysPrefixBold}
@@ -155,7 +155,7 @@ module.exports = {
 ╭─ 🔗 𝐆𝐈𝐓𝐇𝐔𝐁 ─╮
 ╰➤ [ 𝐋𝐈𝐍𝐊 ]
 ───────────────
-🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+🧚‍♀️𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       const design2 = `❖ ── [ 𝐒𝐘𝐒𝐓𝐄𝐌 𝐈𝐍𝐅𝐎 ] ── ❖
 
@@ -171,7 +171,7 @@ module.exports = {
 ╭─ 🔗 𝐆𝐈𝐓𝐇𝐔𝐁 ─╮
 ╰➤ [ 𝐋𝐈𝐍𝐊 ]
 ───────────────────
-⚛️ 𝐍𝐈𝐉𝐇𝐔𝐌 𝐂𝐇𝐀𝐓𝐁𝐎𝐓`;
+⚛️ 𝐀𝐑𝐈𝐘𝐀𝐍 𝐂𝐇𝐀𝐓𝐁𝐎𝐓`;
 
       const designs = [design1, design2];
       const randomDesign = designs[Math.floor(Math.random() * designs.length)];
