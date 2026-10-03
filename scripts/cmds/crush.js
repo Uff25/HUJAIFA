@@ -1,4 +1,4 @@
-if (!global.crushTargets) {
+ (!global.crushTargets) {
   global.crushTargets = new Set();
 }
 
