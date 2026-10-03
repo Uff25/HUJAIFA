@@ -24,20 +24,20 @@ module.exports = {
       const uptimeString = `${days}𝗗 ${hours}𝗛 ${minutes}𝗠`;
 
       const msg = 
-`🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧👑
+`🧚‍♀️𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧👑
 ───────────────
 » 🎀 𝗨𝗣𝗧𝗜𝗠𝗘 𝗦𝗧𝗔𝗧𝗦:
 » 🐤 𝗨𝗽𝘁𝗶𝗺𝗲: ${uptimeString}
 » 👥 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿𝘀: ${allUsers.length.toLocaleString()}
 » 💬 𝗧𝗼𝘁𝗮𝗹 𝗚𝗿𝗼𝘂𝗽𝘀: ${allThreads.length.toLocaleString()}
 ───────────────
-» 👑𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍`;
+» 👑𝆠𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑`;
 
       api.sendMessage(msg, event.threadID, event.messageID);
     } catch (error) {
       console.error(error);
       api.sendMessage(
-        `───────────────\n» ❌ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱.\n───────────────\n» 👑𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍`,
+        `───────────────\n» ❌ 𝗔𝗻 𝗲𝗿𝗿𝗼𝗿 𝗼𝗰𝗰𝘂𝗿𝗿𝗲𝗱.\n───────────────\n» 👑𝆠፝𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑`,
         event.threadID,
         event.messageID
       );
