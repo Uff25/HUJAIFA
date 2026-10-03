@@ -30,12 +30,12 @@ module.exports = {
       const mention = Object.keys(event.mentions);
       if (mention.length === 0) {
         const noMentionMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 💋 কাকে কিস করতে চাও 
 » 🥱 তাকে মেনশন করো
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
         return message.reply(noMentionMsg);
       }
 
@@ -61,13 +61,13 @@ module.exports = {
       fs.writeFileSync(imgPath, Buffer.from(response.data, "binary"));
 
       const successMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 🥵 উফ্ বেবি! তোমাকে তো 
 » 🤤 খেয়ে দিল, এখন তো 
 » 💋 তোমার বিয়ে হবে না!🤭🤣
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       await message.reply({
         body: successMsg,
@@ -79,11 +79,11 @@ module.exports = {
     } catch (err) {
       console.error("Error in kiss command:", err.message || err);
       const errorMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ কিস করাতে সমস্যা হয়েছে
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝HN𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return message.reply(errorMsg);
     }
   }
