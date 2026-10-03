@@ -32,7 +32,7 @@ const crushMessages = [
 module.exports = {
   config: {
     name: "crush",
-    aliases: ["flirt", "love", "potiya"],
+    aliases: ["flirt", "potaw", "potiya"],
     version: "1.0",
     author: "EryXenX & Siyam Hasan",
     shortDescription: "Target user with hilarious romantic replies",
