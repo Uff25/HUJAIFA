@@ -120,7 +120,7 @@ async function executeStyle1({ api, message, event }) {
 		ctx.fillStyle = "#ffffff";
 		ctx.shadowColor = "#00d2ff";
 		ctx.shadowBlur = 18;
-		ctx.fillText("👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑", 85, 110);
+		ctx.fillText("👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑", 85, 110);
 
 		ctx.shadowBlur = 0;
 		ctx.font = "bold 20px 'Segoe UI', Arial, sans-serif";
@@ -511,7 +511,7 @@ async function executeStyle1({ api, message, event }) {
 		ctx.shadowColor = "#00d2ff";
 		ctx.shadowBlur = 12;
 		ctx.textAlign = "center";
-		ctx.fillText("👑 SIYAM-HASAN CHAT BOT  ⚡  LIGHTING SYSTEM • LIVE MONITOR 👑", width / 2, 1018);
+		ctx.fillText("👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 CHAT BOT  ⚡  LIGHTING SYSTEM • LIVE MONITOR 👑", width / 2, 1018);
 		ctx.restore();
 
 		const buffer = canvas.toBuffer("image/png");
