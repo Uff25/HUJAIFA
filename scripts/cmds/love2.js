@@ -238,7 +238,7 @@ module.exports = {
       ctx.shadowBlur = 0;
       ctx.fillStyle = "#888888";
       ctx.font = "16px sans-serif";
-      ctx.fillText("─── 👑 OWNER: SIYAM-HASAN  |  🧚‍♀️ NIJHUM CHATBOT ───", width / 2, 455);
+      ctx.fillText("─── 👑 OWNER: 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑  |  🧚‍♀️ ARIYAN CHATBOT ───", width / 2, 455);
 
       // ফাইল সেভ ও সেন্ড
       const imgPath = path.join(__dirname, "cache", `love_hd_${id1}_${id2}.png`);
@@ -246,7 +246,7 @@ module.exports = {
       const buffer = canvas.toBuffer("image/png");
       fs.writeFileSync(imgPath, buffer);
 
-      const msgText = `» 👑 𝗢𝗪𝗡𝗘𝗥 : 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍
+      const msgText = `» 👑 𝗢𝗪𝗡𝗘𝗥 : 𝆠፝𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑
 ───────────────
 💘 𝗖𝗬𝗕𝗘𝗥 𝗟𝗢𝗩𝗘 𝗠𝗔𝗧𝗖𝗛 
 ───────────────
@@ -258,7 +258,7 @@ module.exports = {
 
 » ${comment}
 ───────────────
-» 🧚‍♀️ 𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ আ্ঁরি্ঁয়া্ঁন্ঁ 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage(
         {
