@@ -24,35 +24,35 @@ module.exports = {
 
     if (mention.length == 0) {
       const noMentionMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 🙈 কাউকে মেনশন না করলে 
 » 🙄 প্রেম করবা কার সাথে
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return message.reply(noMentionMsg);
     } else if (mention.length == 1) {
       const one = event.senderID, two = mention[0];
       bal(one, two).then(ptth => {
         const msg1 = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 👩‍❤️‍👨 শুধু তুমি আর আমি,
 » 🥱 বাকি সব ফাউল প্রানী
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
         message.reply({ body: msg1, attachment: fs.createReadStream(ptth) }).then(() => fs.unlinkSync(ptth));
       });
     } else {
       const one = mention[1], two = mention[0];
       bal(one, two).then(ptth => {
         const msg2 = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 💖 দুইজনের কী যে পিরীত!
 » 🌹 সারা জীবন যেন এভাবেই কাটায়! 😉
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
         message.reply({ body: msg2, attachment: fs.createReadStream(ptth) }).then(() => fs.unlinkSync(ptth));
       });
     }
