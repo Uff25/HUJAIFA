@@ -160,7 +160,7 @@ module.exports = {
       ctx.fillStyle = "#00FFFF";
       ctx.shadowColor = "rgba(0, 255, 255, 0.8)";
       ctx.shadowBlur = 12;
-      ctx.fillText("👑 OWNER ➜ SIYAM-HASAN 👑", 600, 760);
+      ctx.fillText("👑 OWNER ➜ 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑", 600, 760);
 
       const buffer = canvas.toBuffer("image/png");
       await fs.writeFile(imagePath, buffer);
@@ -184,7 +184,7 @@ module.exports = {
 — 𝗕𝗲𝘀𝘁 𝗪𝗶𝘀𝗵𝗲𝘀
 ${senderName}
 
-👑  𝗢𝗪𝗡𝗘𝗥 ➜ 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`;
+👑  𝗢𝗪𝗡𝗘𝗥 ➜ 𝆠𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑`;
 
       await api.sendMessage(
         {
