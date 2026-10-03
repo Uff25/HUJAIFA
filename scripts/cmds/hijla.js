@@ -28,12 +28,12 @@ module.exports = {
       targetID = messageReply.senderID;
     } else {
       const noTargetMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ আরে মামা, কারে সাজাবি
 » 💃 তারে তো মেনশন দিলি না
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return message.reply(noTargetMsg);
     }
 
@@ -45,12 +45,12 @@ module.exports = {
       const filePath = path.join(cacheDir, `hijla_milon_${Date.now()}.png`);
 
       const loadingMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⏳ দাঁড়া মামা ওরে হিজলা
 » 🥵 সাজাইয়া দিচ্ছি... 💄
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       message.reply(loadingMsg);
 
       const accessToken = "6628568379|c1e620fa708a1d5696fb991c1bde5662";
@@ -84,14 +84,14 @@ module.exports = {
       fs.writeFileSync(filePath, buffer);
 
       const finalCaption = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 💃 ঐ দেখ মামা আমাদের
 » 🥱 নতুন হিজলা
 » 👤 𝗡𝗮𝗺𝗲: ${userName} 
 » 👏 মামা হাততালি দে সবাই!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage({
         body: finalCaption,
@@ -104,12 +104,12 @@ module.exports = {
     } catch (e) {
       console.error("HIJLA ERROR:", e);
       const errorMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ মামা ওটা পালাইছে
 » 🆔 আবার ট্রাই কর
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return message.reply(errorMsg);
     }
   }
