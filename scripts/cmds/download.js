@@ -21,14 +21,14 @@ module.exports = {
 
     if (module.exports.config.author !== LOCKED_AUTHOR) {
       const lockMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⛔ 𝗙𝗜𝗟𝗘 𝗟𝗢𝗖𝗞𝗘𝗗
-» ❌ সিয়াম ভাই এর নাম 
+» ❌ আ্ঁরি্ঁয়া্ঁন্ঁ ভাই এর নাম 
 » 🤦 পরিবর্তন করা হয়েছে!
 » ⚠️ এই কমান্ডটি নষ্ট করা হলো।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage(
         lockMsg,
@@ -42,7 +42,7 @@ module.exports = {
 
     if (!url) {
       const usageMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⚠️ অনুগ্রহ করে একটি 
 » ❌ 𝗗𝗶𝗿𝗲𝗰𝘁 𝗟𝗶𝗻𝗸 দিন।
@@ -50,7 +50,7 @@ module.exports = {
  💡 ব্যবহার পদ্ধতি:
  🎀 download https://example.com/video.mp4
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️‿𝐀𝐑𝐈𝐘𝐀𝐍  𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage(
         usageMsg,
@@ -70,7 +70,7 @@ module.exports = {
 
     if (!supported.includes(ext)) {
       const unsupportedMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ 𝗨𝗻𝘀𝘂𝗽𝗽𝗼𝗿𝘁𝗲𝗱 𝗙𝗶𝗹𝗲 𝗧𝘆𝗽𝗲!
 ───────────────
@@ -78,7 +78,7 @@ module.exports = {
 » 📁 mp4 mp3 jpg png gif 
 » ✅ pdf docx txt zip
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage(
         unsupportedMsg,
