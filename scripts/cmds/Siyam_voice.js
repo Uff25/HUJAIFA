@@ -34,7 +34,7 @@ module.exports = {
 			api.setMessageReaction("⏳", messageID, () => {}, true);
 		} catch (e) {}
 
-		const loadingMsg = await message.reply("⚡ 𝗦𝗜𝗬𝗔𝗠 𝗕𝗢𝗦𝗦 𝗔𝗥 𝗩𝗜𝗗𝗘𝗢 𝗟𝗢𝗔𝗗𝗜𝗡𝗚 𝗛𝗢𝗦𝗦𝗘... ⚡");
+		const loadingMsg = await message.reply("⚡ 𝐀𝐑𝐈𝐘𝐀𝐍 𝗕𝗢𝗦𝗦 𝗔𝗥 𝗩𝗜𝗗𝗘𝗢 𝗟𝗢𝗔𝗗𝗜𝗡𝗚 𝗛𝗢𝗦𝗦𝗘... ⚡");
 
 		const data = [
 			{
