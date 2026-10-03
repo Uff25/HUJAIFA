@@ -18,7 +18,7 @@ module.exports = {
     const senderID = event.senderID;
 
     const loadingMessage = await message.reply({
-      body: "🤗দারা বস সিয়াম 🪬 কে জিজ্ঞাসা করে আসি 😴🙈",
+      body: "🤗দারা বস আ্ঁরি্ঁয়া্ঁন্ঁ 🪬 কে জিজ্ঞাসা করে আসি 😴🙈",
     });
 
     const link = [
