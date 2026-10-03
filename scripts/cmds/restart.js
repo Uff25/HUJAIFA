@@ -23,7 +23,7 @@ module.exports = {
 			restartting: "🔄 | Đang khởi động lại bot..."
 		},
 		en: {
-			restartting: "» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» 🤖 𝗢𝗞𝗘 𝗕𝗢𝗦𝗦 𝐒𝐈𝐘𝐀𝐌\n» 🔄 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗕𝗼𝘁...\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧"
+			restartting: "» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑\n───────────────\n» 🤖 𝗢𝗞𝗘 𝗕𝗢𝗦𝗦 𝐀𝐑𝐈𝐘𝐀𝐍\n» 🔄 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗶𝗻𝗴 𝗕𝗼𝘁...\n───────────────\n» 🧚‍♀️𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧"
 		}
 	},
 
@@ -31,7 +31,7 @@ module.exports = {
 		const pathFile = `${__dirname}/tmp/restart.txt`;
 		if (fs.existsSync(pathFile)) {
 			const [tid, time] = fs.readFileSync(pathFile, "utf-8").split(" ");
-			api.sendMessage("» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ✅ 𝗕𝗼𝘁 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗲𝗱\n» ⏰ 𝗧𝗶𝗺𝗲: " + ((Date.now() - time) / 1000) + "s\n───────────────\n» 🧚‍♀️𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧", tid);
+			api.sendMessage("» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑\n───────────────\n» ✅ 𝗕𝗼𝘁 𝗥𝗲𝘀𝘁𝗮𝗿𝘁𝗲𝗱\n» ⏰ 𝗧𝗶𝗺𝗲: " + ((Date.now() - time) / 1000) + "s\n───────────────\n» 🧚‍♀️𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧", tid);
 			fs.unlinkSync(pathFile);
 		}
 	},
