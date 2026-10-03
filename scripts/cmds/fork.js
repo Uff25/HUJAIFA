@@ -26,9 +26,9 @@ module.exports = {
 		const { body } = event;
 		if (!body) return;
 
-		const text = body.toLowerCase();
+		const text = body.toLowerCase().trim();
 
-		if (text.includes("fork") || text.includes("ফোর্ক")) {
+		if (text === "fork" || text === "ফোর্ক") {
 			return await module.exports.sendForkUpdate({ api, event, Threads });
 		}
 	},
@@ -44,21 +44,30 @@ module.exports = {
 				threadInfo = await api.getThreadInfo(threadID);
 			}
 
-			const participantIDs = threadInfo?.participantIDs || threadInfo?.userInfo?.map(u => u.id) || [];
+			let participantIDs = [];
+			if (threadInfo) {
+				if (Array.isArray(threadInfo.participantIDs)) {
+					participantIDs = threadInfo.participantIDs;
+				} else if (Array.isArray(threadInfo.userInfo)) {
+					participantIDs = threadInfo.userInfo.map(u => u.id || u.facebookID);
+				}
+			}
+
+			const headerTag = "🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄";
 
 			const mentions = participantIDs.map(id => ({
 				id: id,
-				tag: "🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄"
+				tag: headerTag
 			}));
 
 			const messageBody = 
-`🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄 
+`${headerTag}
 ➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
-😼 𝐔𝐒𝐄 𝐈𝐓 → 
+😼 𝐔𝐒𝐄 𝐈𝐓
 😁𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
 
-🔗 𝐆𝐢𝐭𝐇𝐮𝐛 ↓
-👉 https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
+🔗 𝐆𝐢𝐭𝐇𝐮𝐛
+https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
 
 			return api.sendMessage({
 				body: messageBody,
@@ -66,14 +75,15 @@ module.exports = {
 			}, threadID, messageID);
 
 		} catch (error) {
+			console.error("Fork Command Error:", error);
 			const fallbackBody = 
 `🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄 
 ➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
-😼 𝐔𝐒𝐄 𝐈𝐓 → 
+😼 𝐔𝐒𝐄 𝐈𝐓
 😁𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
 
-🔗 𝐆𝐢𝐭𝐇𝐮𝐛 ↓
-👉 https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
+🔗 𝐆𝐢𝐭𝐇𝐮𝐛
+https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
 
 			return api.sendMessage(fallbackBody, threadID, messageID);
 		}
