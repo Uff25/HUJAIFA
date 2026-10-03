@@ -1,7 +1,6 @@
- (!global.crushTargets) {
+ if (!global.crushTargets) {
   global.crushTargets = new Set();
-}
-
+ }
 // 👑 নাম: হৃদয় হাসান
 // 🏡 বাসা: কিশোরগঞ্জ
 // 🎂 বয়স: ১৭+
