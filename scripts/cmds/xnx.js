@@ -25,7 +25,7 @@ module.exports = {
 
   onStart: async function ({ api, args, message, event, commandName, argsUsed }) {
     let base;
-    const creatorName = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+    const creatorName = "𝆠፝𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑";
 
     try {
       const configRes = await axios.get(nix);
@@ -98,7 +98,7 @@ module.exports = {
 
   onReply: async function ({ api, event, Reply }) {
     const { results, author, messageID, base } = Reply;
-    const creatorName = "𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍";
+    const creatorName = "𝆠፝𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑";
     
     if (event.senderID !== author) return;
 
