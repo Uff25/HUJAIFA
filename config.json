@@ -24,13 +24,13 @@
   },
 
   "adminBot": [
-    "61593774713636",
-    "61591371184179"
+    "61592697905168",
+    "61592612064543"
   ],
 
   "security": {
     "enableOwnerLock": true,
-    "ownerUID": "61593771713736",
+    "ownerUID": "61592697905168",
     "ownerIndex": 0,
     "notes": "Do not change adminBot[0], bot will stop if modified"
   },
@@ -45,8 +45,8 @@
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [
-      "61593761713736",
-      "61591371386179"
+      "61592697905168",
+      "61592612064543"
     ],
     "notes": "If enabled, only IDs in whiteListIds can use the bot."
   },
