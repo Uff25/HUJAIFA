@@ -41,23 +41,23 @@ module.exports = {
 		const isAdmin = await isUserAdmin(api, event, event.senderID);
 		if (!isAdmin) {
 			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ 𝐏𝐄𝐑𝐌𝐈𝐒𝐒𝐈𝐎𝐍 𝐃𝐄𝐍𝐈𝐄𝐃!
 » ⚠️ 𝐎𝐧𝐥𝐲 𝐀𝐝𝐦𝐢𝐧𝐬 𝐜𝐚𝐧 𝐮𝐬𝐞 
 » 🚪 𝐀𝐥𝐥-𝐎𝐮𝐭 𝐂𝐨𝐦𝐦𝐚𝐧𝐝.
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
 		}
 
 		const initMsg = await api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⚙️ 𝐏𝐑𝐎𝐂𝐄𝐒𝐒𝐈𝐍𝐆...
 » ⏳ 𝐋𝐞𝐚𝐯𝐢𝐧𝐠 𝐚𝐥𝐥 𝐨𝐭𝐡𝐞𝐫 𝐠𝐫𝐨𝐮𝐩𝐬, 
 » 📌 𝐩𝐥𝐞𝐚𝐬𝐞 𝐰𝐚𝐢𝐭!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID);
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID);
 
 		try {
 			const threadList = await api.getThreadList(100, null, ["INBOX"]);
@@ -80,7 +80,7 @@ module.exports = {
 			}
 
 			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 🚀 𝐀𝐋𝐋-𝐎𝐔𝐓 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐄𝐃!
 ───────────────
@@ -88,16 +88,16 @@ module.exports = {
 » ❌ 𝐅𝐚𝐢𝐥𝐞𝐝: ${failCount} Group(s)
 » 📌 𝐂𝐮𝐫𝐫𝐞𝐧𝐭 𝐆𝐫𝐨𝐮𝐩: Saved Safe 🛡️
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
 
 		} catch (error) {
 			return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ 𝐄𝐑𝐑𝐎𝐑!
 » ⚠️ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐟𝐞𝐭𝐜𝐡 𝐠𝐫𝐨𝐮𝐩 𝐥𝐢𝐬𝐭.
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`, currentThreadID, event.messageID);
 		}
 	}
 };
