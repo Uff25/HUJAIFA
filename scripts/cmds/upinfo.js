@@ -76,7 +76,7 @@ module.exports = {
       ctx.fillStyle = titleGrad;
       ctx.shadowColor = "#ff00cc";
       ctx.shadowBlur = 10;
-      ctx.fillText("✨ NIJHUM BOT SYSTEM ✨", 60, 90);
+      ctx.fillText("✨ 𝐀𝐑𝐈𝐘𝐀𝐍 BOT SYSTEM ✨", 60, 90);
       ctx.shadowBlur = 0;
 
       const uptime = process.uptime();
