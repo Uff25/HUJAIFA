@@ -102,7 +102,7 @@ module.exports = {
 
 📌 Title: ${title}
 🔗 Link: ${ytLink}
-👑 𝗢𝗪𝗡𝗘𝗥 𝆠፝𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑`,
+👑 𝗢𝗪𝗡𝗘𝗥 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑`,
 
           attachment: fs.createReadStream(savedPath)
         },
@@ -121,7 +121,7 @@ module.exports = {
       api.setMessageReaction("❌", messageID, () => {}, true);
 
       return api.sendMessage(
-        "❌সমস্যা হয়েছে 🚨বস সিয়াম এর ইনবক্সে নক দাও🌚 https://www.facebook.com/profile.php?id=100037154624637",
+        "❌সমস্যা হয়েছে 🚨বস আ্ঁরি্ঁয়া্ঁন্ঁ এর ইনবক্সে নক দাও🌚 https://www.facebook.com/profile.php?id=61591654275272",
         threadID,
         messageID
       );
