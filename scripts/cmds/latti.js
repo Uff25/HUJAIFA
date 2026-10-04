@@ -20,12 +20,12 @@ module.exports = {
     try {
       if (!messageReply) {
         const noReplyMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 🦵 কাকে ফুটবলের মতো কিক 
 » 😈 মারবি তাকে রিপ্লাই দে
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
         return api.sendMessage(noReplyMsg, threadID, messageID);
       }
 
@@ -37,12 +37,12 @@ module.exports = {
       });
 
       const successMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 💢 এই নে তুই লাথি খা!🦵
 » 😈 তুই লাথি খাওয়ারই যোগ্য
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
 
       return api.sendMessage(
         {
@@ -56,12 +56,12 @@ module.exports = {
     } catch (err) {
       console.error(err);
       const errorMsg = 
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » 💥 ছবি লোড করতে 
 » 🕵️ সমস্যা হয়েছে
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`;
       return api.sendMessage(errorMsg, threadID, messageID);
     }
   }
