@@ -130,9 +130,9 @@ async function runBabaPrediction(api, event, senderID, targetID) {
 
   try {
     const loadingText = 
-`🔮 » 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`🔮 » 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ━━━━━━━━━━━━━━━━━━
-বাবা সিয়াম তোমার ভবিষ্যৎবাণী করছে প্লিজ ওয়েট করুন...⏳
+বাবা আ্ঁরি্ঁয়া্ঁন্ঁ তোমার ভবিষ্যৎবাণী করছে প্লিজ ওয়েট করুন...⏳
 ━━━━━━━━━━━━━━━━━━`;
 
     let loadingMsg = null;
@@ -151,7 +151,7 @@ async function runBabaPrediction(api, event, senderID, targetID) {
     const loveScore = Math.floor(Math.random() * 101);
 
     const magicResponse = 
-`🔮 » 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`🔮 » 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ━━━━━━━━━━━━━━━━━━
 
 👤 𝗖 𝗢 𝗥: ${senderName}
@@ -165,7 +165,7 @@ async function runBabaPrediction(api, event, senderID, targetID) {
 » ${randomPrediction}
 
 ━━━━━━━━━━━━━━━━━━
-🏆 » 𝐍𝐈𝐉𝐇𝐔𝐌-𝐂𝐇𝐀𝐓-𝗕𝗢𝗧 📡`;
+🏆 » 𝐀𝐑𝐈𝐘𝐀𝐍-𝐂𝐇𝐀𝐓-𝗕𝗢𝗧 📡`;
 
     await api.sendMessage(magicResponse, threadID, messageID);
 
