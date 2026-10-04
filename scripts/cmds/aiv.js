@@ -39,13 +39,13 @@ async function handleCommand({ api, event, args }) {
     messageReply.attachments.length === 0
   ) {
     return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⚠️ একটা ছবিতে reply দিয়ে লিখুন: 
 » aiv prompt
 » 🔰 aiv dancing in a neon city
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -67,12 +67,12 @@ async function handleCommand({ api, event, args }) {
     )
   ) {
     return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⚠️ শুধু ছবিতে reply দিয়ে 
 » 🫣 এই command ব্যবহার করা যাবে।
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -82,12 +82,12 @@ async function handleCommand({ api, event, args }) {
 
   if (!prompt) {
     return api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⚠️ Prompt লিখুন। 
 » 🔰 aiv dancing in a neon city
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
@@ -105,12 +105,12 @@ async function handleCommand({ api, event, args }) {
 
     waitMessageID = await new Promise((resolve) => {
       api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ⏳ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐰𝐚𝐢𝐭 𝐛𝐚𝐫𝐚...
 » 🎥 𝐕𝐢𝐝𝐞𝐨 𝐢𝐬 𝐠𝐞𝐧𝐞𝐫𝐚𝐭𝐢𝐧𝐠!
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
         threadID,
         (err, info) => {
           resolve(info ? info.messageID : null);
@@ -203,7 +203,7 @@ async function handleCommand({ api, event, args }) {
     await new Promise((resolve, reject) => {
       api.sendMessage(
         {
-          body: `» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑\n───────────────\n» ✅ 𝐀𝐈 𝐕𝐈𝐃𝐄𝐎 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄𝐃!\n───────────────\n» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+          body: `» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑\n───────────────\n» ✅ 𝐀𝐈 𝐕𝐈𝐃𝐄𝐎 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄𝐃!\n───────────────\n» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
           attachment: fs.createReadStream(tempFilePath)
         },
         threadID,
@@ -236,13 +236,13 @@ async function handleCommand({ api, event, args }) {
     );
 
     api.sendMessage(
-`» 👑 𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍 👑
+`» 👑 𝐀𝐑𝐈𝐘𝐀𝐍-𝐒𝐀𝐁𝐁𝐈𝐑 👑
 ───────────────
 » ❌ 𝐅𝐀𝐈𝐋𝐄𝐃 𝐓𝐎 
 » 🤩 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐕𝐈𝐃𝐄𝐎!
 » ⚠️ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧...
 ───────────────
-» 🧚‍♀️ ‿𝗡𝗜𝗝𝗛𝗨𝗠 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
+» 🧚‍♀️ ‿𝐀𝐑𝐈𝐘𝐀𝐍 𝗖𝗛𝗔𝗧𝗕𝗢𝗧`,
       threadID,
       messageID
     );
