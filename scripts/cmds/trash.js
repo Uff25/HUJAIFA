@@ -12,7 +12,7 @@ const baseApiUrl = async () => {
 module.exports = {
   config: {
     name: "trash",
-    aliases: [],
+    aliases: ["trush"],
     version: "1.7",
     author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍", // এই নাম কাটলে, বট বন্ধ হয়ে যাবে 🤧 
     role: 0,
