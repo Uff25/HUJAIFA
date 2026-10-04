@@ -20,7 +20,7 @@ module.exports = {
     if (args[0] && args[0].toLowerCase() === "off") {
       if (activeMurgi.has(event.threadID)) {
         activeMurgi.set(event.threadID, false);
-        return message.reply("🛑 ওকে সিয়াম বস মাগির🖕 পুলাকে আর চুদব না🤬.");
+        return message.reply("🛑 ওকে আ্ঁরি্ঁয়া্ঁন্ঁ বস মাগির🖕 পুলাকে আর চুদব না🤬.");
       } else {
         return message.reply("⚠️ Murgi mode is not running.");
       }
@@ -36,7 +36,7 @@ module.exports = {
 
     const messages = [
       "খা*নকির পোলা রেডি তো চু*দা খাওয়ার জন্য 😈 ",
-        "এখন তোর মার দুধ দরে ঘুমামু সকালে তোর বাপরে পুকটি মারতে জামু গুড নাইট ছোট 😚",
+        "এখন তোর মার দুধ দরে ঘুমামু সকালে তোর বাপরে পুটকি মারতে জামু গুড নাইট ছোট 😚",
         "শুন খানকির পোলা ইডেট করতে করতে মইরা যা পোস্ট কইরা ফেমাস কর আমারে, 🙄",
         "গালাগালি করতে করতে তোর বুরি মারে সস্তা বানিয়ে ফেলছস",
         "এই ইহুদির পুত এসব ছাড়া খানকির পোলা কি পারছ",
