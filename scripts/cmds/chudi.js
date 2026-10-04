@@ -35,7 +35,7 @@ module.exports.onStart = async function({ api, event, args }) {
     }
 
     if (!targetID) {
-        return api.sendMessage("বস যে মেয়েকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ", threadID, messageID);
+        return api.sendMessage("বস আ্ঁরি্ঁয়া্ঁন্ঁ যে মেয়েকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ", threadID, messageID);
     }
 
     let realName = "মাগি";
@@ -56,7 +56,7 @@ module.exports.onStart = async function({ api, event, args }) {
         return api.sendMessage({ body: msg.body.replace(realName, tagText), mentions: arraytag }, threadID);
     };
 
-    a("বস 𓆩𝐒𝐈𝐘𝐀𝐌𓆪 এর চুদা লো-🖕🥵");
+    a("বস 𓆩𝐀𝐑𝐈𝐘𝐀𝐍𓆪 এর চুদা লো-🖕🥵");
 
     if (activeSessions.has(threadID)) {
         activeSessions.get(threadID).forEach(clearTimeout);
@@ -75,10 +75,10 @@ module.exports.onStart = async function({ api, event, args }) {
         { msg: "বান্দির মেয়ে তর কচি বোনের ভুদা ফাক কর থুতু দিয়ে ভুদায় দন ডুকামু 🤟" + " " + realName, time: 20000 },
         { msg: "বান্দি মাগির মেয়ে তর আম্মু রে চুদি তর দুলা ভাই এর কান্দে ফেলে  🤝" + " " + realName, time: 23000 },
         { msg: "উফফফ খাদ্দামা মাগির মেয়ে তর আম্মুর কালা ভুদায় আমার মাল আউট তর কচি বোন রে উপ্তা করে এবার চুদবো  💉।" + " " + realName, time: 25000 },
-        { msg: "অনলাইনে গালি বাজ হয়ে গেছত মাগির মেয়ে এমন চুদা দিমু লাইফ টাইম মনে রাখবি ফারহান বস তর বাপ মাগির মেয়ে 😘।" + " " + realName, time: 28500 },
+        { msg: "অনলাইনে গালি বাজ হয়ে গেছত মাগির মেয়ে এমন চুদা দিমু লাইফ টাইম মনে রাখবি আ্ঁরি্ঁয়া্ঁন্ঁ বস তর বাপ মাগির মেয়ে 😘।" + " " + realName, time: 28500 },
         { msg: "বাতিজা শুন তর আম্মু রে চুদলে রাগ করবি না তো আচ্ছা জা রাগ করিস না তর আম্মুর কালা ভুদায় আর চুদলাম না তো বোন এর জামা টা খুলে দে  ✋" + " " + realName, time: 31000 },
-        { msg: " হাই মাদারচোদ তর তর ব্যাশা জাতের আম্মু টা রে আদর করে করে চুদি " + " " + realName, time: 36000 },
-        { msg: "~ চুদা কি আরো খাবি মাগির পোল 🤖", time: 39000, raw: true },
+        { msg: " হাই মাদারচোদ তোর ব্যাশা জাতের আম্মু টা রে আদর করে করে চুদি " + " " + realName, time: 36000 },
+        { msg: "~ চুদা কি আরো খাবি মাগির পোলা 🤖", time: 39000, raw: true },
         { msg: "খাংকির মেয়ে 🥰।" + " " + realName, time: 42000 },
         { msg: "মাদারচোদ😍.." + " " + realName, time: 48000 },
         { msg: "ব্যাস্যার মেয়ে 🐰" + " " + realName, time: 51000 },
@@ -89,14 +89,14 @@ module.exports.onStart = async function({ api, event, args }) {
         { msg: "নাট বল্টু মাগির মেয়ে🤟" + " " + realName, time: 66000 },
         { msg: "তর বোন রে পায়জামা খুলে চুদি 🤣" + " " + realName, time: 69000 },
         { msg: "উম্মম্মা তর বোন এরকচি ভুদায়💉।" + " " + realName, time: 72000 },
-        { msg: "DNA টেষ্ট করা দেখবি সিয়াম এর চুদা তেই তর জন্ম।" + " " + realName, time: 75000 },
+        { msg: "DNA টেষ্ট করা দেখবি আ্ঁরি্ঁয়া্ঁন্ঁ এর চুদা তেই তর জন্ম।" + " " + realName, time: 75000 },
         { msg: "কামলা মাগির মেয়ে  ✋" + " " + realName, time: 81000 },
         { msg: " বাস্ট্রাড এর বাচ্ছা বস্তির মেয়ে " + " " + realName, time: 87000 },
         { msg: "~ আমার জারজ শন্তান🤖", time: 93000, raw: true },
         { msg: "Welcome মাগির মেয়ে 🥰।" + " " + realName, time: 99000 },
         { msg: "তর কচি বোন এর পম পম😍.." + " " + realName, time: 105000 },
         { msg: "ব্যাস্যার মেয়ে কথা শুন তর আম্মু রে চুদি গামছা পেচিয়ে🐰" + " " + realName, time: 111000 },
-        { msg: "Hi ফারহান এর জারজ মাগির মেয়ে  💔!" + " " + realName, time: 114000 },
+        { msg: "Hi আ্ঁরি্ঁয়া্ঁন্ঁ এর জারজ মাগির মেয়ে  💔!" + " " + realName, time: 114000 },
         { msg: "২০ টাকা এ পতিতা মাগির মেয়ে " + " " + realName, time: 120000 },
         { msg: "depression থেকেও তর মাইরে চু*** দি 🤬 " + " " + realName, time: 126000 },
         { msg: "বস্তির মেয়ে অনলাইনের কিং" + " " + realName, time: 132000 },
@@ -110,7 +110,7 @@ module.exports.onStart = async function({ api, event, args }) {
         { msg: "Welcome শুয়োরের বাচ্চা 🥰।" + " " + realName, time: 174000 },
         { msg: "কুত্তার বাচ্ছা তর কচি বোন এর পম পম😍.." + " " + realName, time: 177000 },
         { msg: "খাঙ্কির মেয়ে মেয়ে কথা শুন তর আম্মু রে চুদি গামছা পেচিয়ে🐰" + " " + realName, time: 180000 },
-        { msg: "Hi বস সিয়াম এর জারজ মেয়ে মাগির মেয়ে  💔!" + " " + realName, time: 183000 },
+        { msg: "Hi বস আ্ঁরি্ঁয়া্ঁন্ঁ এর জারজ মেয়ে মাগির মেয়ে  💔!" + " " + realName, time: 183000 },
         { msg: "খান্কি মাগির মেয়ে " + " " + realName, time: 186000 },
         { msg: "তোর বাপে তোর নানা। 🤬 " + " " + realName, time: 189000 },
         { msg: "বস্তির মেয়ে তোর বইনরে মুসলমানি দিমু।" + " " + realName, time: 192000 },
@@ -119,10 +119,10 @@ module.exports.onStart = async function({ api, event, args }) {
         { msg: "কুত্তার পুকটি চাটামু💉।" + " " + realName, time: 201000 },
         { msg: "তর আম্মুর হোগা দিয়া ট্রেন ভইরা দিমু।।" + " " + realName, time: 204000 },
         { msg: "হিজলা মাগির মেয়ে হাতির ল্যাওড়া দিয়া তর মায়েরে চুদুম।  ✋" + " " + realName, time: 207000 },
-        { msg: "তর বোন ভোদা ছিল্লা লবণ লাগায় দিমু। " + " " + realName, time: 210000 },
+        { msg: "তর বোন এর ভোদা ছিল্লা লবণ লাগায় দিমু। " + " " + realName, time: 210000 },
         { msg: "~ আমার ফাটা কন্ডমের ফসল। জা ভাগ🤖", time: 213000, raw: true },
         { msg: "Welcome শুয়োরের বাচ্চা 🥰।" + " " + realName, time: 216000 },
-        { msg: "কুত্তার বাচ্ছা তর বৌন ভোদায় মাগুর মাছ চাষ করুম।😍.." + " " + realName, time: 218000 },
+        { msg: "কুত্তার বাচ্ছা তর বোনের ভোদায় মাগুর মাছ চাষ করুম।😍.." + " " + realName, time: 218000 },
         { msg: "খাঙ্কিরমেয়ে মেয়ে তর বোনের  হোগায় ইনপুট, তর মায়ের ভোদায় আউটপুট।🐰" + " " + realName, time: 220000 },
         { msg: "তর মায়ের ভোদা বোম্বাই মরিচ দিয়া চুদামু।💔!" + " " + realName, time: 222000 },
         { msg: "খান্কি মাগির মেয়ে তর মায়ের ভোদা শিরিষ কাগজ দিয়া ঘইষা দিমু। " + " " + realName, time: 225000 },
