@@ -35,7 +35,7 @@ module.exports.onStart = async function({ api, event, args }) {
     }
 
     if (!targetID) {
-        return api.sendMessage("বস আ্ঁরি্ঁয়া্ঁন্ঁ যে মেয়েকে চুদ্দে চাউ তার আইডি @ম্যানশন দেউ", threadID, messageID);
+        return api.sendMessage("বস আ্ঁরি্ঁয়া্ঁন্ঁ যে মেয়েকে চুদতে চাউ তার আইডি @ম্যানশন দেউ", threadID, messageID);
     }
 
     let realName = "মাগি";
