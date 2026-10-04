@@ -21,7 +21,7 @@ module.exports = {
     if (args[0] && args[0].toLowerCase() === "off") {
       if (activeMurgi.has(event.threadID)) {
         activeMurgi.set(event.threadID, false);
-        return message.reply("🛑 ওকে সিয়াম বস মাগির🖕 মেয়েকে আর চুদব না🤬.");
+        return message.reply("🛑 ওকে আ্ঁরি্ঁয়া্ঁন্ঁ বস মাগির🖕 মেয়েকে আর চুদব না🤬.");
       } else {
         return message.reply("⚠️ Murgi mode is not running.");
       }
@@ -80,7 +80,7 @@ module.exports = {
     ];
 
     activeMurgi.set(event.threadID, true);
-    message.reply("🔥 Murgi mode started 🫵সিয়াম বস য়ের 🥵চুদা শুরু 🖕.");
+    message.reply("🔥 Murgi mode started 🫵আ্ঁরি্ঁয়া্ঁন্ঁ বস য়ের 🥵চুদা শুরু 🖕.");
 
     try {
       while (activeMurgi.get(event.threadID)) {
