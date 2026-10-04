@@ -27,7 +27,7 @@ module.exports = {
       }
       global.babaAutoTargets[targetID] = true;
       const targetName = await getName(api, event, targetID);
-      return api.sendMessage(`✅ [ ${targetName} ] এর জন্য বাবা সিয়ামের অটো ভবিষ্যৎবাণী মোড চালু করা হলো! এখন থেকে যেকোনো মেসেজে উত্তর পাবে।`, threadID, messageID);
+      return api.sendMessage(`✅ [ ${targetName} ] এর জন্য বাবা আ্ঁরি্ঁয়া্ঁনে্ঁর্ঁ অটো ভবিষ্যৎবাণী মোড চালু করা হলো! এখন থেকে যেকোনো মেসেজে উত্তর পাবে।`, threadID, messageID);
     }
 
     if (args[0]?.toLowerCase() === "off") {
