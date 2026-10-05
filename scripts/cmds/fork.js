@@ -1,95 +1,53 @@
 module.exports = {
-	config: {
-		name: "fork",
-		aliases: ["github", "গিটহাব"],
-		version: "4.0",
-		author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
-		countDown: 0,
-		role: 0,
-		shortDescription: {
-			bn: "বটের ফোর্ক লিঙ্ক ও আপডেট দেখাবে"
-		},
-		longDescription: {
-			bn: "বটের আপডেট ফোর্ক গিটহাব লিঙ্ক সবাইকে মেনশন দিয়ে নোটিফিকেশন পাঠাবে"
-		},
-		category: "info",
-		guide: {
-			bn: ""
-		}
-	},
+  config: {
+    name: "fork",
+    version: "2.0.0",
+    author: "ARIYAN SABBIR",
+    countDown: 5,
+    role: 0,
 
-	onStart: async function ({ api, event, Threads }) {
-		return await module.exports.sendForkUpdate({ api, event, Threads });
-	},
+    shortDescription: {
+      en: "Get the GitHub fork link of ARIYAN CHAT BOT."
+    },
 
-	onChat: async function ({ api, event, Threads }) {
-		const { body } = event;
-		if (!body) return;
+    longDescription: {
+      en: "Provides the official GitHub fork link to create your own copy of ARIYAN CHAT BOT."
+    },
 
-		const text = body.toLowerCase();
+    category: "info",
 
-		// যেকোনো লেখার শুরুতে, মাঝে বা শেষে থাকলে এবং বড়/ছোট হাতের বা বাংলা/ইংরেজি যেকোনো ফরম্যাটে থাকলেও ট্রিগার হবে
-		const triggerRegex = /(fork|ফোর্ক|Fork|github|গিটহাব)/i;
+    guide: {
+      en: "{p}fork"
+    }
+  },
 
-		if (triggerRegex.test(text)) {
-			return await module.exports.sendForkUpdate({ api, event, Threads });
-		}
-	},
+  onStart: async function ({ message }) {
+    const forkLink =
+      "https://github.com/ItsAriyan-X/ARIYAN_CHAT_BOT/fork";
 
-	sendForkUpdate: async function ({ api, event, Threads }) {
-		const { threadID, messageID } = event;
+    const replyText =
+`╭━━━〔 🤖 ARIYAN CHAT BOT 〕━━━╮
 
-		try {
-			let threadInfo;
-			if (Threads && typeof Threads.getInfo === "function") {
-				threadInfo = await Threads.getInfo(threadID);
-			} else if (api && typeof api.getThreadInfo === "function") {
-				threadInfo = await api.getThreadInfo(threadID);
-			}
+✨ নিজের ফেসবুক আইডিতে
+আমাদের Bot সেটআপ করতে চান?
 
-			let participantIDs = [];
-			if (threadInfo) {
-				if (Array.isArray(threadInfo.participantIDs) && threadInfo.participantIDs.length > 0) {
-					participantIDs = threadInfo.participantIDs;
-				} else if (Array.isArray(threadInfo.userInfo) && threadInfo.userInfo.length > 0) {
-					participantIDs = threadInfo.userInfo.map(u => u.id || u.facebookID);
-				}
-			}
+🔗 GitHub Fork Link
+━━━━━━━━━━━━━━━━━━
+${forkLink}
+━━━━━━━━━━━━━━━━━━
 
-			const mentionTag = "🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄";
+📌 কীভাবে করবেন?
+➊ উপরের GitHub লিংকে ক্লিক করুন
+➋ নিজের GitHub account-এ Login করুন
+➌ "Fork" বাটনে ক্লিক করুন
+➍ Fork হয়ে গেলে Repository থেকে
+   Bot-এর ফাইলগুলো ব্যবহার করুন
 
-			const mentions = participantIDs.map(id => ({
-				id: id,
-				tag: mentionTag
-			}));
+⚡ ARIYAN CHAT BOT
+👑 Author: ARIYAN SABBIR
 
-			const messageBody = 
-`${mentionTag}
-➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
-😼 𝐔𝐒𝐄 𝐈𝐓
-😁 𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
+╰━━━━━━━━━━━━━━━━━━━━╯`;
 
-🔗 𝐆𝐢𝐭𝐇𝐮𝐛
-https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
-
-			return api.sendMessage({
-				body: messageBody,
-				mentions: mentions.length > 0 ? mentions : []
-			}, threadID, messageID);
-
-		} catch (error) {
-			console.error("Fork Command Error:", error);
-
-			const fallbackBody = 
-`🚨 𝐍𝐄𝐖 𝐅𝐎𝐑𝐊 𝐔𝐏𝐃𝐀𝐓𝐄
-➤ 𝐍𝐞𝐰 𝐅𝐮𝐧 & 𝐔𝐬𝐞𝐟𝐮𝐥 𝐂𝐌𝐃𝐒 
-😼 𝐔𝐒𝐄 𝐈𝐓
-😁 𝐓𝐇𝐄𝐍 𝐊𝐍𝐎𝐖! 
-
-🔗 𝐆𝐢𝐭𝐇𝐮𝐛
-https://github.com/siyam404-bot/siyam-V2-V5-bot-.git`;
-
-			return api.sendMessage(fallbackBody, threadID, messageID);
-		}
-	}
+    return message.reply(replyText);
+  }
 };
