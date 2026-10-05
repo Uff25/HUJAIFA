@@ -216,7 +216,7 @@ async function generateUpCard(data) {
   ctx.fillStyle = '#00ffff';
   ctx.shadowColor = '#00ffff';
   ctx.shadowBlur = 25;
-  ctx.fillText('SIYAM HASAN', width / 2, height - 85);
+  ctx.fillText('ARIYAN-SABBIR', width / 2, height - 85);
   ctx.shadowColor = 'transparent';
 
   const cacheDir = path.join(__dirname, 'cache');
