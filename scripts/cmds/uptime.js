@@ -106,7 +106,7 @@ module.exports = {
 			ctx.font = "bold 30px Arial";
 			ctx.fillStyle = "#ffffff";
 			ctx.textAlign = "center";
-			ctx.fillText("SIYAM-HASAN  •  BOT STATUS", 490, 98);
+			ctx.fillText("ARIYAN-SABBIR  •  BOT STATUS", 490, 98);
 
 			// Big Uptime
 			ctx.fillStyle = "rgba(24, 24, 46, 0.95)";
