@@ -1,12 +1,12 @@
 /** Don't change credits bro i will fix¯\_(ツ)_/¯ **/
 module.exports.config = {
-  name: "iss",
+  name: "18+",
   version: "1.0.0",
   hasPermssion: 2,
-  credits: "乛 ARIYAN ཐི༏ཋྀ SABBIRꜛཐི༏ཋྀ࿐",
+  credits: "乛 M𝆠፝֟R ཐི༏ཋྀ JU𝆠፝֟W𝆠፝֟ELꜛཐི༏ཋྀ࿐",
   description: "18+ VIDEOS",
   commandCategory: "video",
-  usages: "iss",
+  usages: "/18+",
   cooldowns: 5,
   dependencies: {
     "request": "",
@@ -226,7 +226,7 @@ module.exports.run = async ({ api, event, args, client, Users, Threads, __GLOBAL
 
     const bodyText =
 `❰ 𝗖𝗥𝗘𝗗𝗜𝗧𝗦 ❱
-乛 ARIYAN ཐི༏ཋྀꜛSABBIRཐི༏ཋྀ࿐
+乛 M𝆠፝֟R ཐི༏ཋྀ JU𝆠፝֟W𝆠፝֟ELꜛཐི༏ཋྀ࿐
 
 ❰ 𝗖𝗔𝗣𝗧𝗜𝗢𝗡 ❱
 ${caption}
