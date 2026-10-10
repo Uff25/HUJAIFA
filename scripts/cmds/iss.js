@@ -6,7 +6,7 @@ module.exports.config = {
   credits: "乛 M𝆠፝֟R ཐི༏ཋྀ JU𝆠፝֟W𝆠፝֟ELꜛཐི༏ཋྀ࿐",
   description: "18+ VIDEOS",
   commandCategory: "video",
-  usages: "/18+",
+  usages: ".19+",
   cooldowns: 5,
   dependencies: {
     "request": "",
