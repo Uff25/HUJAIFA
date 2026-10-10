@@ -1,12 +1,12 @@
 /** Don't change credits bro i will fix¯\_(ツ)_/¯ **/
 module.exports.config = {
-  name: "Iss",
+  name: "iss",
   version: "1.0.0",
   hasPermssion: 2,
   credits: "乛 ARIYAN ཐི༏ཋྀ SABBIRꜛཐི༏ཋྀ࿐",
   description: "18+ VIDEOS",
   commandCategory: "video",
-  usages: "Iss",
+  usages: "iss",
   cooldowns: 5,
   dependencies: {
     "request": "",
