@@ -1,6 +1,6 @@
 /** Don't change credits bro i will fix¯\_(ツ)_/¯ **/
 module.exports.config = {
-  name: "18+",
+  name: "Iss",
   version: "1.0.0",
   hasPermssion: 2,
   credits: "乛 ARIYAN ཐི༏ཋྀ SABBIRꜛཐི༏ཋྀ࿐",
