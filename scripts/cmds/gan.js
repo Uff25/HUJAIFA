@@ -10,7 +10,7 @@ module.exports = {
     name: "gan",
     version: "1.0.2",
     role: 0,
-    author: "𝐒𝐈𝐘𝐀𝐌-𝐇𝐀𝐒𝐀𝐍",
+    author: "ARIYAN-SABBIR",
     shortDescription: "Play random song with command 🎶",
     longDescription: "Sends a random mp3 song from preset Catbox links.",
     category: "media",
@@ -20,10 +20,18 @@ module.exports = {
   onStart: async function({ api, event }) {
     const { threadID, messageID } = event;
 
-    const authorHash = crypto.createHash("sha256").update(module.exports.config.author || "").digest("hex");
-    if (authorHash !== "30fb7ef490db0beed090ffc2c96b797e87bcf95fa5012e841f32a7e7ffc7cf4c") {
+    // 🔒 AUTHOR LOCK
+    const authorHash = crypto
+      .createHash("sha256")
+      .update(module.exports.config.author || "")
+      .digest("hex");
+
+    if (
+      authorHash !==
+      "e5880e78058583b9890ed12efb49333cc0f1e838d4d5469e0c9e8522edb05e6b"
+    ) {
       return api.sendMessage(
-        "😼কিরে আবাল 𝐒𝐈𝐘𝐀𝐌- ভাইয়ের নাম চেঞ্জ করলি কেন 😼ফাইল কি তোর বাপে বানাই ছিল😭😂",
+        "😼 কিরে! ARIYAN বসের নাম চেঞ্জ করলি কেন? 😼😂 এই ফাইল কি তোর বাপে বানাইছিল নাকি? 😭🤣",
         threadID,
         messageID
       );
@@ -38,7 +46,6 @@ module.exports = {
       "https://files.catbox.moe/0gncxf.mp4",
       "https://files.catbox.moe/gcm88s.mp4",
       "https://files.catbox.moe/yz23lp.mp4",
-
       "https://files.catbox.moe/etsdn9.mp3",
       "https://files.catbox.moe/ayepdz.mp3",
       "https://files.catbox.moe/oaecnx.mp3",
@@ -63,12 +70,17 @@ module.exports = {
     ];
 
     if (songLinks.length === 0) {
-      return api.sendMessage("❌ Nᴏ sᴏɴɢs ᴄᴏᴜʟᴅ ʙᴇ ғᴏᴜɴᴅ!", threadID, messageID);
+      return api.sendMessage(
+        "❌ Nᴏ sᴏɴɢs ᴄᴏᴜʟᴅ ʙᴇ ғᴏᴜɴᴅ!",
+        threadID,
+        messageID
+      );
     }
 
     api.setMessageReaction("🎵", messageID, () => {}, true);
 
     let index;
+
     do {
       index = Math.floor(Math.random() * songLinks.length);
     } while (index === lastPlayed && songLinks.length > 1);
@@ -91,23 +103,36 @@ module.exports = {
       writer.on("finish", async () => {
         api.sendMessage(
           {
-            body: "🎶 Hᴇʀᴇ's ʏᴏᴜʀ sᴏɴɢ 🎧",
+            body: "🎶 Hᴇʀᴇ's ʏᴏᴜʀ sᴏɴɢ 🎧\n👑 Powered by ARIYAN-SABBIR",
             attachment: fs.createReadStream(filePath)
           },
           threadID,
           async () => {
-            fs.unlinkSync(filePath);
+            try {
+              fs.unlinkSync(filePath);
+            } catch (err) {
+              console.error("[GAN CLEANUP ERROR]", err.message);
+            }
           },
           messageID
         );
       });
 
       writer.on("error", () => {
-        api.sendMessage("❌ Fᴀɪʟᴇᴅ ᴛᴏ sᴇɴᴅ sᴏɴɢ!", threadID, messageID);
+        api.sendMessage(
+          "❌ Fᴀɪʟᴇᴅ ᴛᴏ sᴇɴᴅ sᴏɴɢ!",
+          threadID,
+          messageID
+        );
       });
 
     } catch (err) {
-      api.sendMessage("⚠️ Fᴀɪʟᴇᴅ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ sᴏɴɢ!", threadID, messageID);
+      console.error("[GAN DOWNLOAD ERROR]", err);
+      api.sendMessage(
+        "⚠️ Fᴀɪʟᴇᴅ ᴛᴏ ᴅᴏᴡɴʟᴏᴀᴅ sᴏɴɢ!",
+        threadID,
+        messageID
+      );
     }
   }
 };
